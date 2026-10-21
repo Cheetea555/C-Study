@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>考研四科 · 学习中心总览</title>
+<style>
+:root{--ink:#1f2430;--muted:#8a919e;--line:#e5e7eb;--bg:#f4f5f7}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:900px;margin:0 auto;padding:40px 20px 60px}
+h1{font-size:26px;margin:0 0 6px}
+.sub{color:var(--muted);margin:0 0 28px;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;text-decoration:none;color:var(--ink);display:block;transition:box-shadow .2s,transform .2s}
+.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,42,.08)}
+.card .t{font-weight:700;font-size:17px;margin-bottom:4px}
+.card .d{color:var(--muted);font-size:13px;line-height:1.8}
+.bar{height:4px;border-radius:4px;margin-bottom:12px}
+.b-math{background:linear-gradient(90deg,#6366f1,#4f46e5)}
+.b-408{background:linear-gradient(90deg,#14b8a6,#0d9488)}
+.b-en{background:linear-gradient(90deg,#8b5cf6,#7c3aed)}
+.b-pol{background:linear-gradient(90deg,#ef4444,#dc2626)}
+.tip{margin-top:28px;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;color:var(--muted);font-size:13px;line-height:1.9}
+a{color:#4f46e5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🎓 考研四科 · 学习中心总览</h1>
+  <p class="sub">四个独立应用，同一套引擎（计划 / 错题本 / 刷题 / 统计）。每科数据互不影响，可分别收藏到浏览器书签。</p>
+  <div class="grid">
+    <a class="card" href="kaoyan-math2/index.html">
+      <div class="bar b-math"></div>
+      <div class="t">📐 考研数学二 · 学习中心</div>
+      <div class="d">15 章 142 考点 · 53 课教学 · 150 题题库 · 105 条公式手册（含默写模式）· 满分 150</div>
+    </a>
+    <a class="card" href="kaoyan-408/index.html">
+      <div class="bar b-408"></div>
+      <div class="t">💻 考研408 · 学习中心</div>
+      <div class="d">26 章（数据结构/组原/OS/网络）· 55 课教学 · 130 题题库 · 77 张速查卡 · 满分 150</div>
+    </a>
+    <a class="card" href="kaoyan-en2/index.html">
+      <div class="bar b-en"></div>
+      <div class="t">✍️ 考研英语二 · 学习中心</div>
+      <div class="d">8 章（词汇/长难句/五大题型）· 16 课教学 · 40 题题库 · 39 张句型方法速查卡 · 满分 100</div>
+    </a>
+    <a class="card" href="kaoyan-politics/index.html">
+      <div class="bar b-pol"></div>
+      <div class="t">🚩 考研政治 · 学习中心</div>
+      <div class="d">16 章（马原/毛中特/史纲/思修/时政）· 32 课教学 · 48 题题库 · 35 张原理对照与模板卡 · 满分 100</div>
+    </a>
+  </div>
+  <div class="tip">
+    💡 使用建议：四个应用各有独立的每日目标与计时器。先在总览页定盘（例如数学 180 分钟 / 408 150 / 英语 90 / 政治 60，按自身基础调整），再分别进各科「设置与数据」填入。每科每周记得导出一次备份。公共课考试日期默认 2026-12-19（以研招网为准）。本页可直接双击打开，也可作为浏览器起始页。
+  </div>
+</div>
+</body>
+</html>
