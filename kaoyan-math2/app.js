@@ -259,6 +259,7 @@ const STORE_KEY = 'kaoyan-math2.v1';
 let S = null;
 let kpSubject = '全部', kpQuery = '';
 let pqFilter = { ch: '', diff: 0, scope: 'all' }; // 刷题筛选
+let pqScopeSnapshot = null; // Keep the current practice set stable while answers change.
 let pqIndex = 0;                                   // 当前题号
 let pqSession = { qid: null, picked: -1, revealed: false }; // 当前题的作答状态
 let fQuery = '', fCatFilter = 'all', fQuiz = false, fOnlyFav = false; // 公式手册筛选
@@ -304,8 +305,15 @@ function load(){
 }
 
 function save(){
-  if (typeof localStorage === 'undefined') return;
-  try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) { /* 存储满时静默失败 */ }
+  if (typeof localStorage === 'undefined') return false;
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(S));
+    if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(true);
+    return true;
+  } catch (e) {
+    if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(false);
+    return false;
+  }
 }
 
 /* ---------------- 通用小工具 ---------------- */
@@ -344,7 +352,9 @@ function shortChapter(id){
 function toast(msg){
   if (typeof document === 'undefined') return; // Node 测试环境无 DOM
   const t = document.createElement('div');
-  t.className = 'toast'; t.textContent = msg;
+  document.querySelectorAll('.toast').forEach(item => item.remove());
+  t.className = 'toast'; t.setAttribute('role', 'status');
+  t.textContent = (typeof StudyUI !== 'undefined' && !StudyUI.storageOK() && /已|成功/.test(msg) && !/备份已导出/.test(msg)) ? '操作尚未保存，请先导出备份。' : msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
@@ -439,6 +449,7 @@ function renderDash(){
   renderCurrentPlan();
   renderReviewQueue(due);
   renderKpSummary();
+  if (typeof StudyUI !== 'undefined') StudyUI.refresh();
 }
 
 function renderCurrentPlan(){
@@ -466,7 +477,7 @@ function renderCurrentPlan(){
           progressBar(done / tot * 100) + '</div>';
       });
       html += '<div class="row" style="margin-top:10px">' +
-        '<button class="btn sm" onclick="A.goTab(\'learn\')">📖 去学本课</button>' +
+        '<button class="btn sm" onclick="A.startPlannedLesson()">开始本课学习</button>' +
         '<button class="btn ghost sm" onclick="A.goTab(\'kp\')">去标记知识点 →</button></div>';
     }
   }
@@ -585,7 +596,8 @@ function filteredQuestions(){
     // 教学配套模式：只做本课指定的题目（按教学顺序）
     return QUESTIONS.filter(q => pqFilter.ids.indexOf(q.id) >= 0);
   }
-  return QUESTIONS.filter(q => {
+  if (pqFilter.scope !== 'all' && pqScopeSnapshot) return QUESTIONS.filter(q => pqScopeSnapshot.includes(q.id));
+  const list = QUESTIONS.filter(q => {
     if (pqFilter.ch && q.ch !== pqFilter.ch) return false;
     if (pqFilter.diff && q.diff !== pqFilter.diff) return false;
     const rec = S.qz[q.id];
@@ -594,6 +606,8 @@ function filteredQuestions(){
     if (pqFilter.scope === 'right' && !(rec && rec.ok)) return false;
     return true;
   });
+  if (pqFilter.scope !== 'all') pqScopeSnapshot = list.map(q => q.id);
+  return list;
 }
 
 function pqCur(){
@@ -663,13 +677,17 @@ function practiceCard(q, list){
       (rec ? '<span class="muted">（上次：' + (rec.ok ? '✅ 对' : '❌ 错') + '）</span>' : '') + '</p>' +
       '<div style="white-space:pre-wrap;line-height:2">' + mathHtml(q.sol) + '</div>' +
       (q.type === 'choice' ? '' :
-        '<div class="row" style="margin-top:10px"><button class="btn ok" onclick="A.selfJudge(true)">✅ 我做对了</button><button class="btn warn" onclick="A.selfJudge(false)">❌ 我做错了</button></div>') +
+        '<div class="row" style="margin-top:10px"><button class="btn ok" ' + (pqSession.judged ? 'disabled' : '') + ' onclick="A.selfJudge(true)">✅ 我做对了</button><button class="btn warn" ' + (pqSession.judged ? 'disabled' : '') + ' onclick="A.selfJudge(false)">❌ 我做错了</button></div>') +
       '</div>';
   }
+  const feedback = pqSession.revealed && rec && (q.type === 'choice' || pqSession.judged)
+    ? '<div class="answer-result" role="status">' + (rec.ok ? '✓ 本次答对了' : '本次答错了 · 已加入错题本') + '</div>' : '';
+  const retry = pqSession.revealed ? '<button class="btn sm ghost" onclick="A.retryQuestion()">重新作答</button>' : '';
   return '<div class="card q-card">' +
+    '<div class="practice-progress pbar" aria-label="当前题目进度"><div class="pfill" style="width:' + (i / n * 100) + '%"></div></div>' +
     '<div class="m-head"><span class="tag">' + esc(shortChapter(q.ch)) + '</span><span class="tag">' + diffName + '</span>' +
     '<span class="tag">' + typeName + '题</span><span class="muted">' + q.id + ' · 第 ' + i + '/' + n + ' 题</span></div>' +
-    '<p class="q-text">' + mathHtml(q.q) + '</p>' + body + sol +
+    '<p class="q-text">' + mathHtml(q.q) + '</p>' + body + feedback + retry + sol +
     '<div class="row" style="margin-top:14px;justify-content:space-between">' +
     '<button class="btn ghost" ' + (i <= 1 ? 'disabled' : '') + ' onclick="A.pqNav(-1)">← 上一题</button>' +
     '<button class="btn ghost" ' + (i >= n ? 'disabled' : '') + ' onclick="A.pqNav(1)">下一题 →</button></div></div>';
@@ -690,9 +708,10 @@ function renderPractice(){
   const q = list[pqIndex];
   if (pqSession.qid !== q.id){
     const rec = S.qz[q.id];
-    pqSession = { qid: q.id, picked: rec ? (typeof rec.lastPick === 'number' ? rec.lastPick : (rec.ok ? q.ans : -1)) : -1, revealed: !!rec };
+    pqSession = { qid: q.id, picked: rec ? (typeof rec.lastPick === 'number' ? rec.lastPick : (rec.ok ? q.ans : -1)) : -1, revealed: !!rec, judged: !!rec };
   }
   el('pqArea').innerHTML = practiceCard(q, list);
+  if (typeof StudyUI !== 'undefined') StudyUI.practiceRendered();
 }
 
 function pickOpt(oi){
@@ -712,15 +731,26 @@ function revealAns(){
 }
 function selfJudge(ok){
   const q = pqCur();
-  if (!q) return;
+  if (!q || !pqSession.revealed || pqSession.judged) return;
+  pqSession.judged = true;
   recordAnswer(q, ok);
   renderPractice(); renderDash(); renderMistakeList();
   if (ok) toast('✅ 已记录：本题做对');
+}
+function retryQuestion(){
+  const q = pqCur();
+  if (!q) return;
+  pqSession = { qid: q.id, picked: -1, revealed: false, judged: false };
+  renderPractice();
 }
 function pqNav(d){
   const list = filteredQuestions();
   pqIndex = Math.min(Math.max(0, pqIndex + d), list.length - 1);
   renderPractice();
+  if (typeof document !== 'undefined') {
+    const card = document.querySelector('.q-card');
+    if (card) card.scrollIntoView({ block: 'start', behavior: 'auto' });
+  }
 }
 
 /* ---------------- 教学中心 ---------------- */
@@ -778,6 +808,7 @@ function renderLearn(){
       '<span class="ch-bar">' + progressBar(dn / arr.length * 100) + '</span></summary>' +
       arr.map(l => lessonCard(l)).join('') + '</details>';
   }).join('');
+  if (typeof StudyUI !== 'undefined') StudyUI.filterLessons();
 }
 
 function markLesson(id){
@@ -802,6 +833,8 @@ function markLesson(id){
 function practiceLesson(id){
   const l = findLesson(id);
   if (!l) return;
+  if (typeof StudyUI !== 'undefined') StudyUI.setPracticeSource(id);
+  pqScopeSnapshot = null;
   pqFilter = { ch: l.ch, diff: 0, scope: 'all', ids: (l.quiz && l.quiz.length) ? l.quiz.slice() : null };
   el('pqChapter').value = l.ch;
   el('pqDiff').value = '0';
@@ -812,6 +845,8 @@ function practiceLesson(id){
 }
 
 function clearPqIds(){
+  if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
+  pqScopeSnapshot = null;
   pqFilter.ids = null;
   pqIndex = 0;
   renderPractice();
@@ -842,6 +877,7 @@ function renderFormulas(){
       (f.tip ? '<div class="f-tip muted">💡 ' + mathHtml(f.tip) + '</div>' : '') +
       '</div>';
   }).join('') || '<p class="muted">没有匹配的公式，换个关键词或分类。</p>';
+  if (typeof StudyUI !== 'undefined') StudyUI.decorateFormulas();
 }
 
 function toggleFav(id){
@@ -984,6 +1020,7 @@ function updateTimerDisplay(){
   const T = S.timer;
   const sec = Math.floor(T.accumSec + (T.running ? (Date.now() - T.startTs) / 1000 : 0));
   el('timerDisplay').textContent = fmtHMS(sec);
+  if (typeof StudyUI !== 'undefined') StudyUI.updateTimer();
 }
 function syncTimerBtn(){ el('timerBtn').textContent = S.timer.running ? '⏸ 暂停' : '▶ 开始'; }
 function tick(){
@@ -1120,9 +1157,11 @@ function importData(file){
       const obj = JSON.parse(r.result);
       if (!obj || !obj.settings || !Array.isArray(obj.logs) || !Array.isArray(obj.mistakes) || !Array.isArray(obj.papers)) throw new Error('bad');
       if (!confirm('导入将覆盖当前全部数据，确定继续？')) return;
+      obj.kp = obj.kp || {}; obj.qz = obj.qz || {}; obj.lessons = obj.lessons || {}; obj.favF = obj.favF || {};
       obj.timer = obj.timer || { running: false, startTs: 0, accumSec: 0, chapterId: null };
       S = obj;
-      save(); renderAll();
+      pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
+      save(); renderAll(); syncTimerBtn(); updateTimerDisplay();
       toast('导入成功');
     } catch (e) {
       toast('文件格式不正确，导入失败');
@@ -1137,15 +1176,19 @@ function clearData(){
   S = defaultState();
   S.plan = generatePlan(todayStr(), S.settings.examDate, SYLLABUS);
   S.plan.generatedAt = todayStr();
-  save(); renderAll();
+  pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
+  if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
+  save(); renderAll(); syncTimerBtn(); updateTimerDisplay();
   toast('已清空');
 }
 
 /* ---------------- 事件动作（供内联 onclick 调用） ---------------- */
 
 function goTab(name){
+  if (!document.getElementById('tab-' + name)) return;
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tab').forEach(s => s.classList.toggle('active', s.id === 'tab-' + name));
+  if (typeof StudyUI !== 'undefined') StudyUI.onTab(name);
 }
 function cycleKp(pid){
   setKp(pid, (kpStatus(pid) + 1) % 4);
@@ -1206,7 +1249,7 @@ function toggleTimer(){
     T.running = true;
     T.chapterId = el('timerChapter').value || null;
   }
-  save(); syncTimerBtn();
+  save(); syncTimerBtn(); updateTimerDisplay();
 }
 function finishTimer(){
   const T = S.timer;
@@ -1234,12 +1277,12 @@ function regenPlan(){
   save(); renderAll();
   toast('学习计划已更新');
 }
-function openModal(html){ el('modalBox').innerHTML = html; el('modal').classList.remove('hidden'); }
-function closeModal(){ el('modal').classList.add('hidden'); }
+function openModal(html){ el('modalBox').innerHTML = html; el('modal').classList.remove('hidden'); if (typeof StudyUI !== 'undefined') StudyUI.modalOpened(); }
+function closeModal(){ el('modal').classList.add('hidden'); if (typeof StudyUI !== 'undefined') StudyUI.modalClosed(); }
 
 const A = {
   goTab, cycleKp, review, editMistake, delMistake, saveMistakeEdit, toggleMastered,
-  pickOpt, revealAns, selfJudge, pqNav, markLesson, practiceLesson, clearPqIds, toggleFav, revealF,
+  pickOpt, revealAns, selfJudge, retryQuestion, pqNav, markLesson, practiceLesson, clearPqIds, toggleFav, revealF,
   delPaper, delLog, toggleTimer, finishTimer, quickAdd, regenPlan,
   exportData, clearData, closeModal
 };
@@ -1295,6 +1338,8 @@ function init(){
   el('mfChapter').addEventListener('change', e => { mFilter.chapter = e.target.value; renderMistakeList(); });
   el('mfReason').addEventListener('change', e => { mFilter.reason = e.target.value; renderMistakeList(); });
   ['pqChapter', 'pqDiff', 'pqScope'].forEach(id => el(id).addEventListener('change', () => {
+    pqScopeSnapshot = null;
+    if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
     pqFilter.ch = el('pqChapter').value;
     pqFilter.diff = parseInt(el('pqDiff').value, 10) || 0;
     pqFilter.scope = el('pqScope').value;
@@ -1310,6 +1355,11 @@ function init(){
   renderAll();
   syncTimerBtn();
   updateTimerDisplay();
+  if (typeof StudyUI !== 'undefined') StudyUI.mount({
+    storeKey: STORE_KEY, getState: () => S, actions: A, save,
+    syllabus: SYLLABUS, lessons: LESSONS, today: todayStr,
+    due: dueMistakes, math: mathHtml, chapterName: shortChapter, toast, openModal
+  });
   setInterval(tick, 1000);
 }
 

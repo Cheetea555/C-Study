@@ -1,59 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>考研四科 · 学习中心总览</title>
-<style>
-:root{--ink:#1f2430;--muted:#8a919e;--line:#e5e7eb;--bg:#f4f5f7}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
-.wrap{max-width:900px;margin:0 auto;padding:40px 20px 60px}
-h1{font-size:26px;margin:0 0 6px}
-.sub{color:var(--muted);margin:0 0 28px;font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 22px;text-decoration:none;color:var(--ink);display:block;transition:box-shadow .2s,transform .2s}
-.card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(15,23,42,.08)}
-.card .t{font-weight:700;font-size:17px;margin-bottom:4px}
-.card .d{color:var(--muted);font-size:13px;line-height:1.8}
-.bar{height:4px;border-radius:4px;margin-bottom:12px}
-.b-math{background:linear-gradient(90deg,#6366f1,#4f46e5)}
-.b-408{background:linear-gradient(90deg,#14b8a6,#0d9488)}
-.b-en{background:linear-gradient(90deg,#8b5cf6,#7c3aed)}
-.b-pol{background:linear-gradient(90deg,#ef4444,#dc2626)}
-.tip{margin-top:28px;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:14px 18px;color:var(--muted);font-size:13px;line-height:1.9}
-a{color:#4f46e5}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>C-Study · 考研学习工作台</title>
+  <link rel="stylesheet" href="assets/study.css">
 </head>
-<body>
-<div class="wrap">
-  <h1>🎓 考研四科 · 学习中心总览</h1>
-  <p class="sub">四个独立应用，同一套引擎（计划 / 错题本 / 刷题 / 统计）。每科数据互不影响，可分别收藏到浏览器书签。</p>
-  <div class="grid">
-    <a class="card" href="kaoyan-math2/index.html">
-      <div class="bar b-math"></div>
-      <div class="t">📐 考研数学二 · 学习中心</div>
-      <div class="d">15 章 142 考点 · 53 课教学 · 150 题题库 · 105 条公式手册（含默写模式）· 满分 150</div>
-    </a>
-    <a class="card" href="kaoyan-408/index.html">
-      <div class="bar b-408"></div>
-      <div class="t">💻 考研408 · 学习中心</div>
-      <div class="d">26 章（数据结构/组原/OS/网络）· 55 课教学 · 130 题题库 · 77 张速查卡 · 满分 150</div>
-    </a>
-    <a class="card" href="kaoyan-en2/index.html">
-      <div class="bar b-en"></div>
-      <div class="t">✍️ 考研英语二 · 学习中心</div>
-      <div class="d">8 章（词汇/长难句/五大题型）· 16 课教学 · 40 题题库 · 39 张句型方法速查卡 · 满分 100</div>
-    </a>
-    <a class="card" href="kaoyan-politics/index.html">
-      <div class="bar b-pol"></div>
-      <div class="t">🚩 考研政治 · 学习中心</div>
-      <div class="d">16 章（马原/毛中特/史纲/思修/时政）· 32 课教学 · 48 题题库 · 35 张原理对照与模板卡 · 满分 100</div>
-    </a>
-  </div>
-  <div class="tip">
-    💡 使用建议：四个应用各有独立的每日目标与计时器。先在总览页定盘（例如数学 180 分钟 / 408 150 / 英语 90 / 政治 60，按自身基础调整），再分别进各科「设置与数据」填入。每科每周记得导出一次备份。公共课考试日期默认 2026-12-19（以研招网为准）。本页可直接双击打开，也可作为浏览器起始页。
-  </div>
-</div>
+<body class="portal-body">
+  <header class="portal-header">
+    <a class="app-logo" href="index.html"><span class="logo-mark" aria-hidden="true">C</span><span>C-Study<small>考研学习工作台</small></span></a>
+    <span class="offline-label"><span class="offline-dot"></span>本地记录 · 离线可用</span>
+  </header>
+  <main class="portal-main">
+    <section class="portal-intro" aria-labelledby="portalTitle">
+      <div>
+        <p class="eyebrow" id="portalDate">YOUR PERSONAL STUDY SPACE</p>
+        <h1 id="portalTitle">把今天，<br><span>学扎实。</span></h1>
+        <p>四门科目，一个学习空间。<br>从今天的一小步，走向想要的未来。</p>
+      </div>
+      <div class="portal-resume" id="portalResume">
+        <span class="eyebrow">READY WHEN YOU ARE</span>
+        <h3>从一门科目开始</h3>
+        <p>先学一课，再做几题。进步从这里发生。</p>
+        <a class="btn" href="kaoyan-math2/index.html#resume">开始学习数学二 →</a>
+      </div>
+    </section>
+    <section class="portal-summary" aria-label="本浏览器四科学习汇总">
+      <div><label>今日学习</label><strong><span id="totalMinutes">—</span><small>分钟</small></strong></div>
+      <div><label>今日待复习</label><strong><span id="totalDue">—</span><small>题</small></strong></div>
+      <div><label>累计学完</label><strong><span id="totalLessons">—</span><small>课</small></strong></div>
+    </section>
+    <section aria-labelledby="subjectsTitle">
+      <div class="portal-section-title"><h2 id="subjectsTitle">你的学习空间</h2><span>保持节奏，慢慢积累。</span></div>
+      <div class="subject-grid" id="subjectGrid">
+        <a class="subject-card" data-subject="math2" href="kaoyan-math2/index.html"><h3>数学二</h3><p class="subject-description">高等数学 · 线性代数</p><span class="muted">15 章 · 53 课 · 150 道练习 →</span></a>
+        <a class="subject-card" data-subject="408" href="kaoyan-408/index.html"><h3>计算机 408</h3><p class="subject-description">数据结构 · 组成原理 · 操作系统 · 计算机网络</p><span class="muted">26 章 · 55 课 · 130 道练习 →</span></a>
+        <a class="subject-card" data-subject="en2" href="kaoyan-en2/index.html"><h3>英语二</h3><p class="subject-description">词汇语法 · 阅读理解 · 翻译写作</p><span class="muted">8 章 · 16 课 · 40 道练习 →</span></a>
+        <a class="subject-card" data-subject="politics" href="kaoyan-politics/index.html"><h3>思想政治</h3><p class="subject-description">理解原理 · 梳理脉络 · 巩固记忆</p><span class="muted">16 章 · 32 课 · 48 道练习 →</span></a>
+      </div>
+    </section>
+    <div class="portal-note" id="portalNote"><span>学习记录保存在当前浏览器中。每周到各科「设置与数据」导出一次备份，让每一份努力都有留存。</span></div>
+    <noscript><p class="storage-warning">浏览器已关闭 JavaScript。请启用 JavaScript 后使用课程、刷题和学习记录功能。</p></noscript>
+    <footer class="portal-footer"><span>C-Study · 日拱一卒，功不唐捐。</span><span>无需安装 · 无外部依赖 · 数据由你保管</span></footer>
+  </main>
+  <script src="assets/common.js"></script>
+  <script src="assets/portal.js"></script>
 </body>
 </html>

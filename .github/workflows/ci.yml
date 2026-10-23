@@ -32,3 +32,8 @@ jobs:
               (cd "$d" && node "$t")
             done
           done
+
+      - name: Shared workspace regression tests
+        run: |
+          for file in assets/*.js; do node --check "$file"; done
+          node tests/workspace.test.js

@@ -7,10 +7,10 @@
 **零依赖、零构建、离线可用**：纯原生 HTML/CSS/JS，无需安装、无需联网，clone 下来双击 HTML 即用；全部数据保存在浏览器本地。
 
 <p align="center">
-  <img src="docs/screenshots/portal.png" width="880" alt="四科总览导航页">
+  <img src="docs/screenshots/portal-workspace.jpg" width="880" alt="四科学习工作台总览">
 </p>
 <p align="center">
-  <img src="docs/screenshots/math2-dash.png" width="880" alt="数学二 · 仪表盘">
+  <img src="docs/screenshots/math2-workspace.jpg" width="880" alt="数学二 · 今日概览">
 </p>
 
 ## 🚀 快速开始
@@ -35,6 +35,8 @@ git clone https://github.com/Cheetea555/C-Study.git
 
 > 📌 在线版与本地版的数据分别保存在各自浏览器的 localStorage 中，互不相通；无论哪种方式，都请养成每周导出备份的习惯（见[数据与备份](#-数据与备份)）。
 
+新版界面提供桌面侧栏、手机底部导航、首页继续学习、课程搜索与定位、题目重新作答、逐题错题复习和跨页面计时。界面与验收说明见 [前端体验说明](docs/frontend-ux.md)。
+
 ## ✨ 共同引擎（四科同源）
 
 | 能力 | 说明 |
@@ -49,14 +51,14 @@ git clone https://github.com/Cheetea555/C-Study.git
 
 ## 📚 四科内容一览
 
-全部内容内置、离线可用（合计 **65 章 · 约 430 考点 · 156 课 · 368 题 · 256 张速查卡**）。
+全部内容内置、离线可用（合计 **65 章 · 420 考点 · 156 课 · 368 题 · 256 张速查卡**）。
 
 | 科目 | 目录 | 知识体系 | 教学 | 题库 | 速查卡 | 满分 / 默认目标 |
 |---|---|---|---|---|---|---|
 | 📐 [数学二](kaoyan-math2/README.md) | `kaoyan-math2/` | 15 章 · 142 考点（高数 9 + 线代 6） | 53 课 · 109 例题 | 150 题 | 105 条公式 | 150 / 120 |
-| 💻 [408](kaoyan-408/README.md) | `kaoyan-408/` | 26 章 · 约 180 考点（数据结构 / 组成原理 / 操作系统 / 网络） | 55 课 · 110 例题 | 130 题 | 77 张 | 150 / 100 |
+| 💻 [408](kaoyan-408/README.md) | `kaoyan-408/` | 26 章 · 165 考点（数据结构 / 组成原理 / 操作系统 / 网络） | 55 课 · 110 例题 | 130 题 | 77 张 | 150 / 100 |
 | ✍️ [英语二](kaoyan-en2/README.md) | `kaoyan-en2/` | 8 章 · 40 考点（词汇 / 长难句 / 五大题型） | 16 课 · 32 例题 | 40 题 | 39 张 | 100 / 70 |
-| 🚩 [政治](kaoyan-politics/README.md) | `kaoyan-politics/` | 16 章 · 71 考点（马原 / 毛中特 / 史纲 / 思修法治 / 时政） | 32 课 · 50 例题 | 48 题 | 35 张 | 100 / 70 |
+| 🚩 [政治](kaoyan-politics/README.md) | `kaoyan-politics/` | 16 章 · 73 考点（马原 / 毛中特 / 史纲 / 思修法治 / 时政） | 32 课 · 50 例题 | 48 题 | 35 张 | 100 / 70 |
 
 各科的内容细节、复习建议与数据文件说明，见各科目录下的 README。
 
@@ -65,6 +67,8 @@ git clone https://github.com/Cheetea555/C-Study.git
 ```
 C-Study/
 ├── index.html              # 四科总览导航页（双击打开 / Pages 入口）
+├── assets/                 # 四科共用样式、导航与学习体验；全部资源本地加载
+├── tests/workspace.test.js # 新界面交互与总览统计的回归测试
 ├── kaoyan-math2/           # 考研数学二 · 学习中心
 ├── kaoyan-408/             # 考研 408 · 学习中心
 ├── kaoyan-en2/             # 考研英语二 · 学习中心
@@ -107,6 +111,10 @@ node test-mistake.js       # 错题自动记录：快照 / 去重 / 旧数据兼
 ```
 
 四科 × 5 = 20 个测试，当前全部通过；CI 会在每次 push 时自动运行全部测试（见顶部徽章）。**改动任何数据文件后，请运行对应测试自动校验。**
+
+在仓库根目录运行 `node tests/workspace.test.js`，额外验证四科的重新作答、筛选题集稳定、自评去重、存储异常反馈，以及总览数据与课程题库的一致性。该测试也已接入 CI。
+
+四科 HTML 共用 `assets/study.css`；`assets/workspace.js` 负责导航、课程定位、逐题复习和计时条，`assets/common.js` 负责科目信息和汇总计算，`assets/portal.js` 负责总览呈现。修改公共界面时请检查四科，而不仅是一科。
 
 ### 加内容
 
