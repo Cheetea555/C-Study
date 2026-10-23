@@ -7,11 +7,10 @@
 **零依赖、零构建、离线可用**：纯原生 HTML/CSS/JS，无需安装、无需联网，clone 下来双击 HTML 即用；全部数据保存在浏览器本地。
 
 <p align="center">
-  <img src="docs/screenshots/math2-dash.png" width="880" alt="数学二 · 仪表盘">
+  <img src="docs/screenshots/portal.png" width="880" alt="四科总览导航页">
 </p>
 <p align="center">
-  <img src="docs/screenshots/portal.png" width="428" alt="四科总览导航页">
-  <img src="docs/screenshots/408-dash.png" width="428" alt="408 · 仪表盘">
+  <img src="docs/screenshots/math2-dash.png" width="880" alt="数学二 · 仪表盘">
 </p>
 
 ## 🚀 快速开始
