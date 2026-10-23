@@ -56,4 +56,10 @@ assert.strictEqual(P.calcStreak(['2026-10-18', '2026-10-17'], '2026-10-19'), 2);
 assert.strictEqual(P.calcStreak(['2026-10-19', '2026-10-17'], '2026-10-19'), 1); // 断一天
 assert.strictEqual(P.calcStreak([], '2026-10-19'), 0);
 
-console.log('✅ 全部断言通过（日期 / 计划生成 / 复习调度 / 待复习队列 / 连续打卡）');
+/* ---------- 备份提醒 ---------- */
+assert.strictEqual(P.backupDueDays('', '2026-10-19'), -1);           // 从未备份
+assert.strictEqual(P.backupDueDays('2026-10-19', '2026-10-19'), 0);  // 当天刚备份
+assert.strictEqual(P.backupDueDays('2026-10-12', '2026-10-19'), 7);  // 满 7 天
+assert.strictEqual(P.backupDueDays('2026-10-01', '2026-10-19'), 18);
+
+console.log('✅ 全部断言通过（日期 / 计划生成 / 复习调度 / 待复习队列 / 连续打卡 / 备份提醒）');

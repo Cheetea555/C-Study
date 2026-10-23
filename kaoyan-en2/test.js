@@ -22,4 +22,10 @@ assert.strictEqual(m.stage, 0);
 assert.strictEqual(P.calcStreak(['2026-10-19', '2026-10-18'], '2026-10-19'), 2);
 assert.strictEqual(P.dueMistakes([{ mastered: false, nextReview: '2026-10-19' }], '2026-10-19').length, 1);
 
-console.log('✅ 英语二纯函数断言全部通过（日期 / ' + P.SYLLABUS.length + ' 章计划 / 复习调度 / 满分=100）');
+/* ---------- 备份提醒 ---------- */
+assert.strictEqual(P.backupDueDays('', '2026-10-19'), -1);           // 从未备份
+assert.strictEqual(P.backupDueDays('2026-10-19', '2026-10-19'), 0);  // 当天刚备份
+assert.strictEqual(P.backupDueDays('2026-10-12', '2026-10-19'), 7);  // 满 7 天
+assert.strictEqual(P.backupDueDays('2026-10-01', '2026-10-19'), 18);
+
+console.log('✅ 英语二纯函数断言全部通过（日期 / ' + P.SYLLABUS.length + ' 章计划 / 复习调度 / 满分=100 / 备份提醒）');

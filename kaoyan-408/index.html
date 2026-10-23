@@ -108,6 +108,23 @@ th,td{padding:8px 6px;text-align:left;border-bottom:1px solid var(--line);font-s
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 hr.sep{border:none;border-top:1px dashed var(--line);margin:14px 0}
 @media(max-width:800px){.two-col{grid-template-columns:1fr}.hbar-name{width:110px}}
+
+/* 备份提醒条（仪表盘顶部，距上次导出超 7 天或已有数据却从未备份时显示） */
+.backup-tip{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;line-height:1.8;color:#92400e}
+
+/* ---- 窄屏（手机）适配 ---- */
+@media(max-width:720px){
+  header{padding:10px 12px}
+  nav#tabs{flex-wrap:nowrap;overflow-x:auto;padding:8px 8px 0;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  nav#tabs::-webkit-scrollbar{display:none}
+  nav#tabs button{flex:0 0 auto;padding:10px 12px;font-size:14px;white-space:nowrap}
+  main{padding:14px 10px 60px}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .fgrid{grid-template-columns:1fr}
+  .modal-box{padding:14px}
+  .opt{padding:12px}
+  .btn{padding:10px 14px}
+}
 /* ---------- 数学/结构排版 ---------- */
 .mfr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;line-height:1.2}
 .mfr-n{padding:0 3px;border-bottom:1.2px solid currentColor;font-size:.9em}
