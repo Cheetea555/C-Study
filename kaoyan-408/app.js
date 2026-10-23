@@ -286,6 +286,11 @@ function dueMistakes(list, today){
   return list.filter(m => !m.mastered && m.nextReview && m.nextReview <= today);
 }
 
+/* 距上次备份导出的天数；从未备份返回 -1 */
+function backupDueDays(lastBackup, today){
+  return lastBackup ? diffDays(lastBackup, today) : -1;
+}
+
 function calcStreak(dates, today){
   const set = new Set(dates);
   let d = today, n = 0;
@@ -446,8 +451,26 @@ function renderHeader(){
   el('countdown').innerHTML = html;
 }
 
+/* 仪表盘备份提醒：距上次导出超 7 天、或已有学习数据却从未备份时显示 */
+function renderBackupTip(today){
+  let tip = document.getElementById('backupTip');
+  let head;
+  const d = backupDueDays(S.settings.lastBackup, today);
+  if (d >= 7) head = '已 ' + d + ' 天未导出备份';
+  else if (d < 0 && (S.logs.length || S.mistakes.length)) head = '你还未导出过备份';
+  else { if (tip) tip.remove(); return; }
+  if (!tip){
+    tip = document.createElement('div');
+    tip.id = 'backupTip';
+    tip.className = 'backup-tip';
+    document.getElementById('tab-dash').prepend(tip);
+  }
+  tip.innerHTML = '⚠️ ' + head + '——清理浏览器缓存会丢失全部学习记录。请到「设置与数据 → 数据备份」导出 JSON 并妥善保存。';
+}
+
 function renderDash(){
   const t = todayStr();
+  renderBackupTip(t);
   const kp = kpTotals();
   const due = dueMistakes(S.mistakes, t);
   const streak = calcStreak(S.logs.map(l => l.date), t);
@@ -1138,6 +1161,8 @@ function exportData(){
   a.download = 'kaoyan408-backup-' + todayStr() + '.json';
   a.click();
   URL.revokeObjectURL(a.href);
+  S.settings.lastBackup = todayStr();
+  save();
   toast('备份已导出，请妥善保存');
 }
 
@@ -1355,7 +1380,7 @@ if (typeof module !== 'undefined' && module.exports){
   module.exports = {
     pad2, fmtDate, parseDate, todayStr, addDays, diffDays,
     REVIEW_STEPS, REASONS, KP_STATUS, SYLLABUS,
-    phaseFor, generatePlan, scheduleNext, dueMistakes, calcStreak, uid,
+    phaseFor, generatePlan, scheduleNext, dueMistakes, calcStreak, uid, backupDueDays,
     defaultState, recordAnswer, addQToMistake, mistakeOptsHtml,
     __testSetState: s => { S = s; }
   };

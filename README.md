@@ -1,12 +1,26 @@
 # 🎓 考研四科学习中心（C-Study）
 
-![零依赖](https://img.shields.io/badge/dependencies-zero-brightgreen) ![离线可用](https://img.shields.io/badge/works-offline-green) ![纯前端](https://img.shields.io/badge/tech-原生HTML·CSS·JS-blue) ![tests](https://img.shields.io/badge/tests-20%20passed-brightgreen) ![爱发电](https://img.shields.io/badge/支持-爱发电-946ce6)
+![零依赖](https://img.shields.io/badge/dependencies-zero-brightgreen) ![离线可用](https://img.shields.io/badge/works-offline-green) ![纯前端](https://img.shields.io/badge/tech-原生HTML·CSS·JS-blue) [![CI](https://github.com/Cheetea555/C-Study/actions/workflows/ci.yml/badge.svg)](https://github.com/Cheetea555/C-Study/actions/workflows/ci.yml) ![爱发电](https://img.shields.io/badge/支持-爱发电-946ce6)
 
 一套为考研初试（**数学二 / 408 / 英语二 / 政治**）自建的一站式本地学习应用：四个科目各是一个独立单页应用，共用同一套自研学习引擎——分阶段计划、教学中心、内置题库、艾宾浩斯错题本、速查卡手册、真题成绩曲线、学习计时与统计诊断。
 
 **零依赖、零构建、离线可用**：纯原生 HTML/CSS/JS，无需安装、无需联网，clone 下来双击 HTML 即用；全部数据保存在浏览器本地。
 
+<p align="center">
+  <img src="docs/screenshots/math2-dash.png" width="880" alt="数学二 · 仪表盘">
+</p>
+<p align="center">
+  <img src="docs/screenshots/portal.png" width="428" alt="四科总览导航页">
+  <img src="docs/screenshots/408-dash.png" width="428" alt="408 · 仪表盘">
+</p>
+
 ## 🚀 快速开始
+
+**在线使用**（无需下载）：
+
+👉 **https://cheetea555.github.io/C-Study/**
+
+**本地使用**：
 
 ```bash
 git clone https://github.com/Cheetea555/C-Study.git
@@ -14,11 +28,13 @@ git clone https://github.com/Cheetea555/C-Study.git
 
 或直接下载 ZIP 解压。然后：
 
-1. 双击根目录 **`考研四科学习中心.html`** —— 四科总览导航页（可直接当浏览器起始页）；
+1. 双击根目录 **`index.html`** —— 四科总览导航页（可直接当浏览器起始页）；
 2. 也可以直接双击任意一科的 `index.html` 进入该科应用（推荐 Chrome / Edge）；
 3. 在各科「设置与数据」中确认考试日期、每日目标与目标分数，开始使用。
 
 没有安装步骤、没有构建步骤、不需要网络。
+
+> 📌 在线版与本地版的数据分别保存在各自浏览器的 localStorage 中，互不相通；无论哪种方式，都请养成每周导出备份的习惯（见[数据与备份](#-数据与备份)）。
 
 ## ✨ 共同引擎（四科同源）
 
@@ -49,7 +65,7 @@ git clone https://github.com/Cheetea555/C-Study.git
 
 ```
 C-Study/
-├── 考研四科学习中心.html   # 四科总览导航页（双击打开）
+├── index.html              # 四科总览导航页（双击打开 / Pages 入口）
 ├── kaoyan-math2/           # 考研数学二 · 学习中心
 ├── kaoyan-408/             # 考研 408 · 学习中心
 ├── kaoyan-en2/             # 考研英语二 · 学习中心
@@ -91,7 +107,7 @@ node test-formulas.js      # 速查卡结构与排版可解析
 node test-mistake.js       # 错题自动记录：快照 / 去重 / 旧数据兼容 / 持久化
 ```
 
-四科 × 5 = 20 个测试，当前全部通过。**改动任何数据文件后，请运行对应测试自动校验。**
+四科 × 5 = 20 个测试，当前全部通过；CI 会在每次 push 时自动运行全部测试（见顶部徽章）。**改动任何数据文件后，请运行对应测试自动校验。**
 
 ### 加内容
 

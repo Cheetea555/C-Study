@@ -37,4 +37,10 @@ assert.strictEqual(P.calcStreak(['2026-10-19', '2026-10-18'], '2026-10-19'), 2);
 assert.strictEqual(P.calcStreak(['2026-10-18'], '2026-10-19'), 1);
 assert.strictEqual(P.calcStreak([], '2026-10-19'), 0);
 
-console.log('✅ 408 纯函数断言全部通过（日期 / 26 章计划生成 / 复习调度 / 打卡连续性）');
+/* ---------- 备份提醒 ---------- */
+assert.strictEqual(P.backupDueDays('', '2026-10-19'), -1);           // 从未备份
+assert.strictEqual(P.backupDueDays('2026-10-19', '2026-10-19'), 0);  // 当天刚备份
+assert.strictEqual(P.backupDueDays('2026-10-12', '2026-10-19'), 7);  // 满 7 天
+assert.strictEqual(P.backupDueDays('2026-10-01', '2026-10-19'), 18);
+
+console.log('✅ 408 纯函数断言全部通过（日期 / 26 章计划生成 / 复习调度 / 打卡连续性 / 备份提醒）');

@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Syntax check (all apps)
+        run: |
+          set -e
+          for d in kaoyan-math2 kaoyan-408 kaoyan-en2 kaoyan-politics; do
+            echo "▶ node --check $d"
+            (cd "$d" && node --check *.js)
+          done
+
+      - name: Run all tests (4 apps × 5 suites)
+        run: |
+          set -e
+          for d in kaoyan-math2 kaoyan-408 kaoyan-en2 kaoyan-politics; do
+            for t in test.js test-data.js test-lessons.js test-formulas.js test-mistake.js; do
+              echo "▶ $d/$t"
+              (cd "$d" && node "$t")
+            done
+          done
