@@ -1,6 +1,6 @@
 # 🎓 考研四科学习中心（C-Study）
 
-![零依赖](https://img.shields.io/badge/dependencies-zero-brightgreen) ![离线可用](https://img.shields.io/badge/works-offline-green) ![纯前端](https://img.shields.io/badge/tech-原生HTML·CSS·JS-blue) [![CI](https://github.com/Cheetea555/C-Study/actions/workflows/ci.yml/badge.svg)](https://github.com/Cheetea555/C-Study/actions/workflows/ci.yml) ![爱发电](https://img.shields.io/badge/支持-爱发电-946ce6)
+![零依赖](https://img.shields.io/badge/dependencies-zero-brightgreen) ![离线可用](https://img.shields.io/badge/works-offline-green) ![纯前端](https://img.shields.io/badge/tech-原生HTML·CSS·JS-blue) [![CI](https://github.com/Cheetea555/C-Study/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/Cheetea555/C-Study/actions/workflows/ci.yml) ![爱发电](https://img.shields.io/badge/支持-爱发电-946ce6)
 
 一套为考研初试（**数学二 / 408 / 英语二 / 政治**）自建的一站式本地学习应用：四个科目各是一个独立单页应用，共用同一套自研学习引擎——分阶段计划、教学中心、内置题库、艾宾浩斯错题本、速查卡手册、真题成绩曲线、学习计时与统计诊断。
 
