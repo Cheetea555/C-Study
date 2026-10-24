@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>四科备份与恢复 · C-Study</title>
+  <link rel="stylesheet" href="assets/study.css">
+</head>
+<body class="portal-body backup-body">
+  <header class="portal-header">
+    <a class="app-logo" href="index.html"><span class="logo-mark" aria-hidden="true">C</span><span>C-Study<small>考研学习工作台</small></span></a>
+    <a href="index.html">返回四科总览</a>
+  </header>
+  <main class="backup-main">
+    <p class="eyebrow">KEEP YOUR PROGRESS</p>
+    <h1>让努力，有一份留存。</h1>
+    <p class="muted">四科学习记录与全局时间计划，一起备份。恢复前先核对，再选择要替换的项目。</p>
+    <p class="storage-warning" id="backupWarning" role="alert" hidden></p>
+    <p id="backupStatus" role="status" aria-live="polite"></p>
+    <div class="backup-layout">
+      <section class="card" aria-labelledby="browserBackupTitle">
+        <div class="backup-section-heading"><h2 id="browserBackupTitle">当前浏览器中的记录</h2><button class="btn sm ghost" type="button" id="refreshBackup">重新读取</button></div>
+        <p class="muted backup-hint" id="backupOrigin"></p>
+        <ul class="backup-rows" id="browserRecords"></ul>
+        <p class="backup-completeness" id="browserCompleteness"></p>
+        <button class="btn" type="button" id="exportFull">下载当前备份</button>
+        <p class="muted backup-hint">只包含已经保存的记录。请先在科目页保存修改；运行中的计时会在备份副本中暂停，原计时继续运行。</p>
+      </section>
+      <section class="card" aria-labelledby="importBackupTitle">
+        <h2 id="importBackupTitle" tabindex="-1">打开或收集备份文件</h2>
+        <p class="muted backup-hint">可单独打开完整备份，也可分批收集各科备份及全局设置文件。收集和预览不会改变学习记录。</p>
+        <label for="backupFiles">选择 JSON 文件（可多选）</label><input id="backupFiles" type="file" multiple accept="application/json,.json">
+        <details class="backup-paste"><summary>粘贴备份内容</summary><label for="backupText">备份 JSON</label><textarea id="backupText" rows="4" spellcheck="false" placeholder="粘贴一份完整备份、科目备份或全局设置 JSON"></textarea><button class="btn sm ghost" type="button" id="readBackupText">读取粘贴内容</button></details>
+        <div id="collectedBackup" hidden>
+          <p class="backup-completeness" id="importCompleteness"></p>
+          <fieldset class="backup-selection"><legend>选择要恢复的项目</legend><div id="importRecords"></div></fieldset>
+          <div class="row"><button class="btn" type="button" id="previewRestore">预览选中恢复</button><button class="btn ghost" type="button" id="downloadCollection">下载已收集备份</button><button class="btn ghost" type="button" id="resetCollection">清空已收集文件</button></div>
+          <details class="backup-extract"><summary>分别下载，去各科导入</summary><p class="muted backup-hint">拆分后的科目备份可在各科「设置与数据」导入；全局设置在时间计划页导入。</p><div class="row" id="extractBackups"></div></details>
+          <p class="muted backup-hint">恢复会替换选中的整项记录，不合并新旧进度；未选中和备份缺失的项目保持原样。恢复后重新打开相关科目页。</p>
+        </div>
+      </section>
+    </div>
+    <section class="card backup-confirm" id="restoreConfirmation" hidden aria-labelledby="restoreConfirmTitle">
+      <h2 id="restoreConfirmTitle" tabindex="-1">确认恢复范围</h2><p id="restoreConfirmText"></p>
+      <p class="muted backup-hint">覆盖前会保留原文。若其他页面在预览后保存了记录，本次恢复会停止，请重新读取并预览。</p>
+      <div class="row"><button class="btn danger" type="button" id="commitRestore">确认覆盖选中记录</button><button class="btn ghost" type="button" id="cancelRestore">取消本次恢复</button></div>
+    </section>
+    <section class="card backup-journal" id="restoreJournal" hidden aria-labelledby="restoreJournalTitle">
+      <h2 id="restoreJournalTitle">上次恢复记录</h2><p class="backup-hint" id="journalStatus"></p>
+      <div class="row"><button class="btn ghost" type="button" id="downloadJournal">下载恢复原文</button><button class="btn ghost" type="button" id="previewRollback">回滚上次恢复</button><button class="btn ghost" type="button" id="previewFinishJournal">结束恢复处理</button></div>
+      <p class="muted backup-hint">回滚只还原仍保持本次恢复结果的项目，后续已被其他页面改动的记录会保留并标出。这里只保留最近一次恢复原文，不能替代下载的文件备份。</p>
+      <div id="journalConfirmation" hidden><p id="journalConfirmText"></p><div class="row"><button class="btn danger" type="button" id="commitJournalAction">确认处理恢复记录</button><button class="btn ghost" type="button" id="cancelJournalAction">取消</button></div></div>
+    </section>
+    <section class="card" id="restoreResult" hidden aria-labelledby="restoreResultTitle"><h2 id="restoreResultTitle" tabindex="-1">处理结果</h2><p id="restoreResultMessage"></p><ul class="backup-rows" id="restoreResultRows"></ul><a class="btn ghost" href="index.html">返回四科总览</a></section>
+    <p class="muted backup-hint">本地文件模式可收集和下载备份；统一恢复需在同一 HTTP 站点打开本页。双击使用时可拆分下载，再到各科分别导入。备份保存在你下载的位置，不会上传服务器。</p>
+    <noscript><p class="storage-warning">请启用 JavaScript 以备份或恢复学习记录。</p></noscript>
+  </main>
+  <script src="assets/common.js"></script>
+  <script src="assets/storage.js"></script>
+  <script src="assets/planner.js"></script>
+  <script src="assets/plan-catalog.js"></script>
+  <script src="assets/backup.js"></script>
+  <script src="assets/backup-page.js"></script>
+</body>
+</html>

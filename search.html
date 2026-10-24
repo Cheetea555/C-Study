@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>四科搜索 · C-Study</title>
+  <link rel="stylesheet" href="assets/study.css">
+</head>
+<body class="portal-body search-body">
+  <header class="portal-header">
+    <a class="app-logo" href="index.html"><span class="logo-mark" aria-hidden="true">C</span><span>C-Study<small>考研学习工作台</small></span></a>
+    <a href="index.html">返回四科总览</a>
+  </header>
+  <main class="search-main">
+    <p class="eyebrow">FIND YOUR NEXT STEP</p>
+    <h1>找到知识，再向前一步。</h1>
+    <p class="muted">搜索四科课程正文、考点、题干与解析、速查卡。题目结果会标明是否命中解析。</p>
+    <form id="searchForm" class="card search-form" action="search.html" role="search">
+      <label for="searchQuery">搜索内容</label>
+      <div class="search-input-row"><input type="search" id="searchQuery" name="q" maxlength="200" placeholder="例如：链表、TLB、求导、定语从句" autocomplete="off"><button class="btn" type="submit">搜索</button></div>
+      <div class="search-filters">
+        <div><label for="searchSubject">科目</label><select name="subject" id="searchSubject"><option value="">全部科目</option><option value="math2">数学二</option><option value="408">计算机 408</option><option value="en2">英语二</option><option value="politics">思想政治</option></select></div>
+        <div><label for="searchType">内容类型</label><select name="type" id="searchType"><option value="">全部内容</option><option value="point">考点</option><option value="lesson">课程</option><option value="question">题目</option><option value="card">速查卡</option></select></div>
+        <button class="btn ghost" id="resetSearch" type="button">清空条件</button>
+      </div>
+    </form>
+    <p id="searchStatus" role="status" aria-live="polite" aria-atomic="true">正在准备搜索内容…</p>
+    <section id="searchResults" aria-label="搜索结果"></section>
+    <button class="btn ghost search-more" id="searchMore" type="button" hidden>再显示 20 条</button>
+    <p class="muted search-help">可用空格组合关键词，例如「链表 删除」。也支持 PV / 信号量、TLB / 快表、求导 / 导数。</p>
+    <noscript><p class="storage-warning">请启用 JavaScript 后搜索课程和题目。</p></noscript>
+  </main>
+  <script src="assets/common.js"></script>
+  <script src="assets/search.js"></script>
+  <script src="assets/search-index.js"></script>
+  <script src="assets/search-page.js"></script>
+</body>
+</html>

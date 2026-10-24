@@ -14,184 +14,184 @@ function addDays(s, n){ const d = parseDate(s); d.setDate(d.getDate() + n); retu
 function diffDays(a, b){ return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
 
 /* ---------------- 业务常量（纯数据） ---------------- */
-const REVIEW_STEPS = [1, 2, 4, 7, 15, 30]; // 艾宾浩斯复习间隔（天）
-const REASONS = ['概念不清', '思路方法', '计算失误', '审题粗心'];
+const REVIEW_STEPS = reviewEngine().STEPS; // 艾宾浩斯复习间隔（天）
+const REASONS = ['未归因', '概念不清', '思路方法', '计算失误', '审题粗心'];
 const KP_STATUS = ['未开始', '学习中', '需复习', '已掌握'];
 
 /* 数学二考试范围：高等数学 + 线性代数（不含概率统计） */
 const SYLLABUS = [
-  { id: 'c01', subject: '高等数学', name: '第一章 函数、极限、连续', points: [
-    '函数的概念与特性（有界、单调、奇偶、周期）',
-    '复合函数与反函数',
-    '基本初等函数与初等函数',
-    '数列极限的定义与性质',
-    '函数极限的定义与性质',
-    '无穷小与无穷大的概念及关系',
-    '极限四则运算法则',
-    '两个重要极限及应用',
-    '无穷小的比较与等价无穷小替换',
-    '洛必达法则求未定式极限',
-    '泰勒公式求极限（常用麦克劳林展开）',
-    '函数的连续性',
-    '间断点及其分类（第一类、第二类）',
-    '闭区间上连续函数的性质（最值、介值、零点定理）'
+  { id: "c01", subject: "高等数学", name: "第一章 函数、极限、连续", points: [
+    { id: "math2.c01.p01", legacyKey: "c01-0", title: "函数的概念与特性（有界、单调、奇偶、周期）" },
+    { id: "math2.c01.p02", legacyKey: "c01-1", title: "复合函数与反函数" },
+    { id: "math2.c01.p03", legacyKey: "c01-2", title: "基本初等函数与初等函数" },
+    { id: "math2.c01.p04", legacyKey: "c01-3", title: "数列极限的定义与性质" },
+    { id: "math2.c01.p05", legacyKey: "c01-4", title: "函数极限的定义与性质" },
+    { id: "math2.c01.p06", legacyKey: "c01-5", title: "无穷小与无穷大的概念及关系" },
+    { id: "math2.c01.p07", legacyKey: "c01-6", title: "极限四则运算法则" },
+    { id: "math2.c01.p08", legacyKey: "c01-7", title: "两个重要极限及应用" },
+    { id: "math2.c01.p09", legacyKey: "c01-8", title: "无穷小的比较与等价无穷小替换" },
+    { id: "math2.c01.p10", legacyKey: "c01-9", title: "洛必达法则求未定式极限" },
+    { id: "math2.c01.p11", legacyKey: "c01-10", title: "泰勒公式求极限（常用麦克劳林展开）" },
+    { id: "math2.c01.p12", legacyKey: "c01-11", title: "函数的连续性" },
+    { id: "math2.c01.p13", legacyKey: "c01-12", title: "间断点及其分类（第一类、第二类）" },
+    { id: "math2.c01.p14", legacyKey: "c01-13", title: "闭区间上连续函数的性质（最值、介值、零点定理）" },
   ]},
-  { id: 'c02', subject: '高等数学', name: '第二章 导数与微分', points: [
-    '导数的定义与几何意义',
-    '可导、连续的关系',
-    '求导四则运算法则',
-    '复合函数求导（链式法则）',
-    '反函数求导',
-    '基本初等函数导数公式',
-    '高阶导数（常用函数的 n 阶导）',
-    '隐函数求导',
-    '对数求导法',
-    '参数方程确定的函数求导',
-    '微分的定义与几何意义',
-    '微分在近似计算中的应用'
+  { id: "c02", subject: "高等数学", name: "第二章 导数与微分", points: [
+    { id: "math2.c02.p01", legacyKey: "c02-0", title: "导数的定义与几何意义" },
+    { id: "math2.c02.p02", legacyKey: "c02-1", title: "可导、连续的关系" },
+    { id: "math2.c02.p03", legacyKey: "c02-2", title: "求导四则运算法则" },
+    { id: "math2.c02.p04", legacyKey: "c02-3", title: "复合函数求导（链式法则）" },
+    { id: "math2.c02.p05", legacyKey: "c02-4", title: "反函数求导" },
+    { id: "math2.c02.p06", legacyKey: "c02-5", title: "基本初等函数导数公式" },
+    { id: "math2.c02.p07", legacyKey: "c02-6", title: "高阶导数（常用函数的 n 阶导）" },
+    { id: "math2.c02.p08", legacyKey: "c02-7", title: "隐函数求导" },
+    { id: "math2.c02.p09", legacyKey: "c02-8", title: "对数求导法" },
+    { id: "math2.c02.p10", legacyKey: "c02-9", title: "参数方程确定的函数求导" },
+    { id: "math2.c02.p11", legacyKey: "c02-10", title: "微分的定义与几何意义" },
+    { id: "math2.c02.p12", legacyKey: "c02-11", title: "微分在近似计算中的应用" },
   ]},
-  { id: 'c03', subject: '高等数学', name: '第三章 微分中值定理与导数应用', points: [
-    '费马引理与罗尔定理',
-    '拉格朗日中值定理',
-    '柯西中值定理',
-    '带拉格朗日余项的泰勒公式',
-    '方程根的存在性与个数讨论',
-    '利用导数证明不等式',
-    '函数的单调性',
-    '函数的极值及判别（第一/第二充分条件）',
-    '曲线的凹凸性与拐点',
-    '曲线的渐近线（水平、垂直、斜）',
-    '函数图形的描绘',
-    '最值与实际应用题',
-    '曲率、曲率圆与曲率半径'
+  { id: "c03", subject: "高等数学", name: "第三章 微分中值定理与导数应用", points: [
+    { id: "math2.c03.p01", legacyKey: "c03-0", title: "费马引理与罗尔定理" },
+    { id: "math2.c03.p02", legacyKey: "c03-1", title: "拉格朗日中值定理" },
+    { id: "math2.c03.p03", legacyKey: "c03-2", title: "柯西中值定理" },
+    { id: "math2.c03.p04", legacyKey: "c03-3", title: "带拉格朗日余项的泰勒公式" },
+    { id: "math2.c03.p05", legacyKey: "c03-4", title: "方程根的存在性与个数讨论" },
+    { id: "math2.c03.p06", legacyKey: "c03-5", title: "利用导数证明不等式" },
+    { id: "math2.c03.p07", legacyKey: "c03-6", title: "函数的单调性" },
+    { id: "math2.c03.p08", legacyKey: "c03-7", title: "函数的极值及判别（第一/第二充分条件）" },
+    { id: "math2.c03.p09", legacyKey: "c03-8", title: "曲线的凹凸性与拐点" },
+    { id: "math2.c03.p10", legacyKey: "c03-9", title: "曲线的渐近线（水平、垂直、斜）" },
+    { id: "math2.c03.p11", legacyKey: "c03-10", title: "函数图形的描绘" },
+    { id: "math2.c03.p12", legacyKey: "c03-11", title: "最值与实际应用题" },
+    { id: "math2.c03.p13", legacyKey: "c03-12", title: "曲率、曲率圆与曲率半径" },
   ]},
-  { id: 'c04', subject: '高等数学', name: '第四章 不定积分', points: [
-    '原函数与不定积分的概念',
-    '基本积分公式表',
-    '直接积分法',
-    '第一类换元法（凑微分法）',
-    '第二类换元法（三角代换、根式代换）',
-    '分部积分法',
-    '有理函数的积分（部分分式）',
-    '简单无理函数与三角有理式积分'
+  { id: "c04", subject: "高等数学", name: "第四章 不定积分", points: [
+    { id: "math2.c04.p01", legacyKey: "c04-0", title: "原函数与不定积分的概念" },
+    { id: "math2.c04.p02", legacyKey: "c04-1", title: "基本积分公式表" },
+    { id: "math2.c04.p03", legacyKey: "c04-2", title: "直接积分法" },
+    { id: "math2.c04.p04", legacyKey: "c04-3", title: "第一类换元法（凑微分法）" },
+    { id: "math2.c04.p05", legacyKey: "c04-4", title: "第二类换元法（三角代换、根式代换）" },
+    { id: "math2.c04.p06", legacyKey: "c04-5", title: "分部积分法" },
+    { id: "math2.c04.p07", legacyKey: "c04-6", title: "有理函数的积分（部分分式）" },
+    { id: "math2.c04.p08", legacyKey: "c04-7", title: "简单无理函数与三角有理式积分" },
   ]},
-  { id: 'c05', subject: '高等数学', name: '第五章 定积分', points: [
-    '定积分的定义与几何意义',
-    '定积分的性质（比较、估值、积分中值定理）',
-    '变限积分函数及其求导',
-    '牛顿-莱布尼茨公式',
-    '定积分的换元法',
-    '定积分的分部积分法',
-    '利用对称性、周期性计算定积分',
-    '常用积分结论（区间再现等）',
-    '无穷限反常积分',
-    '无界函数反常积分（瑕积分）',
-    '用定积分定义计算数列极限'
+  { id: "c05", subject: "高等数学", name: "第五章 定积分", points: [
+    { id: "math2.c05.p01", legacyKey: "c05-0", title: "定积分的定义与几何意义" },
+    { id: "math2.c05.p02", legacyKey: "c05-1", title: "定积分的性质（比较、估值、积分中值定理）" },
+    { id: "math2.c05.p03", legacyKey: "c05-2", title: "变限积分函数及其求导" },
+    { id: "math2.c05.p04", legacyKey: "c05-3", title: "牛顿-莱布尼茨公式" },
+    { id: "math2.c05.p05", legacyKey: "c05-4", title: "定积分的换元法" },
+    { id: "math2.c05.p06", legacyKey: "c05-5", title: "定积分的分部积分法" },
+    { id: "math2.c05.p07", legacyKey: "c05-6", title: "利用对称性、周期性计算定积分" },
+    { id: "math2.c05.p08", legacyKey: "c05-7", title: "常用积分结论（区间再现等）" },
+    { id: "math2.c05.p09", legacyKey: "c05-8", title: "无穷限反常积分" },
+    { id: "math2.c05.p10", legacyKey: "c05-9", title: "无界函数反常积分（瑕积分）" },
+    { id: "math2.c05.p11", legacyKey: "c05-10", title: "用定积分定义计算数列极限" },
   ]},
-  { id: 'c06', subject: '高等数学', name: '第六章 定积分的应用', points: [
-    '定积分的元素法（微元法）',
-    '直角坐标下平面图形的面积',
-    '极坐标下平面图形的面积',
-    '旋转体的体积（绕 x 轴 / y 轴、柱壳法）',
-    '平行截面面积已知的立体体积',
-    '平面曲线的弧长',
-    '旋转曲面的侧面积',
-    '定积分的物理应用（功、压力、质心等）'
+  { id: "c06", subject: "高等数学", name: "第六章 定积分的应用", points: [
+    { id: "math2.c06.p01", legacyKey: "c06-0", title: "定积分的元素法（微元法）" },
+    { id: "math2.c06.p02", legacyKey: "c06-1", title: "直角坐标下平面图形的面积" },
+    { id: "math2.c06.p03", legacyKey: "c06-2", title: "极坐标下平面图形的面积" },
+    { id: "math2.c06.p04", legacyKey: "c06-3", title: "旋转体的体积（绕 x 轴 / y 轴、柱壳法）" },
+    { id: "math2.c06.p05", legacyKey: "c06-4", title: "平行截面面积已知的立体体积" },
+    { id: "math2.c06.p06", legacyKey: "c06-5", title: "平面曲线的弧长" },
+    { id: "math2.c06.p07", legacyKey: "c06-6", title: "旋转曲面的侧面积" },
+    { id: "math2.c06.p08", legacyKey: "c06-7", title: "定积分的物理应用（功、压力、质心等）" },
   ]},
-  { id: 'c07', subject: '高等数学', name: '第七章 常微分方程', points: [
-    '微分方程的基本概念（阶、解、通解、特解）',
-    '可分离变量的微分方程',
-    '齐次微分方程',
-    '一阶线性微分方程',
-    '可降阶的高阶微分方程',
-    '线性微分方程解的性质与结构',
-    '二阶常系数齐次线性微分方程',
-    '二阶常系数非齐次线性微分方程',
-    '高阶常系数线性微分方程',
-    '微分方程的几何应用',
-    '微分方程的物理应用'
+  { id: "c07", subject: "高等数学", name: "第七章 常微分方程", points: [
+    { id: "math2.c07.p01", legacyKey: "c07-0", title: "微分方程的基本概念（阶、解、通解、特解）" },
+    { id: "math2.c07.p02", legacyKey: "c07-1", title: "可分离变量的微分方程" },
+    { id: "math2.c07.p03", legacyKey: "c07-2", title: "齐次微分方程" },
+    { id: "math2.c07.p04", legacyKey: "c07-3", title: "一阶线性微分方程" },
+    { id: "math2.c07.p05", legacyKey: "c07-4", title: "可降阶的高阶微分方程" },
+    { id: "math2.c07.p06", legacyKey: "c07-5", title: "线性微分方程解的性质与结构" },
+    { id: "math2.c07.p07", legacyKey: "c07-6", title: "二阶常系数齐次线性微分方程" },
+    { id: "math2.c07.p08", legacyKey: "c07-7", title: "二阶常系数非齐次线性微分方程" },
+    { id: "math2.c07.p09", legacyKey: "c07-8", title: "高阶常系数线性微分方程" },
+    { id: "math2.c07.p10", legacyKey: "c07-9", title: "微分方程的几何应用" },
+    { id: "math2.c07.p11", legacyKey: "c07-10", title: "微分方程的物理应用" },
   ]},
-  { id: 'c08', subject: '高等数学', name: '第八章 多元函数微分学', points: [
-    '二元函数的极限与连续',
-    '偏导数的定义与计算',
-    '全微分的定义',
-    '可微、可偏导、连续的关系判断',
-    '复合函数求偏导（链式法则）',
-    '隐函数（含方程组）求偏导',
-    '高阶偏导数',
-    '二元函数的极值及充分条件',
-    '条件极值与拉格朗日乘数法',
-    '多元函数的最值应用题'
+  { id: "c08", subject: "高等数学", name: "第八章 多元函数微分学", points: [
+    { id: "math2.c08.p01", legacyKey: "c08-0", title: "二元函数的极限与连续" },
+    { id: "math2.c08.p02", legacyKey: "c08-1", title: "偏导数的定义与计算" },
+    { id: "math2.c08.p03", legacyKey: "c08-2", title: "全微分的定义" },
+    { id: "math2.c08.p04", legacyKey: "c08-3", title: "可微、可偏导、连续的关系判断" },
+    { id: "math2.c08.p05", legacyKey: "c08-4", title: "复合函数求偏导（链式法则）" },
+    { id: "math2.c08.p06", legacyKey: "c08-5", title: "隐函数（含方程组）求偏导" },
+    { id: "math2.c08.p07", legacyKey: "c08-6", title: "高阶偏导数" },
+    { id: "math2.c08.p08", legacyKey: "c08-7", title: "二元函数的极值及充分条件" },
+    { id: "math2.c08.p09", legacyKey: "c08-8", title: "条件极值与拉格朗日乘数法" },
+    { id: "math2.c08.p10", legacyKey: "c08-9", title: "多元函数的最值应用题" },
   ]},
-  { id: 'c09', subject: '高等数学', name: '第九章 二重积分', points: [
-    '二重积分的概念与性质',
-    '直角坐标下化为二次积分（X 型 / Y 型）',
-    '交换积分次序',
-    '极坐标下二重积分的计算',
-    '利用对称性与奇偶性化简',
-    '被积函数含绝对值 / 最值的分块处理',
-    '二重积分的应用（体积、面积）'
+  { id: "c09", subject: "高等数学", name: "第九章 二重积分", points: [
+    { id: "math2.c09.p01", legacyKey: "c09-0", title: "二重积分的概念与性质" },
+    { id: "math2.c09.p02", legacyKey: "c09-1", title: "直角坐标下化为二次积分（X 型 / Y 型）" },
+    { id: "math2.c09.p03", legacyKey: "c09-2", title: "交换积分次序" },
+    { id: "math2.c09.p04", legacyKey: "c09-3", title: "极坐标下二重积分的计算" },
+    { id: "math2.c09.p05", legacyKey: "c09-4", title: "利用对称性与奇偶性化简" },
+    { id: "math2.c09.p06", legacyKey: "c09-5", title: "被积函数含绝对值 / 最值的分块处理" },
+    { id: "math2.c09.p07", legacyKey: "c09-6", title: "二重积分的应用（体积、面积）" },
   ]},
-  { id: 'c10', subject: '线性代数', name: '第一章 行列式', points: [
-    'n 阶行列式的定义',
-    '行列式的性质',
-    '按行（列）展开定理',
-    '余子式与代数余子式',
-    '数值型行列式的计算（化三角形、递推）',
-    '抽象行列式的计算（利用矩阵运算）',
-    '范德蒙德行列式',
-    '行列式与可逆、秩的联系'
+  { id: "c10", subject: "线性代数", name: "第一章 行列式", points: [
+    { id: "math2.c10.p01", legacyKey: "c10-0", title: "n 阶行列式的定义" },
+    { id: "math2.c10.p02", legacyKey: "c10-1", title: "行列式的性质" },
+    { id: "math2.c10.p03", legacyKey: "c10-2", title: "按行（列）展开定理" },
+    { id: "math2.c10.p04", legacyKey: "c10-3", title: "余子式与代数余子式" },
+    { id: "math2.c10.p05", legacyKey: "c10-4", title: "数值型行列式的计算（化三角形、递推）" },
+    { id: "math2.c10.p06", legacyKey: "c10-5", title: "抽象行列式的计算（利用矩阵运算）" },
+    { id: "math2.c10.p07", legacyKey: "c10-6", title: "范德蒙德行列式" },
+    { id: "math2.c10.p08", legacyKey: "c10-7", title: "行列式与可逆、秩的联系" },
   ]},
-  { id: 'c11', subject: '线性代数', name: '第二章 矩阵', points: [
-    '矩阵的概念与运算（加、乘、转置、幂）',
-    '特殊矩阵（对称、反对称、对角、正交）',
-    '伴随矩阵的定义与性质',
-    '逆矩阵的定义、性质与求法',
-    '矩阵可逆的充要条件',
-    '分块矩阵及其运算',
-    '初等变换与初等矩阵',
-    '矩阵的秩的定义与求法',
-    '矩阵方程的求解',
-    '矩阵秩的重要不等式与结论'
+  { id: "c11", subject: "线性代数", name: "第二章 矩阵", points: [
+    { id: "math2.c11.p01", legacyKey: "c11-0", title: "矩阵的概念与运算（加、乘、转置、幂）" },
+    { id: "math2.c11.p02", legacyKey: "c11-1", title: "特殊矩阵（对称、反对称、对角、正交）" },
+    { id: "math2.c11.p03", legacyKey: "c11-2", title: "伴随矩阵的定义与性质" },
+    { id: "math2.c11.p04", legacyKey: "c11-3", title: "逆矩阵的定义、性质与求法" },
+    { id: "math2.c11.p05", legacyKey: "c11-4", title: "矩阵可逆的充要条件" },
+    { id: "math2.c11.p06", legacyKey: "c11-5", title: "分块矩阵及其运算" },
+    { id: "math2.c11.p07", legacyKey: "c11-6", title: "初等变换与初等矩阵" },
+    { id: "math2.c11.p08", legacyKey: "c11-7", title: "矩阵的秩的定义与求法" },
+    { id: "math2.c11.p09", legacyKey: "c11-8", title: "矩阵方程的求解" },
+    { id: "math2.c11.p10", legacyKey: "c11-9", title: "矩阵秩的重要不等式与结论" },
   ]},
-  { id: 'c12', subject: '线性代数', name: '第三章 向量组', points: [
-    'n 维向量与线性组合',
-    '线性表出的判定',
-    '线性相关与线性无关',
-    '向量组部分与整体的相关性结论',
-    '极大线性无关组',
-    '向量组的秩与矩阵秩的关系',
-    '向量组的等价',
-    '内积、施密特正交化与正交矩阵'
+  { id: "c12", subject: "线性代数", name: "第三章 向量组", points: [
+    { id: "math2.c12.p01", legacyKey: "c12-0", title: "n 维向量与线性组合" },
+    { id: "math2.c12.p02", legacyKey: "c12-1", title: "线性表出的判定" },
+    { id: "math2.c12.p03", legacyKey: "c12-2", title: "线性相关与线性无关" },
+    { id: "math2.c12.p04", legacyKey: "c12-3", title: "向量组部分与整体的相关性结论" },
+    { id: "math2.c12.p05", legacyKey: "c12-4", title: "极大线性无关组" },
+    { id: "math2.c12.p06", legacyKey: "c12-5", title: "向量组的秩与矩阵秩的关系" },
+    { id: "math2.c12.p07", legacyKey: "c12-6", title: "向量组的等价" },
+    { id: "math2.c12.p08", legacyKey: "c12-7", title: "内积、施密特正交化与正交矩阵" },
   ]},
-  { id: 'c13', subject: '线性代数', name: '第四章 线性方程组', points: [
-    '齐次线性方程组解的结构',
-    '基础解系与通解',
-    '非齐次方程组解的结构与通解',
-    '解的存在性与唯一性判定（秩判据）',
-    '克拉默法则',
-    '含参数线性方程组的讨论',
-    '两个方程组的公共解与同解'
+  { id: "c13", subject: "线性代数", name: "第四章 线性方程组", points: [
+    { id: "math2.c13.p01", legacyKey: "c13-0", title: "齐次线性方程组解的结构" },
+    { id: "math2.c13.p02", legacyKey: "c13-1", title: "基础解系与通解" },
+    { id: "math2.c13.p03", legacyKey: "c13-2", title: "非齐次方程组解的结构与通解" },
+    { id: "math2.c13.p04", legacyKey: "c13-3", title: "解的存在性与唯一性判定（秩判据）" },
+    { id: "math2.c13.p05", legacyKey: "c13-4", title: "克拉默法则" },
+    { id: "math2.c13.p06", legacyKey: "c13-5", title: "含参数线性方程组的讨论" },
+    { id: "math2.c13.p07", legacyKey: "c13-6", title: "两个方程组的公共解与同解" },
   ]},
-  { id: 'c14', subject: '线性代数', name: '第五章 特征值与特征向量', points: [
-    '特征值与特征向量的定义与求法',
-    '特征值的性质（和、积与迹、行列式的关系）',
-    '相似矩阵的定义与性质',
-    '矩阵可相似对角化的条件',
-    '实对称矩阵特征值与特征向量的性质',
-    '实对称矩阵的正交相似对角化',
-    '利用对角化求矩阵的高次幂',
-    '由特征值特征向量反求矩阵'
+  { id: "c14", subject: "线性代数", name: "第五章 特征值与特征向量", points: [
+    { id: "math2.c14.p01", legacyKey: "c14-0", title: "特征值与特征向量的定义与求法" },
+    { id: "math2.c14.p02", legacyKey: "c14-1", title: "特征值的性质（和、积与迹、行列式的关系）" },
+    { id: "math2.c14.p03", legacyKey: "c14-2", title: "相似矩阵的定义与性质" },
+    { id: "math2.c14.p04", legacyKey: "c14-3", title: "矩阵可相似对角化的条件" },
+    { id: "math2.c14.p05", legacyKey: "c14-4", title: "实对称矩阵特征值与特征向量的性质" },
+    { id: "math2.c14.p06", legacyKey: "c14-5", title: "实对称矩阵的正交相似对角化" },
+    { id: "math2.c14.p07", legacyKey: "c14-6", title: "利用对角化求矩阵的高次幂" },
+    { id: "math2.c14.p08", legacyKey: "c14-7", title: "由特征值特征向量反求矩阵" },
   ]},
-  { id: 'c15', subject: '线性代数', name: '第六章 二次型', points: [
-    '二次型及其矩阵表示',
-    '矩阵的合同',
-    '正交变换化二次型为标准形',
-    '配方法化二次型为标准形',
-    '惯性定理与规范形',
-    '正定二次型与正定矩阵的定义',
-    '正定性的判定条件'
-  ]}
+  { id: "c15", subject: "线性代数", name: "第六章 二次型", points: [
+    { id: "math2.c15.p01", legacyKey: "c15-0", title: "二次型及其矩阵表示" },
+    { id: "math2.c15.p02", legacyKey: "c15-1", title: "矩阵的合同" },
+    { id: "math2.c15.p03", legacyKey: "c15-2", title: "正交变换化二次型为标准形" },
+    { id: "math2.c15.p04", legacyKey: "c15-3", title: "配方法化二次型为标准形" },
+    { id: "math2.c15.p05", legacyKey: "c15-4", title: "惯性定理与规范形" },
+    { id: "math2.c15.p06", legacyKey: "c15-5", title: "正定二次型与正定矩阵的定义" },
+    { id: "math2.c15.p07", legacyKey: "c15-6", title: "正定性的判定条件" },
+  ]},
 ];
 
 /* ---------------- 计划生成 / 复习调度（纯函数） ---------------- */
@@ -222,16 +222,11 @@ function generatePlan(startDate, examDate, syllabus){
 }
 
 /* 复习调度：remembered=true 进入下一轮间隔；false 明天重来 */
+function reviewEngine(){
+  return typeof StudyReview !== 'undefined' ? StudyReview : require('../assets/review.js');
+}
 function scheduleNext(m, remembered, today){
-  m.history.push({ date: today, ok: !!remembered });
-  if (remembered){
-    m.stage += 1;
-    if (m.stage >= REVIEW_STEPS.length){ m.mastered = true; m.nextReview = null; }
-    else { m.nextReview = addDays(today, REVIEW_STEPS[m.stage]); }
-  } else {
-    m.stage = 0; m.mastered = false; m.nextReview = addDays(today, 1);
-  }
-  return m;
+  return reviewEngine().scheduleNext(m, remembered, today);
 }
 
 function dueMistakes(list, today){
@@ -257,6 +252,7 @@ function uid(){ return Date.now().toString(36) + '-' + Math.random().toString(36
 
 const STORE_KEY = 'kaoyan-math2.v1';
 let S = null;
+let persistence = null;
 let kpSubject = '全部', kpQuery = '';
 let pqFilter = { ch: '', diff: 0, scope: 'all' }; // 刷题筛选
 let pqScopeSnapshot = null; // Keep the current practice set stable while answers change.
@@ -272,6 +268,7 @@ function defaultState(){
     v: 1,
     settings: { examDate: '2026-12-19', dailyGoal: 240, targetScore: 120 },
     kp: {},            // { 'c01-3': { status: 0-3, updatedAt } }
+    attempts: [],     // 每次提交的独立记录；旧版聚合次数不会补造为历史。
     qz: {},            // 刷题记录：{ 题目id: { ok, times, lastAt, lastPick(选择题最近一次所选下标) } }
     lessons: {},       // 教学进度：{ 课id: { done, doneAt } }
     favF: {},          // 公式收藏：{ 公式id: true }
@@ -283,37 +280,72 @@ function defaultState(){
   };
 }
 
-function load(){
+function persistenceStore(){
+  if (!persistence){
+    const engine = typeof StudyStorage !== 'undefined' ? StudyStorage : require('../assets/storage.js');
+    persistence = engine.create({ key: STORE_KEY, subjectId: 'math2', maxScore: 150, syllabus: SYLLABUS, defaults: defaultState, getStorage: () => localStorage });
+  }
+  return persistence;
+}
+function storageStatus(){
+  const info = persistenceStore().info();
+  if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(info.ok, info);
+  return info;
+}
+function refreshImportedState(){
+  pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
+  if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
+  renderAll(); syncTimerBtn(); updateTimerDisplay(); storageStatus();
+}
+function retrySave(){
+  if (save()) toast('记录已保存');
+}
+function exportRawData(){
+  const raw = persistenceStore().original();
+  if (raw === null){ toast('没有可下载的浏览器原始记录'); return; }
+  StudyStorage.download(raw, STORE_KEY + '-original-' + todayStr() + '.json');
+  toast('原始记录下载已发起，请确认文件已保存');
+}
+function exportPreservedData(){
   try {
-    const raw = (typeof localStorage !== 'undefined') ? localStorage.getItem(STORE_KEY) : null;
-    if (raw){
-      const obj = JSON.parse(raw);
-      if (obj && obj.settings){
-        S = obj;
-        S.kp = S.kp || {}; S.qz = S.qz || {}; S.lessons = S.lessons || {}; S.favF = S.favF || {}; S.logs = S.logs || []; S.mistakes = S.mistakes || []; S.papers = S.papers || [];
-        S.timer = S.timer || { running: false, startTs: 0, accumSec: 0, chapterId: null };
-        // 计时器跨会话保护：若“运行中”但离上次开启超过 4 小时，按 4 小时封顶并暂停
-        if (S.timer.running && Date.now() - S.timer.startTs > 4 * 3600 * 1000){
-          S.timer.accumSec += 4 * 3600;
-          S.timer.running = false; S.timer.startTs = 0;
-        }
-        return;
-      }
-    }
-  } catch (e) { /* 数据损坏则重置 */ }
-  S = defaultState();
+    const raw = persistenceStore().archived();
+    if (raw === null){ toast('尚无覆盖前保留的记录'); return; }
+    StudyStorage.download(raw, STORE_KEY + '-preserved-' + todayStr() + '.json');
+    toast('覆盖前记录下载已发起，请确认文件已保存');
+  } catch (e) { toast('无法读取覆盖前记录：' + e.message); }
+}
+function retryStorage(){
+  if (!confirm('重新读取会放弃当前页面尚未保存的修改。请先导出当前记录。确定继续？')) return;
+  const result = persistenceStore().read();
+  storageStatus();
+  if (!result.info.ok){ toast('记录仍无法读取，请保留原始记录后尝试恢复快照'); return; }
+  S = result.state;
+  if (!S.plan){ S.plan = generatePlan(todayStr(), S.settings.examDate, SYLLABUS); S.plan.generatedAt = todayStr(); }
+  refreshImportedState();
+  toast('已重新读取浏览器记录');
+}
+function restoreSnapshot(){
+  try {
+    const next = persistenceStore().snapshot();
+    if (!confirm('将恢复最近一次有效快照，覆盖前会保留浏览器原始记录。请先导出当前页面尚未保存的修改。确定继续？')) return;
+    if (!persistenceStore().save(next, { replace: true })){ storageStatus(); toast('恢复失败，原记录未被覆盖'); return; }
+    S = next; refreshImportedState(); toast('快照已恢复');
+  } catch (e) { toast('恢复失败：' + e.message); }
+}
+
+function load(){
+  S = persistenceStore().read().state;
+  // 延续旧版跨会话保护，暂停离开超过四小时的计时。
+  if (S.timer.running && Date.now() - S.timer.startTs > 4 * 3600 * 1000){
+    S.timer.accumSec += 4 * 3600; S.timer.running = false; S.timer.startTs = 0;
+  }
+  storageStatus();
 }
 
 function save(){
-  if (typeof localStorage === 'undefined') return false;
-  try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(S));
-    if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(true);
-    return true;
-  } catch (e) {
-    if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(false);
-    return false;
-  }
+  const ok = persistenceStore().save(S);
+  storageStatus();
+  return ok;
 }
 
 /* ---------------- 通用小工具 ---------------- */
@@ -354,7 +386,7 @@ function toast(msg){
   const t = document.createElement('div');
   document.querySelectorAll('.toast').forEach(item => item.remove());
   t.className = 'toast'; t.setAttribute('role', 'status');
-  t.textContent = (typeof StudyUI !== 'undefined' && !StudyUI.storageOK() && /已|成功/.test(msg) && !/备份已导出/.test(msg)) ? '操作尚未保存，请先导出备份。' : msg;
+  t.textContent = (typeof StudyUI !== 'undefined' && !StudyUI.storageOK() && /已|成功/.test(msg) && !/下载/.test(msg)) ? '操作尚未保存，请先导出备份。' : msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
@@ -375,13 +407,13 @@ function kpStatus(pid){
 function setKp(pid, st){ S.kp[pid] = { status: st, updatedAt: todayStr() }; }
 function chapterDone(c){
   let d = 0;
-  c.points.forEach((_, i) => { if (kpStatus(c.id + '-' + i) === 3) d++; });
+  c.points.forEach(p => { if (kpStatus(p.id) === 3) d++; });
   return d;
 }
 function kpTotals(){
   let total = 0, done = 0, learning = 0, review = 0;
-  SYLLABUS.forEach(c => c.points.forEach((_, i) => {
-    const st = kpStatus(c.id + '-' + i);
+  SYLLABUS.forEach(c => c.points.forEach(p => {
+    const st = kpStatus(p.id);
     total++;
     if (st === 3) done++; else if (st === 2) review++; else if (st === 1) learning++;
   }));
@@ -529,13 +561,13 @@ function renderKP(){
 
   el('kpList').innerHTML = SYLLABUS
     .filter(c => kpSubject === '全部' || c.subject === kpSubject)
-    .filter(c => !q || c.name.toLowerCase().indexOf(q.toLowerCase()) >= 0 || c.points.some(p => p.toLowerCase().indexOf(q.toLowerCase()) >= 0))
+    .filter(c => !q || c.name.toLowerCase().indexOf(q.toLowerCase()) >= 0 || c.points.some(p => p.title.toLowerCase().indexOf(q.toLowerCase()) >= 0))
     .map(c => {
       const done = chapterDone(c), tot = c.points.length;
       const isCur = S.plan && S.plan.chapters.some(pc => pc.id === c.id && idx >= pc.s && idx <= pc.e);
       const chips = c.points.map((p, i) => {
-        const pid = c.id + '-' + i, st = kpStatus(pid);
-        return '<button class="kp-chip st' + st + '" title="点击切换状态（当前：' + KP_STATUS[st] + '）" onclick="A.cycleKp(\'' + pid + '\')"><span class="dot"></span>' + esc(p) + '</button>';
+        const pid = p.id, st = kpStatus(pid);
+        return '<div class="kp-point"><button data-point-id="' + esc(pid) + '" class="kp-chip st' + st + '" title="点击切换状态（当前：' + KP_STATUS[st] + '）" onclick="A.cycleKp(\'' + pid + '\')"><span class="dot"></span>' + esc(p.title) + '</button>' + contentEngine().pointLinks(contentIndex(), pid) + '</div>';
       }).join('');
       return '<details class="chapter" data-cid="' + c.id + '"' + ((openIds.has(c.id) || isCur) ? ' open' : '') + '>' +
         '<summary><span class="ch-name">' + esc(c.name) + '</span>' +
@@ -550,9 +582,10 @@ function renderMistakeList(){
   let arr = S.mistakes.slice();
   if (mFilter.status === 'due') arr = dueMistakes(S.mistakes, t);
   else if (mFilter.status === 'active') arr = arr.filter(m => !m.mastered);
+  else if (mFilter.status === 'relapsed') arr = arr.filter(m => !m.mastered && (m.recurrences || []).length);
   else if (mFilter.status === 'mastered') arr = arr.filter(m => m.mastered);
   if (mFilter.chapter) arr = arr.filter(m => m.chapterId === mFilter.chapter);
-  if (mFilter.reason) arr = arr.filter(m => m.reason === mFilter.reason);
+  if (mFilter.reason) arr = arr.filter(m => reviewEngine().reasonStatus(m).category === mFilter.reason);
   arr.sort((a, b) => ((a.nextReview || '9999-99-99') < (b.nextReview || '9999-99-99') ? -1 : 1));
 
   el('mistakeList').innerHTML = arr.length
@@ -561,12 +594,12 @@ function renderMistakeList(){
         const badge = m.mastered
           ? '<span class="tag ok2">已掌握</span>'
           : '<span class="tag ' + (due ? 'hot' : '') + '">' + (due ? '今日待复习' : '下次 ' + m.nextReview) + '</span>';
-        const reviewBtns = m.mastered ? '' :
+        const reviewBtns = !due ? '' :
           '<button class="btn sm ok" onclick="A.review(\'' + m.id + '\',true)">会了</button>' +
           '<button class="btn sm warn" onclick="A.review(\'' + m.id + '\',false)">还不会</button>';
-        return '<div class="mistake-card' + (m.mastered ? ' ok' : '') + '">' +
+        return '<div class="mistake-card' + (m.mastered ? ' ok' : '') + '" data-mistake-id="' + esc(m.id) + '">' +
           '<div class="m-head"><span class="tag">' + esc(shortChapter(m.chapterId)) + '</span>' +
-          '<span class="tag warn">' + esc(m.reason) + '</span>' + badge +
+          '<span class="tag warn">' + esc(reviewEngine().reasonStatus(m).label) + '</span>' + badge +
           '<span class="muted">' + m.date + '</span></div>' +
           '<div class="m-src">' + esc(m.source) + '</div>' +
           '<div class="m-desc">' + esc(m.desc.length > 90 ? plainMath(m.desc).slice(0, 90) + '…' : plainMath(m.desc)) + '</div>' +
@@ -576,6 +609,7 @@ function renderMistakeList(){
           '<button class="btn sm danger" onclick="A.delMistake(\'' + m.id + '\')">删除</button></div></div>';
       }).join('')
     : '<p class="muted">这里还没有错题。做错就记进来，复习队列会自动安排。</p>';
+  if (typeof StudyUI !== 'undefined') StudyUI.mistakesRendered();
 }
 
 /* ---------------- 知识点详解 ---------------- */
@@ -591,8 +625,51 @@ function renderNote(chId){
 
 /* ---------------- 刷题模块 ---------------- */
 
+let contentRegistry = null;
+function contentEngine(){ return typeof StudyContent !== 'undefined' ? StudyContent : require('../assets/content.js'); }
+function contentIndex(){
+  if (!contentRegistry) contentRegistry = contentEngine().create(SYLLABUS, LESSONS, QUESTIONS);
+  return contentRegistry;
+}
+function relatedKnowledgeHtml(questionId){ return contentEngine().relatedHtml(contentIndex(), questionId); }
+function lessonPointLinks(lesson){ return contentEngine().lessonPoints(contentIndex(), lesson); }
+function practicePoint(pointId){
+  const index = contentIndex(), point = index.point(pointId), questions = index.questionsFor(pointId);
+  const lesson = index.lessonsFor(pointId)[0];
+  if (typeof StudyUI !== 'undefined') StudyUI.setPracticeSource(lesson ? lesson.id : null, pointId);
+  pqFilter = { ch: point ? point.chapterId : '', diff: 0, scope: 'all', ids: questions.map(q => q.id), pointId };
+  pqScopeSnapshot = null; pqIndex = 0;
+  pqSession = { qid: questions[0] ? questions[0].id : null, picked: -1, revealed: false, judged: false };
+  el('pqChapter').value = pqFilter.ch; el('pqDiff').value = '0'; el('pqScope').value = 'all';
+  goTab('pq');
+  if (!point || !questions.length) toast('该考点尚未关联专项题，请返回课程或知识地图。');
+}
+// Search navigation changes visible content without recording an answer.
+function openQuestion(id){
+  const question = QUESTIONS.find(q => q.id === id);
+  if (!question) return false;
+  if (typeof StudyUI !== 'undefined') StudyUI.setQuestionSource(id);
+  pqFilter = { ch: question.ch, diff: 0, scope: 'all', ids: [id], questionId: id };
+  pqScopeSnapshot = null; pqIndex = 0;
+  pqSession = { qid: id, picked: -1, revealed: false, judged: false };
+  el('pqChapter').value = question.ch; el('pqDiff').value = '0'; el('pqScope').value = 'all';
+  goTab('pq'); return true;
+}
+function openPoint(id){
+  if (!SYLLABUS.some(ch => ch.points.some(point => point.id === id))) return false;
+  kpSubject = '全部'; kpQuery = '';
+  el('kpSubjectSel').value = '全部'; el('kpSearch').value = '';
+  goTab('kp'); return true;
+}
+function openCard(id){
+  if (!FORMULAS.some(card => card.id === id)) return false;
+  fQuery = ''; fCatFilter = 'all'; fOnlyFav = false; fQuiz = false;
+  el('fSearch').value = ''; el('fCat').value = 'all';
+  el('fOnlyFav').checked = false; el('fQuiz').checked = false;
+  goTab('learn'); renderFormulas(); return true;
+}
 function filteredQuestions(){
-  if (pqFilter.ids && pqFilter.ids.length){
+  if (Array.isArray(pqFilter.ids)){
     // 教学配套模式：只做本课指定的题目（按教学顺序）
     return QUESTIONS.filter(q => pqFilter.ids.indexOf(q.id) >= 0);
   }
@@ -620,33 +697,41 @@ function recordAnswer(q, ok, pick){
   const lastPick = (typeof pick === 'number' && pick >= 0) ? pick : (old ? old.lastPick : undefined);
   S.qz[q.id] = { ok: ok, times: (old ? old.times : 0) + 1, lastAt: todayStr() };
   if (typeof lastPick === 'number') S.qz[q.id].lastPick = lastPick;
-  if (!ok) addQToMistake(q, (typeof pick === 'number' && pick >= 0) ? pick : -1);
+  S.attempts = S.attempts || [];
+  S.attempts.push({
+    id: uid(), questionId: q.id, contentVersion: '2026-10', answeredAt: new Date().toISOString(),
+    answer: q.type === 'choice' && typeof pick === 'number' && pick >= 0 ? pick : null,
+    correct: !!ok, score: ok ? 1 : 0, maxScore: 1, isFirst: !old,
+    mode: pqFilter.ids && !pqFilter.pointId && !pqFilter.questionId ? 'lesson' : (old ? 'retry' : 'practice'),
+    gradingMethod: q.type === 'choice' ? 'automatic' : 'self', pointIds: (q.pointIds || []).slice()
+  });
+  if (!ok) addQToMistake(q, (typeof pick === 'number' && pick >= 0) ? pick : -1, S.attempts[S.attempts.length - 1]);
   save();
 }
 
-function addQToMistake(q, pick){
+function addQToMistake(q, pick, attempt){
   const hasPick = q.type === 'choice' && typeof pick === 'number' && pick >= 0 && q.opts && q.opts[pick] != null;
   const wrongTxt = hasPick ? '我选了 ' + 'ABCD'[pick] + '．' + plainMath(q.opts[pick]) : '';
-  const exist = S.mistakes.find(m => m.qid === q.id && !m.mastered);
+  const today = todayStr(), at = attempt ? attempt.answeredAt : new Date().toISOString();
+  const exist = S.mistakes.find(m => m.qid === q.id && !m.mastered) || S.mistakes.find(m => m.qid === q.id);
   if (exist){
-    // 已在错题本且未掌握：只更新本次错解与选项快照，不打断已有复习进度
+    if (!reviewEngine().relapse(exist, { id: uid(), date: today, at, attemptId: attempt && attempt.id, wrong: wrongTxt, wrongIdx: hasPick ? pick : null })) return;
     if (q.type === 'choice' && q.opts){ exist.opts = q.opts.slice(); exist.ansIdx = q.ans; }
-    if (hasPick){ exist.wrong = wrongTxt; exist.wrongIdx = pick; }
-    toast('❌ 又做错了，已更新这道题在错题本中的本次错解');
+    exist.wrong = wrongTxt; exist.wrongIdx = hasPick ? pick : null;
+    toast('再次答错：已记录复发并放回今日复习，历史记录保留');
     return;
   }
   S.mistakes.unshift({
-    id: uid(), qid: q.id, date: todayStr(),
+    id: uid(), qid: q.id, date: today,
     source: '题库 · ' + shortChapter(q.ch) + ' · ' + q.id,
-    chapterId: q.ch, reason: '思路方法',
+    chapterId: q.ch, reason: '未归因', reasonConfirmed: false, reasonConfirmedAt: null,
     desc: q.q, wrong: wrongTxt,
     opts: (q.type === 'choice' && q.opts) ? q.opts.slice() : null,
-    ansIdx: q.type === 'choice' ? q.ans : null,
-    wrongIdx: hasPick ? pick : null,
+    ansIdx: q.type === 'choice' ? q.ans : null, wrongIdx: hasPick ? pick : null,
     correct: '【答案】' + (q.type === 'choice' ? 'ABCD'[q.ans] : q.ans) + '\n【解析】' + q.sol,
-    stage: 0, nextReview: addDays(todayStr(), 1), history: [], mastered: false
+    stage: 0, nextReview: addDays(today, 1), history: [], mastered: false, recurrences: [], lastWrongAt: at
   });
-  toast('❌ 做错了，已自动加入错题本（明天复习）');
+  toast('做错了，已加入错题本（明天复习）；错因待你确认');
 }
 
 function practiceCard(q, list){
@@ -687,7 +772,7 @@ function practiceCard(q, list){
     '<div class="practice-progress pbar" aria-label="当前题目进度"><div class="pfill" style="width:' + (i / n * 100) + '%"></div></div>' +
     '<div class="m-head"><span class="tag">' + esc(shortChapter(q.ch)) + '</span><span class="tag">' + diffName + '</span>' +
     '<span class="tag">' + typeName + '题</span><span class="muted">' + q.id + ' · 第 ' + i + '/' + n + ' 题</span></div>' +
-    '<p class="q-text">' + mathHtml(q.q) + '</p>' + body + feedback + retry + sol +
+    '<p class="q-text">' + mathHtml(q.q) + '</p>' + body + feedback + retry + sol + (pqSession.revealed ? relatedKnowledgeHtml(q.id) : '') +
     '<div class="row" style="margin-top:14px;justify-content:space-between">' +
     '<button class="btn ghost" ' + (i <= 1 ? 'disabled' : '') + ' onclick="A.pqNav(-1)">← 上一题</button>' +
     '<button class="btn ghost" ' + (i >= n ? 'disabled' : '') + ' onclick="A.pqNav(1)">下一题 →</button></div></div>';
@@ -699,10 +784,10 @@ function renderPractice(){
   if (pqIndex >= n) pqIndex = Math.max(0, n - 1);
   const done = list.filter(q => S.qz[q.id]).length;
   const right = list.filter(q => S.qz[q.id] && S.qz[q.id].ok).length;
-  if (pqFilter.ids && pqFilter.ids.length){
-    el('pqInfo').innerHTML = '教学配套练习：' + n + ' 题 <button class="btn sm ghost" onclick="A.clearPqIds()">退出配套模式</button>';
+  if (Array.isArray(pqFilter.ids)){
+    el('pqInfo').innerHTML = (pqFilter.questionId ? '搜索定位：' : pqFilter.pointId ? '考点专项：' + esc((contentIndex().point(pqFilter.pointId) || { title: '暂不存在的考点' }).title) + ' · ' : '教学配套练习：') + n + ' 题 <button class="btn sm ghost" onclick="A.clearPqIds()">' + (pqFilter.questionId ? '返回章节题库' : '退出配套模式') + '</button>';
   } else {
-    el('pqInfo').textContent = n ? ('共 ' + n + ' 题 · 已做 ' + done + ' · 正确率 ' + (done ? Math.round(right / done * 100) : 0) + '%') : '共 0 题';
+    el('pqInfo').textContent = n ? ('共 ' + n + ' 题 · 已做 ' + done + ' · 最近答对率 ' + (done ? Math.round(right / done * 100) : 0) + '%') : '共 0 题';
   }
   if (!n){ el('pqArea').innerHTML = '<div class="card"><p class="muted">当前筛选条件下没有题目，换个条件试试。</p></div>'; return; }
   const q = list[pqIndex];
@@ -771,10 +856,10 @@ function lessonCard(l){
   const quizN = l.quiz ? l.quiz.length : 0;
   return '<details class="lesson' + (done ? ' done' : '') + '" data-lid="' + l.id + '">' +
     '<summary><span class="ls-title">' + (done ? '✅ ' : '📘 ') + esc(l.title) + '</span>' +
-    '<span class="muted">约 ' + l.mins + ' 分钟 · ' + l.pts.length + ' 个考点' + (quizN ? ' · 配套 ' + quizN + ' 题' : '') + '</span></summary>' +
+    '<span class="muted">约 ' + l.mins + ' 分钟 · ' + l.pointIds.length + ' 个考点' + (quizN ? ' · 配套 ' + quizN + ' 题' : '') + '</span></summary>' +
     '<div class="ls-body">' +
     '<p class="ls-goal">🎯 ' + mathHtml(l.goal) + '</p>' +
-    '<h4>概念与方法</h4><ul>' + l.concept.map(x => '<li>' + mathHtml(x) + '</li>').join('') + '</ul>' +
+    lessonPointLinks(l) + '<h4>概念与方法</h4><ul>' + l.concept.map(x => '<li>' + mathHtml(x) + '</li>').join('') + '</ul>' +
     '<h4>例题（先遮住自做，再展开核对）</h4>' +
     l.examples.map((e, i) => '<details class="ex"><summary>例 ' + (i + 1) + '　' + mathHtml(e.q) + '</summary>' +
       '<div class="ex-sol"><b>解答：</b>' + mathHtml(e.sol) + '</div></details>').join('') +
@@ -820,8 +905,7 @@ function markLesson(id){
   } else {
     S.lessons[id] = { done: true, doneAt: todayStr() };
     // 本课覆盖的考点若还未开始，自动标为「学习中」
-    l.pts.forEach(p => {
-      const pid = l.ch + '-' + p;
+    l.pointIds.forEach(pid => {
       if (kpStatus(pid) === 0) setKp(pid, 1);
     });
     toast('🎉 已学完！本课考点已自动标为「学习中」');
@@ -868,7 +952,7 @@ function renderFormulas(){
     const fav = !!S.favF[f.id];
     const covered = fQuiz && !fRevealed.has(f.id);
     const tagCls = f.tag === '高频' ? ' hot2' : (f.tag === '了解' ? '' : ' warn');
-    return '<div class="fcard">' +
+    return '<div class="fcard" data-card-id="' + esc(f.id) + '">' +
       '<div class="f-top"><span class="f-name">' + esc(f.name) + '</span>' +
       '<span class="tag' + tagCls + '">' + f.tag + '</span>' +
       '<button class="fstar' + (fav ? ' on' : '') + '" title="收藏" onclick="A.toggleFav(\'' + f.id + '\')">' + (fav ? '★' : '☆') + '</button></div>' +
@@ -941,7 +1025,11 @@ function renderStats(){
     statCard('📝', '错题总数', S.mistakes.length + '<span class="unit">题</span>', '<span class="muted">未掌握 ' + active + ' · 已掌握 ' + (S.mistakes.length - active) + '</span>') +
     statCard('📐', '知识点掌握', kp.done + '<span class="unit">/ ' + kp.total + '</span>', progressBar(kp.done / kp.total * 100)) +
     statCard('✏️', '题库刷题', qa + '<span class="unit">/ ' + QUESTIONS.length + ' 题</span>',
-      '<span class="muted">正确率 ' + (qa ? Math.round(qr / qa * 100) : 0) + '%</span>');
+      '<span class="muted">最近答对率 ' + (qa ? Math.round(qr / qa * 100) : 0) + '%</span>');
+
+  const metrics = (typeof StudyCommon !== 'undefined' ? StudyCommon : require('../assets/common.js')).attemptSummary(S.attempts);
+  el('statsCards').innerHTML += statCard('📝', '新记录中的首答', metrics.firstTotal ? Math.round(metrics.firstCorrect / metrics.firstTotal * 100) + '%' : '—', '<span class="muted">' + metrics.firstCorrect + ' / ' + metrics.firstTotal + ' 次；旧聚合记录不补造首答</span>') +
+    statCard('📋', '全部新增作答', metrics.total ? Math.round(metrics.correct / metrics.total * 100) + '%' : '—', '<span class="muted">' + metrics.correct + ' / ' + metrics.total + ' 次，含重做与自评</span>');
 
   // 近 30 天柱状图
   const days30 = [];
@@ -963,16 +1051,14 @@ function renderStats(){
     : '<p class="muted">暂无学习记录。</p>';
 
   // 错误原因分布
-  const rc = {};
-  S.mistakes.forEach(m => { rc[m.reason] = (rc[m.reason] || 0) + 1; });
-  const mxr = Math.max(1, Math.max.apply(null, REASONS.map(r => rc[r] || 0)));
-  el('reasonDist').innerHTML = REASONS.map(r =>
-    '<div class="hbar-row"><span class="hbar-name">' + r + '</span>' +
-    '<div class="hbar-track"><div class="hbar-fill warn" style="width:' + Math.round((rc[r] || 0) / mxr * 100) + '%"></div></div>' +
-    '<span class="muted" style="width:40px;text-align:right">' + (rc[r] || 0) + '</span></div>').join('') +
-    '<p class="muted" style="margin-top:8px">“计算失误 / 审题粗心”占比高 → 每天练限时计算；“概念不清”占比高 → 回教材重过定义。</p>';
+  const summary = reviewEngine().reasonSummary(S.mistakes, REASONS), rc = summary.counts;
+  const reasons = Object.keys(rc), mxr = Math.max(1, ...Object.values(rc));
+  el('reasonDist').innerHTML = reasons.map(r =>
+    '<div class="hbar-row"><span class="hbar-name">' + esc(r) + '</span>' +
+    '<div class="hbar-track"><div class="hbar-fill warn" style="width:' + Math.round(rc[r] / mxr * 100) + '%"></div></div>' +
+    '<span class="muted" style="width:40px;text-align:right">' + rc[r] + '</span></div>').join('') +
+    '<p class="muted" style="margin-top:8px">已确认 ' + summary.confirmed + ' 条；未归因或待确认 ' + summary.pending + ' 条。旧标签保留，确认后才计入对应原因。</p>';
 
-  // 最近学习记录
   const logs = S.logs.slice().sort((a, b) => (a.date === b.date ? (a.id < b.id ? 1 : -1) : (a.date < b.date ? 1 : -1))).slice(0, 20);
   el('logList').innerHTML = logs.length
     ? logs.map(l => '<div class="log-row"><span>' + l.date + '</span><span>' + esc(l.chapterId ? shortChapter(l.chapterId) : '未分类') +
@@ -1045,14 +1131,16 @@ function onMistakeSubmit(e){
     stage: 0, nextReview: addDays(date, 1), history: [], mastered: false
   };
   if (!m.source || !m.desc || !m.chapterId){ toast('请至少填写题源、章节和描述'); return; }
-  S.mistakes.unshift(m);
-  save();
+  reviewEngine().setReason(m, m.reason, m.reason !== '未归因', new Date().toISOString());
+  m.recurrences = [];
+  const next = JSON.parse(JSON.stringify(S)); next.mistakes.unshift(m);
+  if (!commitMistakeChange(next)) return;
   e.target.reset();
   el('mDate').value = todayStr();
   el('mChapter').value = SYLLABUS[0].id;
   el('mistakeAdd').removeAttribute('open');
   renderMistakeList(); renderDash();
-  toast('已入错题本：明天进行第 1 次复习');
+  toast('已入错题本：下次复习 ' + m.nextReview);
 }
 
 function onPaperSubmit(e){
@@ -1108,11 +1196,13 @@ function editMistake(id){
     : '第 ' + (m.stage + 1) + '/' + REVIEW_STEPS.length + ' 轮 · 下次复习 ' + m.nextReview + ' · 已复习 ' + m.history.length + ' 次';
   openModal(
     '<h3>错题详情</h3><p class="muted">' + esc(statusLine) + '</p>' +
+    (typeof StudyUI !== 'undefined' ? StudyUI.mistakeHistoryHtml(m) : '') +
     '<form onsubmit="return A.saveMistakeEdit(event,\'' + m.id + '\')">' +
     '<div class="row"><div class="fld"><label>题源</label><input id="eSrc" value="' + esc(m.source) + '"></div>' +
     '<div class="fld"><label>章节</label><select id="eChapter"></select></div>' +
     '<div class="fld"><label>错误原因</label><select id="eReason"></select></div>' +
     '<div class="fld"><label>记录日期</label><input type="date" id="eDate" value="' + m.date + '"></div></div>' +
+    '<label class="reason-confirm"><input type="checkbox" id="eReasonConfirmed"' + (reviewEngine().reasonStatus(m).confirmed ? ' checked' : '') + '>我已核对本次错误原因（未勾选则保留为待确认）</label>' +
     '<label style="margin-top:10px">题目 / 错因描述</label><textarea id="eDesc" rows="3">' + esc(m.desc) + '</textarea>' +
     mistakeOptsHtml(m) +
     '<label style="margin-top:8px">我当时的错解</label><textarea id="eWrong" rows="2">' + esc(m.wrong) + '</textarea>' +
@@ -1132,60 +1222,54 @@ function editMistake(id){
     el('eChapter').appendChild(o);
   }
   el('eChapter').value = m.chapterId;
-  el('eReason').innerHTML = REASONS.map(r => '<option>' + r + '</option>').join('');
-  el('eReason').value = m.reason;
+  el('eReason').innerHTML = Array.from(new Set(REASONS.concat(m.reason || '未归因'))).map(r => '<option>' + esc(r) + '</option>').join('');
+  el('eReason').value = m.reason || '未归因';
 }
 
 /* ---------------- 数据导入导出 ---------------- */
 
 function exportData(){
-  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'math2-backup-' + todayStr() + '.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
   S.settings.lastBackup = todayStr();
+  StudyStorage.download(persistenceStore().backup(S), STORE_KEY + '-backup-' + todayStr() + '.json');
   save();
-  toast('备份已导出，请妥善保存');
+  toast('备份下载已发起，请确认文件已保存');
 }
 
 function importData(file){
   const r = new FileReader();
   r.onload = () => {
     try {
-      const obj = JSON.parse(r.result);
-      if (!obj || !obj.settings || !Array.isArray(obj.logs) || !Array.isArray(obj.mistakes) || !Array.isArray(obj.papers)) throw new Error('bad');
-      if (!confirm('导入将覆盖当前全部数据，确定继续？')) return;
-      obj.kp = obj.kp || {}; obj.qz = obj.qz || {}; obj.lessons = obj.lessons || {}; obj.favF = obj.favF || {};
-      obj.timer = obj.timer || { running: false, startTs: 0, accumSec: 0, chapterId: null };
-      S = obj;
-      pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
-      save(); renderAll(); syncTimerBtn(); updateTimerDisplay();
-      toast('导入成功');
-    } catch (e) {
-      toast('文件格式不正确，导入失败');
-    }
+      const prepared = persistenceStore().prepareImport(r.result);
+      const unidentified = prepared.unidentified ? '该旧备份无法自动识别科目，请确认它属于本科目。\n' : '';
+      if (!confirm(unidentified + prepared.summary + '\n导入将覆盖本科当前记录，并保留覆盖前的原文。请先导出当前页面尚未保存的修改。确定继续？')) return;
+      if (!persistenceStore().save(prepared.state, { replace: true })){
+        storageStatus(); toast('导入失败，当前学习记录未被替换'); return;
+      }
+      S = prepared.state; refreshImportedState(); toast('备份已导入并保存');
+    } catch (e) { toast('导入失败：' + e.message); }
   };
+  r.onerror = () => toast('无法读取备份文件，当前记录未改变');
   r.readAsText(file);
 }
 
 function clearData(){
-  if (!confirm('确定清空全部数据？此操作不可恢复！')) return;
-  if (!confirm('再次确认：真的要清空吗？建议先导出备份。')) return;
-  S = defaultState();
-  S.plan = generatePlan(todayStr(), S.settings.examDate, SYLLABUS);
-  S.plan.generatedAt = todayStr();
-  pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
-  if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
-  save(); renderAll(); syncTimerBtn(); updateTimerDisplay();
-  toast('已清空');
+  if (!confirm('确定清空本科目的全部记录？建议先导出当前记录。')) return;
+  if (!confirm('再次确认清空？覆盖前将保留浏览器原始记录，可在数据恢复中恢复。')) return;
+  const next = defaultState();
+  next.plan = generatePlan(todayStr(), next.settings.examDate, SYLLABUS);
+  next.plan.generatedAt = todayStr();
+  if (!persistenceStore().save(next, { replace: true })){
+    storageStatus(); toast('清空失败，原记录未被替换'); return;
+  }
+  S = next; refreshImportedState(); toast('本科记录已清空');
 }
 
 /* ---------------- 事件动作（供内联 onclick 调用） ---------------- */
 
 function goTab(name){
   if (!document.getElementById('tab-' + name)) return;
+  const renderers = { dash: renderDash, learn: renderLearn, pq: renderPractice, mistake: renderMistakeList, kp: renderKP, paper: renderPapers, stats: renderStats, settings: renderSettings };
+  if (renderers[name]) renderers[name]();
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tab').forEach(s => s.classList.toggle('active', s.id === 'tab-' + name));
   if (typeof StudyUI !== 'undefined') StudyUI.onTab(name);
@@ -1194,12 +1278,30 @@ function cycleKp(pid){
   setKp(pid, (kpStatus(pid) + 1) % 4);
   save(); renderKP(); renderDash();
 }
+function commitMistakeChange(next){
+  if (!persistenceStore().save(next)){
+    storageStatus(); toast('修改尚未保存，当前错题记录未改变，请导出备份或重试'); return false;
+  }
+  S = next; storageStatus(); return true;
+}
+function confirmMistakeReason(id, reason){
+  const current = S.mistakes.find(x => x.id === id);
+  if (!current || (!REASONS.includes(reason) && reason !== current.reason)) return false;
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
+  reviewEngine().setReason(m, reason, reason !== '未归因', new Date().toISOString());
+  if (!commitMistakeChange(next)) return false;
+  renderMistakeList(); renderDash();
+  toast(m.reasonConfirmed ? '本次错误原因已确认' : '已保留为未归因'); return true;
+}
 function review(id, ok){
-  const m = S.mistakes.find(x => x.id === id);
-  if (!m) return;
-  scheduleNext(m, ok, todayStr());
-  save(); renderMistakeList(); renderDash();
-  toast(ok ? (m.mastered ? '🎉 最后一轮通过，此题已掌握！' : '已记录：进入下一轮复习') : '已记录：明天再复习一次');
+  const current = S.mistakes.find(x => x.id === id), today = todayStr();
+  if (!current || !reviewEngine().isDue(current, today)) return false;
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
+  scheduleNext(m, ok, today);
+  if (!commitMistakeChange(next)) return false;
+  renderMistakeList(); renderDash();
+  toast(ok ? (m.mastered ? '最后一轮通过，此题已掌握！' : '已记录：进入下一轮复习') : '已记录：明天再复习一次');
+  return true;
 }
 function delMistake(id){
   if (!confirm('确定删除这道错题？')) return;
@@ -1208,25 +1310,24 @@ function delMistake(id){
 }
 function saveMistakeEdit(ev, id){
   ev.preventDefault();
-  const m = S.mistakes.find(x => x.id === id);
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
   if (!m) return false;
   m.source = el('eSrc').value.trim() || m.source;
   m.chapterId = el('eChapter').value || m.chapterId;
-  m.reason = el('eReason').value || m.reason;
+  reviewEngine().setReason(m, el('eReason').value, el('eReasonConfirmed').checked, new Date().toISOString());
   m.date = el('eDate').value || m.date;
-  m.desc = el('eDesc').value.trim();
-  m.wrong = el('eWrong').value.trim();
-  m.correct = el('eCorrect').value.trim();
-  save(); closeModal(); renderMistakeList(); renderDash();
-  toast('已保存');
+  m.desc = el('eDesc').value.trim(); m.wrong = el('eWrong').value.trim(); m.correct = el('eCorrect').value.trim();
+  if (!commitMistakeChange(next)) return false;
+  closeModal(); renderMistakeList(); renderDash(); toast('已保存');
   return false;
 }
 function toggleMastered(id){
-  const m = S.mistakes.find(x => x.id === id);
-  if (!m) return;
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
+  if (!m) return false;
   if (m.mastered){ m.mastered = false; m.stage = 0; m.nextReview = addDays(todayStr(), 1); }
   else { m.mastered = true; m.nextReview = null; }
-  save(); closeModal(); renderMistakeList(); renderDash();
+  if (!commitMistakeChange(next)) return false;
+  closeModal(); renderMistakeList(); renderDash();
   toast(m.mastered ? '已标记为掌握' : '已放回复习队列');
 }
 function delPaper(id){
@@ -1253,14 +1354,18 @@ function toggleTimer(){
 }
 function finishTimer(){
   const T = S.timer;
-  const total = T.accumSec + (T.running ? (Date.now() - T.startTs) / 1000 : 0);
+  const total = T.accumSec + (T.running ? Math.max(0, (Date.now() - T.startTs) / 1000) : 0);
   if (total <= 0){ toast('还没有开始计时'); return; }
-  const min = Math.max(1, Math.round(total / 60));
-  addLog(min, T.chapterId || el('timerChapter').value || null, todayStr(), '计时学习');
-  Object.assign(T, { running: false, startTs: 0, accumSec: 0 });
-  save(); syncTimerBtn(); updateTimerDisplay();
+  const minutes = Math.max(1, Math.round(total / 60));
+  const next = JSON.parse(JSON.stringify(S));
+  next.logs.push({ id: uid(), date: todayStr(), minutes, chapterId: T.chapterId || el('timerChapter').value || null, note: '计时学习' });
+  Object.assign(next.timer, { running: false, startTs: 0, accumSec: 0 });
+  if (!persistenceStore().save(next)){
+    storageStatus(); toast('计时归档失败，计时与原记录仍保留，请导出备份或重试'); return;
+  }
+  S = next; storageStatus(); syncTimerBtn(); updateTimerDisplay();
   renderDash(); renderStats();
-  toast('已记录 ' + min + ' 分钟学习');
+  toast('已记录 ' + minutes + ' 分钟学习');
 }
 function quickAdd(){
   const min = parseInt(el('quickMin').value, 10);
@@ -1281,10 +1386,11 @@ function openModal(html){ el('modalBox').innerHTML = html; el('modal').classList
 function closeModal(){ el('modal').classList.add('hidden'); if (typeof StudyUI !== 'undefined') StudyUI.modalClosed(); }
 
 const A = {
-  goTab, cycleKp, review, editMistake, delMistake, saveMistakeEdit, toggleMastered,
-  pickOpt, revealAns, selfJudge, retryQuestion, pqNav, markLesson, practiceLesson, clearPqIds, toggleFav, revealF,
+  openQuestion, openPoint, openCard,
+  goTab, cycleKp, review, confirmMistakeReason, editMistake, delMistake, saveMistakeEdit, toggleMastered,
+  pickOpt, revealAns, selfJudge, retryQuestion, pqNav, markLesson, practiceLesson, practicePoint, clearPqIds, toggleFav, revealF,
   delPaper, delLog, toggleTimer, finishTimer, quickAdd, regenPlan,
-  exportData, clearData, closeModal
+  exportData, clearData, closeModal, retrySave, exportRawData, exportPreservedData, retryStorage, restoreSnapshot
 };
 
 /* ---------------- 初始化 ---------------- */
@@ -1352,14 +1458,21 @@ function init(){
   el('fQuiz').addEventListener('change', e => { fQuiz = e.target.checked; fRevealed.clear(); renderFormulas(); });
   el('fOnlyFav').addEventListener('change', e => { fOnlyFav = e.target.checked; renderFormulas(); });
 
+  window.addEventListener('storage', event => {
+    if (event.key === STORE_KEY || event.key === null){
+      persistenceStore().checkExternal();
+      storageStatus();
+    }
+  });
   renderAll();
   syncTimerBtn();
   updateTimerDisplay();
   if (typeof StudyUI !== 'undefined') StudyUI.mount({
     storeKey: STORE_KEY, getState: () => S, actions: A, save,
-    syllabus: SYLLABUS, lessons: LESSONS, today: todayStr,
-    due: dueMistakes, math: mathHtml, chapterName: shortChapter, toast, openModal
+    syllabus: SYLLABUS, lessons: LESSONS, reasons: REASONS, today: todayStr,
+    due: dueMistakes, math: mathHtml, chapterName: shortChapter, toast, openModal, questionLinks: relatedKnowledgeHtml
   });
+  storageStatus();
   setInterval(tick, 1000);
 }
 

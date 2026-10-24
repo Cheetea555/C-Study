@@ -8,7 +8,7 @@ const L = require('./data-lessons.js').LESSONS;
 
 const src = fs.readFileSync('app.js', 'utf8');
 const mod = { exports: {} };
-new Function('module', 'exports', src + '\nmodule.exports={mathHtml:mathHtml};')(mod, mod.exports);
+new Function('module', 'exports', 'StudyReview', src + '\nmodule.exports={mathHtml:mathHtml};')(mod, mod.exports, require('../assets/review.js'));
 const mathHtml = mod.exports.mathHtml;
 
 let total = 0, ex = 0, refs = 0;
@@ -26,7 +26,7 @@ P.SYLLABUS.forEach(c => {
     assert.ok(les.examples.length >= 2, les.id + ' 例题不足 2 道');
     les.examples.forEach(e => { ex++; assert.ok(e.q && e.sol && e.sol.length >= 10, les.id + ' 例题内容缺失'); });
     assert.ok(les.pitfalls.length >= 1, les.id + ' 缺常见错误');
-    les.pts.forEach(p => assert.ok(Number.isInteger(p) && p >= 0 && p < c.points.length, les.id + ' pts 越界'));
+    les.pointIds.forEach(id => assert.ok(c.points.some(point => point.id === id), les.id + ' 考点引用不存在: ' + id));
     les.quiz.forEach(qid => { refs++; assert.ok(ALLQ.has(qid), les.id + ' 配套题不存在: ' + qid); });
     [les.goal].concat(les.concept, les.pitfalls, les.examples.flatMap(e => [e.q, e.sol])).forEach(s => {
       const r = mathHtml(s);

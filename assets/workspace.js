@@ -2,6 +2,8 @@
 (function () {
   'use strict';
   const C = window.StudyCommon;
+  const Content = window.StudyContent;
+  const Review = window.StudyReview;
   const $ = id => document.getElementById(id);
   const tabInfo = {
     dash: ['今日概览', 'grid', '把注意力，留给今天。'],
@@ -13,7 +15,7 @@
     stats: ['学习统计', 'chart', '让每一天的投入，都有迹可循。'],
     settings: ['设置与数据', 'settings', '调整学习节奏，妥善保存记录。']
   };
-  let bridge, subject, currentTab = 'dash', practiceSource = null, modalFocus = null;
+  let bridge, subject, currentTab = 'dash', practiceSource = null, practicePoint = null, practiceQuestion = null, modalFocus = null;
   let reviewIds = [], reviewIndex = 0, reviewRevealed = false;
   let modalBackground = [];
   let storageOK = true;
@@ -44,6 +46,11 @@
       '<div class="subject-picker"><label for="subjectSwitch">当前学习科目</label><select id="subjectSwitch">' + C.subjects.map(s => '<option value="' + s.folder + '"' + (s.id === subject.id ? ' selected' : '') + '>' + s.name + '</option>').join('') + '</select></div><p class="nav-caption">学习空间</p>';
     document.body.prepend(sidebar);
     sidebar.appendChild(nav);
+    const searchLink = document.createElement('a'); searchLink.className = 'workspace-search';
+    searchLink.href = '../search.html?subject=' + encodeURIComponent(subject.id);
+    searchLink.innerHTML = C.icon('search') + '搜索四科学习内容'; sidebar.appendChild(searchLink);
+    const planLink = document.createElement('a'); planLink.className = 'workspace-search'; planLink.href = '../plan.html';
+    planLink.innerHTML = C.icon('clock') + '四科时间计划'; sidebar.appendChild(planLink);
     const footer = document.createElement('div');
     footer.className = 'sidebar-footer';
     footer.innerHTML = '<span class="offline-dot"></span> 离线也能安心学习<a href="../index.html">' + C.icon('home') + '返回四科总览</a>';
@@ -63,7 +70,8 @@
     $('tab-dash').prepend(hero);
     const dashCards = Array.from(document.querySelectorAll('.dash-grid > .card'));
     ['plan-card', 'timer-card', 'review-card', 'mastery-card'].forEach((name, i) => dashCards[i].classList.add(name));
-    dashCards[0].querySelector('h3').textContent = '今日学习计划';
+    dashCards[0].querySelector('h3').textContent = '章节进度参考';
+    const budgetLink = document.createElement('a'); budgetLink.className = 'text-button'; budgetLink.href = '../plan.html'; budgetLink.textContent = '按四科总预算安排今天 →'; dashCards[0].appendChild(budgetLink);
     dashCards[1].querySelector('h3').textContent = '专注计时';
     dashCards[2].querySelector('h3').textContent = '今日复习';
     dashCards[3].querySelector('h3').textContent = '知识掌握';
@@ -81,7 +89,7 @@
     document.body.appendChild(bottom);
     bottom.querySelectorAll('[data-mobile-tab]').forEach(b => b.addEventListener('click', () => go(b.dataset.mobileTab)));
     const more = document.createElement('div'); more.className = 'more-menu'; more.id = 'moreMenu'; more.hidden = true;
-    more.innerHTML = '<p>更多学习工具</p>' + ['kp', 'paper', 'stats', 'settings'].map(key => '<button type="button" data-more-tab="' + key + '">' + C.icon(tabInfo[key][1]) + tabInfo[key][0] + '</button>').join('') + '<a href="../index.html">' + C.icon('grid') + '切换科目 / 四科总览</a>';
+    more.innerHTML = '<p>更多学习工具</p>' + ['kp', 'paper', 'stats', 'settings'].map(key => '<button type="button" data-more-tab="' + key + '">' + C.icon(tabInfo[key][1]) + tabInfo[key][0] + '</button>').join('') + '<a href="../plan.html">' + C.icon('clock') + '四科时间计划</a><a href="../search.html?subject=' + encodeURIComponent(subject.id) + '">' + C.icon('search') + '搜索四科学习内容</a><a href="../index.html">' + C.icon('grid') + '切换科目 / 四科总览</a>';
     document.body.appendChild(more);
     more.querySelectorAll('button').forEach(b => b.addEventListener('click', () => go(b.dataset.moreTab)));
     $('mobileMore').addEventListener('click', () => toggleMore(more.hidden));
@@ -93,6 +101,14 @@
     const dangerZone = document.createElement('details'); dangerZone.className = 'card danger-zone';
     dangerZone.innerHTML = '<summary>危险操作</summary><p class="muted">清空会移除当前科目的全部学习记录。操作前请先导出备份。</p>';
     dangerZone.appendChild(dangerButton); $('tab-settings').appendChild(dangerZone);
+    const recovery = document.createElement('section'); recovery.className = 'card'; recovery.id = 'storageRecovery';
+    recovery.innerHTML = '<h3>数据恢复</h3><p class="muted">记录异常时先下载原文。重新读取会放弃当前页面尚未保存的修改，请先导出备份；恢复快照前会保留浏览器原文。</p><div class="row">' +
+      button('book', '导出当前记录', 'exportData()', 'btn ghost') + button('book', '下载浏览器原始记录', 'exportRawData()', 'btn ghost') +
+      button('book', '下载覆盖前记录', 'exportPreservedData()', 'btn ghost') + button('repeat', '重新读取记录', 'retryStorage()', 'btn ghost') +
+      button('repeat', '恢复有效快照', 'restoreSnapshot()', 'btn ghost') + button('check', '重试保存', 'retrySave()', 'btn ghost') + '</div>';
+    dangerZone.before(recovery);
+    const fullBackupLink = document.createElement('a'); fullBackupLink.href = '../backup.html'; fullBackupLink.className = 'btn ghost'; fullBackupLink.textContent = '四科备份与恢复';
+    recovery.querySelector('.row').appendChild(fullBackupLink);
     document.querySelectorAll('label').forEach(label => {
       if (label.htmlFor || label.querySelector('input, select, textarea')) return;
       const next = label.nextElementSibling;
@@ -112,19 +128,42 @@
     $('learnList').before(learnSearch);
     $('lessonSearch').addEventListener('input', filterLessons);
     const empty = document.createElement('p'); empty.id = 'lessonEmpty'; empty.className = 'card empty-state'; empty.hidden = true; empty.textContent = '没有找到相关课程，试试其他关键词。'; $('learnList').after(empty);
-    Object.assign(bridge.actions, { continueLearning, startPlannedLesson, openLesson, backToLesson, startReview, revealReview, judgeReview });
-    window.addEventListener('popstate', () => {
-      navigatingHistory = true;
-      try { go(tabInfo[location.hash.slice(1)] ? location.hash.slice(1) : 'dash'); }
-      finally { navigatingHistory = false; }
-    });
-    window.addEventListener('hashchange', () => { const name = location.hash.slice(1); if (tabInfo[name] && name !== currentTab) go(name); });
+    Object.assign(bridge.actions, { continueLearning, startPlannedLesson, openLesson, backToLesson, startReview, revealReview, judgeReview, confirmReviewReason });
+    window.addEventListener('popstate', applyRoute);
+    window.addEventListener('hashchange', applyRoute);
     preferences().lastVisit = Date.now(); bridge.save();
     const initial = location.hash.slice(1);
     if (initial === 'resume') continueLearning();
-    else go(tabInfo[initial] ? initial : 'dash');
+    else applyRoute();
     navigationReady = true;
+    mistakesRendered();
     refresh();
+  }
+  function applyRoute() {
+    const target = Content.parseRoute(location.hash);
+    navigatingHistory = true;
+    try {
+      if (!$('modal').classList.contains('hidden')) bridge.actions.closeModal();
+      if (target.tab === 'learn' && target.lesson) {
+        if (!openLesson(target.lesson, target.point, target.text)) { go('learn'); bridge.toast('该课程暂不存在，请在课程列表中重新选择。'); }
+      } else if (target.tab === 'pq' && target.question) {
+        if (!bridge.actions.openQuestion(target.question)) { clearPracticeSource(); go('pq'); bridge.toast('该题目暂不存在，请在题库中重新选择。'); }
+      } else if (target.tab === 'kp' && target.point) {
+        if (bridge.actions.openPoint(target.point)) focusResult('data-point-id', target.point);
+        else { go('kp'); bridge.toast('该考点暂不存在，请在知识地图中重新选择。'); }
+      } else if (target.tab === 'learn' && target.card) {
+        if (bridge.actions.openCard(target.card)) focusResult('data-card-id', target.card);
+        else { go('learn'); bridge.toast('该速查卡暂不存在，请在手册中重新选择。'); }
+      } else if (target.tab === 'pq' && target.point && bridge.actions.practicePoint) {
+        bridge.actions.practicePoint(target.point);
+      } else if (target.tab === 'pq' && target.lesson) {
+        const lesson = Object.values(bridge.lessons).flat().find(l => l.id === target.lesson);
+        if (lesson) bridge.actions.practiceLesson(lesson.id);
+        else { clearPracticeSource(); go('pq'); bridge.toast('该课程暂不存在，请重新选择练习。'); }
+      } else if (target.tab === 'mistake' && target.reviewIds) {
+        go('mistake'); startReview(target.reviewIds);
+      } else { go(tabInfo[target.tab] ? target.tab : 'dash'); }
+    } finally { navigatingHistory = false; }
   }
   function toggleMore(open) {
     $('moreMenu').hidden = !open; $('mobileMore').setAttribute('aria-expanded', String(open));
@@ -140,8 +179,9 @@
     document.querySelectorAll('[data-mobile-tab]').forEach(b => { const active = b.dataset.mobileTab === name; b.classList.toggle('active', active); if (active) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current'); });
     $('mobileMore').classList.toggle('active', !['dash', 'learn', 'pq', 'mistake'].includes(name));
     toggleMore(false);
-    if (!navigatingHistory && location.hash !== '#' + name) {
-      try { history[navigationReady ? 'pushState' : 'replaceState'](null, '', '#' + name); }
+    const targetHash = Content.route(name, name === 'pq' ? (practiceQuestion ? { question: practiceQuestion } : practicePoint ? { point: practicePoint } : { lesson: practiceSource }) : {});
+    if (!navigatingHistory && location.hash !== targetHash) {
+      try { history[navigationReady ? 'pushState' : 'replaceState'](null, '', targetHash); }
       catch (e) { /* Navigation remains usable in restrictive local-file browsers. */ }
     }
     window.scrollTo({ top: 0, behavior: 'auto' });
@@ -170,22 +210,52 @@
     const lesson = lessons.find(l => !(S.lessons[l.id] && S.lessons[l.id].done)) || lessons[0];
     if (lesson) openLesson(lesson.id); else continueLearning();
   }
-  function openLesson(id) {
+  function openLesson(id, pointId, searchText) {
     const lesson = Object.values(bridge.lessons).flat().find(l => l.id === id);
-    if (!lesson) return;
+    if (!lesson) return false;
     $('lessonSearch').value = ''; filterLessons();
     go('learn');
     const element = Array.from(document.querySelectorAll('details.lesson')).find(d => d.dataset.lid === id);
-    if (!element) return;
+    if (!element) return false;
     element.closest('details.chapter').open = true; element.open = true;
     if (!state().timer.running && !state().timer.accumSec) { $('timerChapter').value = lesson.ch; state().timer.chapterId = lesson.ch; }
     rememberLesson(id);
+    document.querySelectorAll('[data-focus-point]').forEach(el => el.classList.remove('point-focus'));
+    if (pointId && lesson.pointIds.includes(pointId)) {
+      const point = Array.from(element.querySelectorAll('[data-focus-point]')).find(el => el.dataset.focusPoint === pointId);
+      if (point) point.classList.add('point-focus');
+    }
+    if (!navigatingHistory) {
+      try { history.replaceState(null, '', Content.route('learn', { lesson: id, point: lesson.pointIds.includes(pointId) ? pointId : null, text: searchText })); } catch (e) { /* file:// 下保留正常课程定位。 */ }
+    }
     const summary = element.querySelector('summary'); summary.focus({ preventScroll: true });
-    element.scrollIntoView({ block: 'start', behavior: motion() });
+    document.querySelectorAll('.search-focus').forEach(el => el.classList.remove('search-focus'));
+    const needle = String(searchText || '').normalize('NFKC').toLowerCase();
+    const match = needle && Array.from(element.querySelectorAll('.ls-body p, .ls-body li, .ex summary, .ex-sol')).find(el => el.textContent.normalize('NFKC').toLowerCase().includes(needle));
+    if (match) revealResult(match);
+    else element.scrollIntoView({ block: 'start', behavior: motion() });
+    return true;
   }
-  function setPracticeSource(id) { practiceSource = id; rememberLesson(id); }
-  function backToLesson() { if (practiceSource) openLesson(practiceSource); }
-  function clearPracticeSource() { practiceSource = null; }
+  function revealResult(element) {
+    document.querySelectorAll('.search-focus').forEach(el => el.classList.remove('search-focus'));
+    for (let parent = element.parentElement; parent; parent = parent.parentElement) if (parent.tagName === 'DETAILS') parent.open = true;
+    element.classList.add('search-focus');
+    if (!element.matches('button, a, input, select, summary')) element.setAttribute('tabindex', '-1');
+    element.focus({ preventScroll: true }); element.scrollIntoView({ block: 'center', behavior: motion() });
+  }
+  function focusResult(attribute, id) {
+    const element = Array.from(document.querySelectorAll('[' + attribute + ']')).find(el => el.getAttribute(attribute) === id);
+    if (element) revealResult(element);
+  }
+  function setPracticeSource(id, pointId) { practiceSource = id; practicePoint = pointId || null; practiceQuestion = null; if (id) rememberLesson(id); }
+  function setQuestionSource(id) { practiceSource = null; practicePoint = null; practiceQuestion = id; }
+  function backToLesson() { if (practiceSource) openLesson(practiceSource, practicePoint); }
+  function clearPracticeSource() {
+    practiceSource = null; practicePoint = null; practiceQuestion = null;
+    if (currentTab === 'pq' && !navigatingHistory) {
+      try { history.replaceState(null, '', Content.route('pq')); } catch (error) { /* The chapter list remains usable on file://. */ }
+    }
+  }
   function practiceRendered() {
     if (!bridge) return;
     const area = $('pqArea');
@@ -230,11 +300,43 @@
     const pause = $('timerDock').querySelector('button'); pause.innerHTML = C.icon('clock') + (T.running ? '暂停' : '继续');
     $('timerDock').classList.toggle('paused', !T.running);
   }
-  function startReview() {
-    reviewIds = bridge.due(state().mistakes, bridge.today()).map(m => m.id);
+  function startReview(selection) {
+    reviewIds = Review.selectDue(state().mistakes, bridge.today(), selection);
     reviewIndex = 0; reviewRevealed = false;
-    if (!reviewIds.length) { go('mistake'); bridge.toast('今日暂无待复习错题，可以先学习或做几道练习。'); return; }
+    if (!reviewIds.length) { go('mistake'); bridge.toast(Array.isArray(selection) ? '计划中的这批错题已处理或尚未到期，请返回全局计划刷新安排。' : '今日暂无待复习错题，可以先学习或做几道练习。'); return; }
     renderReview();
+  }
+  function mistakeHistoryHtml(m) {
+    const events = m.recurrences || [];
+    if (!events.length) return '';
+    return '<details class="relapse-history"><summary>新增复发记录 ' + events.length + ' 次</summary><p class="muted">展示最近 5 次；此前未记录的复发不补算。</p><ol>' + events.slice(-5).reverse().map(row =>
+      '<li><strong>' + C.esc(row.date) + '</strong> · ' + (row.wasMastered ? '掌握后再错' : '原第 ' + (row.fromStage + 1) + ' 轮') +
+      ' → 第 1 轮<div>' + C.esc(row.wrong || '本次未填写错解') + '</div><small class="muted">原错因：' + C.esc(row.previousReason || '未归因') + (row.previousReasonConfirmed ? '（已确认）' : '（待确认）') + '</small></li>').join('') + '</ol></details>';
+  }
+  function reasonControl(m, id) {
+    const status = Review.reasonStatus(m), reasons = Array.from(new Set((bridge.reasons || ['未归因']).concat(status.reason)));
+    return '<div class="mistake-reason"><label for="' + C.esc(id) + '">' + (status.confirmed ? '调整本次错因' : '确认本次错因') + '</label><div class="reason-controls"><select id="' + C.esc(id) + '">' + reasons.map(reason => '<option' + (reason === status.reason ? ' selected' : '') + '>' + C.esc(reason) + '</option>').join('') + '</select><button type="button" class="btn sm ghost reason-save">保存错因</button></div><small class="muted">' + C.esc(status.label) + ' · 确认后计入原因分布</small></div>';
+  }
+  function mistakesRendered() {
+    if (!bridge) return;
+    document.querySelectorAll('#mistakeList [data-mistake-id]').forEach(card => {
+      if (card.querySelector('.mistake-reason')) return;
+      const m = state().mistakes.find(row => row.id === card.dataset.mistakeId);
+      if (!m) return;
+      const area = document.createElement('div'); area.className = 'mistake-reflection';
+      const links = bridge.questionLinks ? bridge.questionLinks(m.qid) : '';
+      area.innerHTML = mistakeHistoryHtml(m) + reasonControl(m, 'reason-' + m.id) + (links ? '<details class="mistake-links"><summary>回看相关讲解</summary>' + links + '</details>' : '');
+      area.querySelector('button').addEventListener('click', () => {
+        if (bridge.actions.confirmMistakeReason(m.id, area.querySelector('select').value)) {
+          const next = Array.from(document.querySelectorAll('#mistakeList [data-mistake-id]')).find(el => el.dataset.mistakeId === m.id);
+          if (next) next.querySelector('select').focus({ preventScroll: true });
+        }
+      });
+      card.querySelector('.m-actions').before(area);
+    });
+  }
+  function confirmReviewReason() {
+    if (bridge.actions.confirmMistakeReason(reviewIds[reviewIndex], $('reviewReason').value)) renderReview();
   }
   function renderReview() {
     const m = state().mistakes.find(x => x.id === reviewIds[reviewIndex]);
@@ -243,12 +345,15 @@
     }
     bridge.openModal('<div class="review-progress"><span class="eyebrow">今日复习</span><span>' + (reviewIndex + 1) + ' / ' + reviewIds.length + '</span></div><div class="pbar"><div class="pfill" style="width:' + (reviewIndex / reviewIds.length * 100) + '%"></div></div><h2>' + C.esc(m.source) + '</h2><p class="review-question">' + bridge.math(m.desc) + '</p>' +
       (Array.isArray(m.opts) ? '<div class="opts">' + m.opts.map((o, i) => '<div class="opt review-option' + (reviewRevealed && i === m.ansIdx ? ' right' : '') + '"><span class="letter">' + 'ABCD'[i] + '</span><span>' + bridge.math(o) + '</span></div>').join('') + '</div>' : '') +
-      (reviewRevealed ? '<div class="q-sol"><strong>正确思路 / 解析</strong><div class="review-answer">' + bridge.math(m.correct) + '</div></div><div class="row review-actions">' + button('repeat', '还需巩固', 'judgeReview(false)', 'btn ghost') + button('check', '已经掌握思路', 'judgeReview(true)') + '</div>' : '<p class="muted">先在心里或纸上回忆解题步骤，再查看解析。</p>' + button('book', '查看答案与解析', 'revealReview()')));
+      (reviewRevealed ? '<div class="q-sol"><strong>正确思路 / 解析</strong><div class="review-answer">' + bridge.math(m.correct) + '</div></div>' + (bridge.questionLinks ? bridge.questionLinks(m.qid) : '') + mistakeHistoryHtml(m) + reasonControl(m, 'reviewReason') + '<div class="row review-actions">' + button('repeat', '还需巩固', 'judgeReview(false)', 'btn ghost') + button('check', '已经掌握思路', 'judgeReview(true)') + '</div>' : '<p class="muted">先在心里或纸上回忆解题步骤，再查看解析。</p>' + button('book', '查看答案与解析', 'revealReview()')));
+    const reasonSave = $('modalBox').querySelector('.reason-save');
+    if (reasonSave) reasonSave.addEventListener('click', confirmReviewReason);
   }
   function revealReview() { if (reviewIds[reviewIndex]) { reviewRevealed = true; renderReview(); } }
   function judgeReview(ok) {
     if (!reviewRevealed || !reviewIds[reviewIndex]) return;
-    bridge.actions.review(reviewIds[reviewIndex], ok); reviewIndex++; reviewRevealed = false; renderReview();
+    if (bridge.actions.review(reviewIds[reviewIndex], ok) === false) return;
+    reviewIndex++; reviewRevealed = false; renderReview();
   }
   function modalOpened() {
     if (!bridge) return;
@@ -282,11 +387,16 @@
     if (e.shiftKey && (document.activeElement === first || document.activeElement === $('modalBox'))) { e.preventDefault(); last.focus(); }
     else if (!e.shiftKey && (document.activeElement === last || document.activeElement === $('modalBox'))) { e.preventDefault(); first.focus(); }
   }
-  function setStorageStatus(ok) {
+  function setStorageStatus(ok, info) {
     storageOK = ok;
     if (!$('saveStatus')) return;
     $('saveStatus').hidden = ok;
-    $('saveStatus').textContent = '记录尚未保存到浏览器，可能是存储空间不足或浏览器限制。请先到「设置与数据」导出备份，再重试保存。';
+    $('saveStatus').textContent = info && info.message ? info.message : '记录尚未保存到浏览器，可能是存储空间不足或浏览器限制。请先导出备份，再重试保存。';
+    if (!ok) {
+      const action = document.createElement('button'); action.type = 'button'; action.className = 'btn sm ghost'; action.textContent = '前往数据恢复';
+      action.addEventListener('click', () => { go('settings'); $('storageRecovery').scrollIntoView({ block: 'center', behavior: motion() }); });
+      $('saveStatus').appendChild(action);
+    }
   }
   function decorateFormulas() {
     document.querySelectorAll('.fcard').forEach(card => {
@@ -297,5 +407,5 @@
       if (covered) { covered.setAttribute('role', 'button'); covered.tabIndex = 0; covered.setAttribute('aria-label', '核对：' + name); }
     });
   }
-  window.StudyUI = { mount, onTab, refresh, updateTimer, setPracticeSource, clearPracticeSource, practiceRendered, filterLessons, decorateFormulas, modalOpened, modalClosed, setStorageStatus, storageOK: () => storageOK };
+  window.StudyUI = { mount, onTab, refresh, updateTimer, setPracticeSource, setQuestionSource, clearPracticeSource, practiceRendered, mistakesRendered, mistakeHistoryHtml, filterLessons, decorateFormulas, modalOpened, modalClosed, setStorageStatus, storageOK: () => storageOK };
 })();

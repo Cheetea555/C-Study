@@ -4,7 +4,10 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const StudyReview = require('../assets/review.js');
 const C = require('../assets/common.js');
+const StudyStorage = require('../assets/storage.js');
+const StudyContent = require('../assets/content.js');
 const root = path.resolve(__dirname, '..');
 
 assert.equal(C.summary(null, '2026-10-23'), null);
@@ -22,9 +25,11 @@ for (const subject of C.subjects) {
   const app = require(path.join(folder, 'app.js'));
   assert.equal(subject.points, app.SYLLABUS.reduce((n, ch) => n + ch.points.length, 0), subject.name + ' portal point count');
   let questionCount = 0, lessonCount = 0;
-  const context = vm.createContext({
+  const stored = {};
+  const context = vm.createContext({ StudyReview,
     console, setTimeout: () => 0,
-    localStorage: { setItem() {}, getItem() { return null; } }
+    StudyStorage, StudyContent,
+    localStorage: { setItem(key, value) { stored[key] = String(value); }, getItem(key) { return stored[key] ?? null; } }
   });
   for (const file of fs.readdirSync(folder).filter(f => /^data-q.*\.js$/.test(f))) {
     questionCount += require(path.join(folder, file)).QUESTIONS.length;
@@ -32,6 +37,7 @@ for (const subject of C.subjects) {
   }
   for (const file of fs.readdirSync(folder).filter(f => /^data-lessons.*\.js$/.test(f))) {
     lessonCount += Object.values(require(path.join(folder, file)).LESSONS).flat().length;
+    vm.runInContext(fs.readFileSync(path.join(folder, file), 'utf8'), context, { filename: file });
   }
   assert.equal(subject.questions, questionCount, subject.name + ' portal question count');
   assert.equal(subject.lessons, lessonCount, subject.name + ' portal lesson count');
@@ -80,9 +86,10 @@ for (const subject of C.subjects) {
     }
     let reported = null;
     this.StudyUI = { setStorageStatus(ok) { reported = ok; } };
+    const workingSetItem = localStorage.setItem;
     localStorage.setItem = function() { throw Error('quota exceeded'); };
     if (save() !== false || reported !== false) throw Error('storage failure was hidden');
-    localStorage.setItem = function() {};
+    localStorage.setItem = workingSetItem;
     if (save() !== true || reported !== true) throw Error('storage recovery was not reported');
   `, context, { filename: subject.folder + '/workspace-regressions' });
   console.log('PASS ' + subject.name + ' · retake / stable filters / self judgment / storage errors / portal counts');

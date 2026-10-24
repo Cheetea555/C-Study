@@ -35,58 +35,58 @@ var QUESTIONS = [
   sol: '存储结构四种：顺序、链式、索引、散列。其余选项都是逻辑结构层面的划分。' },
 
 /* ============ ds02 线性表 ============ */
-{ id: 'Qds02-1', ch: 'ds02', diff: 2, type: 'fill',
+{ id: 'Qds02-1', ch: 'ds02', pointIds: ['408.ds02.insert-delete-moves'], diff: 2, type: 'fill',
   q: '长度为 n 的顺序表中插入一个元素（等概率插在任意位置），平均需要移动多少个元素？',
   ans: 'n/2',
   sol: '插在第 i 位移动 n−i+1 个，i 取 1..n+1 等概率，平均 = Σ(n−i+1)/(n+1) = n/2。删除则平均 (n−1)/2——插入比删除平均多移 1 次。' },
 
-{ id: 'Qds02-2', ch: 'ds02', diff: 2, type: 'choice',
+{ id: 'Qds02-2', ch: 'ds02', pointIds: ['408.ds02.singly-linked-list'], diff: 2, type: 'choice',
   q: '用头插法建立单链表，读入数据的顺序为 1, 2, 3, 4，则链表中从头到尾的数据序列是（　）',
   opts: ['1, 2, 3, 4', '4, 3, 2, 1', '2, 3, 4, 1', '1, 4, 3, 2'],
   ans: 1,
   sol: '头插法每个新结点都插在表头，最终顺序与读入顺序相反 → 4,3,2,1。想要顺序生成用尾插法（维护尾指针）。' },
 
-{ id: 'Qds02-3', ch: 'ds02', diff: 2, type: 'choice',
+{ id: 'Qds02-3', ch: 'ds02', pointIds: ['408.ds02.singly-linked-list'], diff: 2, type: 'choice',
   q: '在单链表中已知结点 p，在 p 之后插入结点 s 的正确语句序列是（　）',
   opts: ['p->next = s; s->next = p->next;', 's->next = p->next; p->next = s;', 's->next = p; p->next = s;', 'p->next = s; s->next = p;'],
   ans: 1,
   sol: '必须先把 p 的后继保存给 s（s->next = p->next），再让 p 指向 s。若先执行 p->next = s，原后继就丢失了——指针操作题的标准坑。' },
 
-{ id: 'Qds02-4', ch: 'ds02', diff: 3, type: 'choice',
+{ id: 'Qds02-4', ch: 'ds02', pointIds: ['408.ds02.doubly-circular-list'], diff: 3, type: 'choice',
   q: '在双链表中 p 之后插入 s，下列指针修改正确的是（　）',
   opts: ['s->prior=p; s->next=p->next; p->next->prior=s; p->next=s;', 'p->next=s; s->prior=p; s->next=p->next; p->next->prior=s;', 's->next=p->next; p->next=s; s->prior=p; p->next->prior=s;', '顺序无关紧要，任意先后都正确'],
   ans: 0,
   sol: '要点：凡是要用“旧的后继”的写操作（p->next->prior=s）必须放在 p->next=s 之前。A 序列满足；B/C 中 p->next=s 之后 p->next->prior 已指向新结点自身逻辑混乱。' },
 
-{ id: 'Qds02-5', ch: 'ds02', diff: 2, type: 'choice',
+{ id: 'Qds02-5', ch: 'ds02', pointIds: ['408.ds02.doubly-circular-list','408.ds02.representation-choice'], diff: 2, type: 'choice',
   q: '对表头、表尾频繁进行插入删除操作的线性表，最合适的存储结构是（　）',
   opts: ['顺序表', '仅有头指针的单链表', '仅有头指针的循环双链表', '仅有尾指针的循环单链表'],
   ans: 3,
   sol: '带尾指针 rear 的循环单链表：表尾插入 O(1)；表头即 rear->next->next，删除也可达 O(1)。仅有头指针时找表尾要 O(n)。选存储结构就是数“指针到操作点的距离”。' },
 
 /* ============ ds03 栈队列数组 ============ */
-{ id: 'Qds03-1', ch: 'ds03', diff: 2, type: 'choice',
+{ id: 'Qds03-1', ch: 'ds03', pointIds: ["408.ds03.p01","408.ds03.p04"], diff: 2, type: 'choice',
   q: '元素 1、2、3、4 依次进栈（允许途中出栈），不可能得到的出栈序列是（　）',
   opts: ['1, 2, 3, 4', '4, 3, 2, 1', '3, 1, 4, 2', '3, 4, 2, 1'],
   ans: 2,
   sol: '模拟 3,1,4,2：要输出 3 需先压 1,2,3 再弹出 3；下一个输出 1，但此时栈顶是 2，1 被 2 压住出不来 → 不可能。其余三项均可模拟通过。判断方法就是拿序列走一遍。' },
 
-{ id: 'Qds03-2', ch: 'ds03', diff: 2, type: 'fill',
+{ id: 'Qds03-2', ch: 'ds03', pointIds: ["408.ds03.p04"], diff: 2, type: 'fill',
   q: '4 个不同元素依次进栈，可能的出栈序列共有多少种？',
   ans: '14',
   sol: '卡特兰数 C(2n,n)/(n+1)：n=4 → C(8,4)/5 = 70/5 = 14。n=3 → 5，n=5 → 42，记前三个即可应对多数题。' },
 
-{ id: 'Qds03-3', ch: 'ds03', diff: 2, type: 'fill',
+{ id: 'Qds03-3', ch: 'ds03', pointIds: ["408.ds03.p05"], diff: 2, type: 'fill',
   q: '循环队列数组大小 M = 6，front = 2，rear = 4，队列中元素个数为多少？',
   ans: '2',
   sol: '个数 = (rear − front + M) % M = (4 − 2 + 6) % 6 = 2。这个公式对 front 大于 rear（回绕）的情形同样成立，必须默写。' },
 
-{ id: 'Qds03-4', ch: 'ds03', diff: 2, type: 'fill',
+{ id: 'Qds03-4', ch: 'ds03', pointIds: ["408.ds03.p03"], diff: 2, type: 'fill',
   q: '中缀表达式 a + b × c 的后缀（逆波兰）表达式是什么？',
   ans: 'abc*+',
   sol: 'b×c 先算：bc 输出后遇 × 输出 → “bc*”；再与 a 相加 → “abc*+”。手工转换口诀：按优先级加括号，把运算符移到对应括号后。' },
 
-{ id: 'Qds03-5', ch: 'ds03', diff: 2, type: 'fill',
+{ id: 'Qds03-5', ch: 'ds03', pointIds: ["408.ds03.p08"], diff: 2, type: 'fill',
   q: '10 阶对称矩阵按行优先压缩存储下三角（含对角线）元素，共需多少个存储单元？',
   ans: '55',
   sol: 'n(n+1)/2 = 10×11/2 = 55。这是压缩存储的第一问，第二问通常再考 aᵢⱼ 的存放位置 k = i(i−1)/2 + j − 1。' },

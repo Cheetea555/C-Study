@@ -10,7 +10,7 @@ const L = Object.assign({}, require('./data-lessons1.js').LESSONS, require('./da
 // 加载 mathHtml（app.js 在 Node 下不执行 DOM 初始化）
 const src = fs.readFileSync('app.js', 'utf8');
 const mod = { exports: {} };
-new Function('module', 'exports', src + '\nmodule.exports={mathHtml:mathHtml};')(mod, mod.exports);
+new Function('module', 'exports', 'StudyReview', src + '\nmodule.exports={mathHtml:mathHtml};')(mod, mod.exports, require('../assets/review.js'));
 const mathHtml = mod.exports.mathHtml;
 
 const ids = new Set();
@@ -34,8 +34,8 @@ P.SYLLABUS.forEach(c => {
       assert.ok(e.q && e.sol && e.sol.length >= 10, les.id + ' 例题内容缺失');
     });
     assert.ok(Array.isArray(les.pitfalls) && les.pitfalls.length >= 1, les.id + ' 缺常见错误');
-    assert.ok(Array.isArray(les.pts) && les.pts.length >= 1, les.id + ' pts 缺失');
-    les.pts.forEach(p => assert.ok(Number.isInteger(p) && p >= 0 && p < c.points.length, les.id + ' 知识点下标越界: ' + p));
+    assert.ok(Array.isArray(les.pointIds) && les.pointIds.length >= 1, les.id + ' pointIds 缺失');
+    les.pointIds.forEach(id => assert.ok(c.points.some(point => point.id === id), les.id + ' 考点引用不存在: ' + id));
     les.quiz.forEach(qid => {
       quizRefs++;
       assert.ok(ALLQ.has(qid), les.id + ' 配套题不存在: ' + qid);

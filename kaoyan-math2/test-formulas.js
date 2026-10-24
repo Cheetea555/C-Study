@@ -7,7 +7,7 @@ const { FORMULAS, FORMULA_CATS } = require('./data-formulas.js');
 // 加载 mathHtml（app.js 在 Node 下不执行 DOM 初始化）
 const src = fs.readFileSync('app.js', 'utf8');
 const mod = { exports: {} };
-new Function('module', 'exports', src + '\nmodule.exports={mathHtml:mathHtml};')(mod, mod.exports);
+new Function('module', 'exports', 'StudyReview', src + '\nmodule.exports={mathHtml:mathHtml};')(mod, mod.exports, require('../assets/review.js'));
 const mathHtml = mod.exports.mathHtml;
 
 const catIds = new Set(FORMULA_CATS.map(c => c.id));

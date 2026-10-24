@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>全局时间计划 · C-Study</title>
+  <link rel="stylesheet" href="assets/study.css">
+</head>
+<body class="portal-body planner-body">
+  <header class="portal-header">
+    <a class="app-logo" href="index.html"><span class="logo-mark" aria-hidden="true">C</span><span>C-Study<small>考研学习工作台</small></span></a>
+    <a href="index.html">返回四科总览</a>
+  </header>
+  <main class="planner-main">
+    <p class="eyebrow" id="planDate">MAKE ROOM FOR PROGRESS</p>
+    <h1>让计划，装进今天。</h1>
+    <p class="muted">先给复习留时间，再按四科比例安排课程与练习。每完成一项，回来刷新安排。</p>
+    <p class="storage-warning" id="planWarning" role="alert" hidden></p>
+    <p class="planner-status" id="planStatus" role="status" aria-live="polite"></p>
+    <div class="planner-layout">
+      <section class="card planner-config" aria-labelledby="budgetTitle">
+        <h2 id="budgetTitle" tabindex="-1">我的时间预算</h2>
+        <form id="budgetForm">
+          <div class="budget-fields">
+            <div><label for="weekdayMinutes">工作日可用（分钟）</label><input id="weekdayMinutes" type="number" min="0" max="1440" step="1" required></div>
+            <div><label for="weekendMinutes">周末可用（分钟）</label><input id="weekendMinutes" type="number" min="0" max="1440" step="1" required></div>
+            <div><label for="reservePercent">机动留白（%）</label><input id="reservePercent" type="number" min="0" max="50" step="1" required></div>
+            <div><label for="reviewMinutes">每题复习预计（分钟）</label><input id="reviewMinutes" type="number" min="1" max="60" step="1" required></div>
+            <div><label for="practiceMinutes">每课配套练习预计（分钟）</label><input id="practiceMinutes" type="number" min="1" max="60" step="1" required></div>
+          </div>
+          <fieldset class="budget-days"><legend>每周休息日</legend><div id="restDays"></div></fieldset>
+          <label for="restDates">临时休息日</label><textarea id="restDates" rows="2" placeholder="2026-10-25，一行一个或用逗号分隔" aria-describedby="restHint"></textarea>
+          <p id="restHint" class="muted budget-hint">格式为 YYYY-MM-DD；休息日不安排任务，未处理的错题继续保留。</p>
+          <fieldset class="budget-weights"><legend>新课与练习的科目权重</legend><div class="budget-fields" id="budgetWeights"></div></fieldset>
+          <p class="muted budget-hint">按比例分配，可不加到 100。设为 0 暂停该科新课与配套练习，到期错题仍优先。课程预计时长来自教材；实际用时可用科目计时器记录。</p>
+          <button class="btn" type="submit">保存并生成安排</button>
+        </form>
+        <details class="budget-recovery"><summary>设置备份与恢复</summary><p class="muted budget-hint">全局预算单独保存。恢复会先保留被覆盖的原文，课程和错题记录不受影响。需要一起迁移时使用 <a href="backup.html">四科备份与恢复</a>。</p><div class="row">
+          <button class="btn sm ghost" id="downloadDraft" type="button">下载设置草稿</button>
+          <button class="btn sm ghost" id="downloadOriginal" type="button">下载设置原文</button>
+          <button class="btn sm ghost" id="downloadArchived" type="button">下载覆盖前设置</button>
+          <button class="btn sm ghost" id="reloadBudget" type="button">重新读取设置</button>
+          <button class="btn sm ghost" id="restoreBudget" type="button">恢复上一份设置</button>
+        </div><label for="importBudget">导入全局设置</label><input id="importBudget" type="file" accept="application/json,.json"></details>
+      </section>
+      <section class="planner-result" aria-labelledby="tasksTitle">
+        <div class="planner-result-heading"><h2 id="tasksTitle" tabindex="-1">今天的安排</h2><div class="row"><a class="btn sm ghost" href="#budgetTitle">调整预算</a><button class="btn sm ghost" type="button" id="refreshPlan">刷新进度</button></div></div>
+        <div id="budgetSummary" class="budget-summary"></div>
+        <p class="muted budget-hint" id="budgetExplanation"></p>
+        <div class="planner-notices" id="planNotices"></div>
+        <ol class="budget-tasks" id="planTasks"></ol>
+        <section class="card budget-week" aria-labelledby="weekTitle"><h3 id="weekTitle">未来七天的可用时间</h3><div id="weekBudget"></div><p class="muted budget-hint">这里只展示容量。实际任务会按当天最新进度和复习日期重新安排。</p></section>
+        <p class="muted budget-hint">任务分钟是预估。学完课程和复习评分不会自动计时，请在科目页归档计时或补记实际用时。当天日志和未归档计时都会占用预算；未完成内容下次按最新进度重新安排。全局计划与旧的章节日期参考分别保留。</p>
+      </section>
+    </div>
+    <noscript><p class="storage-warning">请启用 JavaScript 以生成全局计划。</p></noscript>
+  </main>
+  <script src="assets/common.js"></script>
+  <script src="assets/storage.js"></script>
+  <script src="assets/content.js"></script>
+  <script src="assets/planner.js"></script>
+  <script src="assets/plan-catalog.js"></script>
+  <script src="assets/planner-page.js"></script>
+</body>
+</html>
