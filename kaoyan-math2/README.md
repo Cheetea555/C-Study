@@ -5,7 +5,7 @@
 
 ## 快速开始
 
-1. 双击本目录 `index.html`（推荐 Chrome / Edge），无需安装、无需联网；
+1. 下载完整仓库，保留本目录与根目录 `assets/` 的相对位置，再双击本目录 `index.html`（推荐 Chrome / Edge），无需安装、无需联网；
 2. 数据自动保存在**本浏览器** localStorage（键 `kaoyan-math2.v1`），与其他三科完全独立、互不影响；
 3. 满分 150，目标分默认 120、每日目标默认 240 分钟（均可在「设置与数据」修改）；
 4. 默认考试日期 **2026-12-19**（2026 年 12 月初试、官方编号 2027 考研的预计时间，以研招网正式通知为准），改日期后计划自动重排。
@@ -66,9 +66,9 @@
 
 ## 开发者说明
 
-- **架构**：纯原生 HTML/CSS/JS，无外部依赖、无构建；`index.html` + `app.js` + 5 个 `data-*.js` 即全部；数据结构见 `app.js` 的 `defaultState()`；
-- **测试**（纯 Node，当前全部通过）：
-  - `node --check *.js` —— 语法校验
+- **架构**：纯原生 HTML/CSS/JS，无外部依赖、无构建；科目页面由 `index.html`、`app.js` 和 6 个 `data-*.js` 组成，并依赖根目录 `assets/` 中的共用样式与脚本。复制或部署时保留完整仓库结构，共用模块见 [根目录说明](../README.md#-开发)；数据结构见 `app.js` 的 `defaultState()`。
+- **测试**（在本科目目录运行，需要 Node.js）：
+  - `Get-ChildItem *.js | ForEach-Object { node --check $_.FullName }` —— PowerShell 逐文件语法校验
   - `node test.js` —— 引擎纯函数（日期 / 计划生成 / 复习调度 / 连续打卡）
   - `node test-data.js` —— 150 题题库结构与 15 章覆盖
   - `node test-lessons.js` —— 53 课结构、例题、配套题引用、排版可解析
