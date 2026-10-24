@@ -1,6 +1,6 @@
 # C-Study 改进优化方案
 
-> 本文记录初次评估时的问题与建议。后续实际改动与验证见 [首批](implementation-progress.md)、[统一搜索](search-implementation.md)、[复发与归因](review-implementation.md)、[全局时间计划](planner-implementation.md)、[四科内容关联](content-linking-implementation.md) 和 [四科备份与恢复](backup-implementation.md)；下文“当前”指评估时的源码快照。
+> 历史方案：本文记录初次评估时的问题与建议，下文「当前」指评估时的源码快照。后续已交付记录见 [更新记录](../CHANGELOG.md)，包括记录保护、统一搜索、复习调度、全局计划、四科内容关联、完整备份和页面置换演示。
 日期：2026-10-23。依据：当前本地 C-Study 与 `postgraduate-exam-website-master` 的源码、数据文件和测试，不以 README 的功能描述代替实现核查。
 
 本文保留改造前的基线分析；首批已实施的功能、兼容规则和验收范围见 [首批改进记录](implementation-progress.md)。
@@ -35,7 +35,7 @@
 | 学习记录 | 本地持久化、计时、错题、课程状态、复习安排 | 已检查的真题作答组件与仓库方法主要负责当前答案反馈 | 参考项目不应被视为完整个人学习管理系统 |
 | 测试 | 20 个科目测试脚本 + 1 个公共回归脚本 | 内容校验、Vitest 单元/组件测试、Playwright 页面测试 | 补数据迁移、内容语义和真实浏览器流程测试 |
 
-### 本次直接统计的内容规模
+### 初次评估时统计的内容规模
 
 | 科目 | 章节 / 考点 / 课程 | 题库数量 | 实际题型 |
 |---|---|---|---|
@@ -318,37 +318,40 @@ HTTP 版可按科目/年份按需获取数据并缓存；file:// 版使用兼容
 
 | 依据 | 支撑结论 |
 |---|---|
-| [408 状态、读取和保存](D:/Cheetea555/Projects/C-Study/kaoyan-408/app.js) | v1 状态结构、损坏回退、整份状态写回 |
-| [408 导入](D:/Cheetea555/Projects/C-Study/kaoyan-408/app.js) | 顶层校验、无科目验证、未依据保存结果反馈 |
-| [408 作答与错题](D:/Cheetea555/Projects/C-Study/kaoyan-408/app.js) | 最近作答聚合、重复答错保留原调度、默认错误原因 |
-| [408 计划](D:/Cheetea555/Projects/C-Study/kaoyan-408/app.js) | 按考点数量分配章节窗口和阶段标签 |
-| [408 课程数据](D:/Cheetea555/Projects/C-Study/kaoyan-408/data-lessons1.js) | pts 下标、quiz 题目引用与文字教学结构 |
-| [公共交互](D:/Cheetea555/Projects/C-Study/assets/workspace.js) | 课程搜索范围、导航和逐题自评复习 |
-| [成绩页](D:/Cheetea555/Projects/C-Study/kaoyan-408/app.js) | 人工成绩台账和曲线 |
-| [政治课程映射](D:/Cheetea555/Projects/C-Study/kaoyan-politics/data-lessons.js) | 认识论课程 pts 未覆盖下标 1 |
-| [公共回归测试](D:/Cheetea555/Projects/C-Study/tests/workspace.test.js) | 真实业务函数通过 VM 执行，展示边界用桩替代 |
+| [408 状态、读取和保存](../kaoyan-408/app.js) | v1 状态结构、损坏回退、整份状态写回 |
+| [408 导入](../kaoyan-408/app.js) | 顶层校验、无科目验证、未依据保存结果反馈 |
+| [408 作答与错题](../kaoyan-408/app.js) | 最近作答聚合、重复答错保留原调度、默认错误原因 |
+| [408 计划](../kaoyan-408/app.js) | 按考点数量分配章节窗口和阶段标签 |
+| [408 课程数据](../kaoyan-408/data-lessons1.js) | pts 下标、quiz 题目引用与文字教学结构 |
+| [公共交互](../assets/workspace.js) | 课程搜索范围、导航和逐题自评复习 |
+| [成绩页](../kaoyan-408/app.js) | 人工成绩台账和曲线 |
+| [政治课程映射](../kaoyan-politics/data-lessons.js) | 认识论课程 pts 未覆盖下标 1 |
+| [公共回归测试](../tests/workspace.test.js) | 真实业务函数通过 VM 执行，展示边界用桩替代 |
+
+表中结论对应改造前的实现，链接用于定位相关模块；当前源码已包含后续修复，不能将历史问题视为当前行为。
 
 ### 参考项目
 
+以下仅列初次评估使用的 `postgraduate-exam-website-master` 源码快照内的相对路径。该快照不在本仓库中，这些路径仅用于说明设计依据，不作为本仓库文件链接。
+
 | 依据 | 支撑结论 |
 |---|---|
-| [数据类型](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/types.ts:1) | 知识层级、真题和知识块关联 |
-| [文章块类型](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/content/knowledge-articles/types.ts:1) | 段落、HTML、公式、图片、提示和动画块 |
-| [文章注册与加载](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/content/knowledge-articles/registry.ts:1) | 按教材动态加载、轻量反查元数据 |
-| [知识正文组件](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/components/knowledge-page/KnowledgeArticle.vue:1) | 小知识点关联真题数去重与跳转 |
-| [真题仓库](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/services/examRepository.ts:1) | 静态题库、缓存、筛选、反查和判题 |
-| [搜索实现](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/search/composables/searchKnowledge.ts:1) | 同义词、字段权重、命中片段与正文定位 |
-| [索引生成](D:/Cheetea555/Projects/postgraduate-exam-website-master/scripts/rebuild-exam-index.mjs:1) | 逐年试卷作为唯一源自动生成索引 |
-| [真题校验](D:/Cheetea555/Projects/postgraduate-exam-website-master/scripts/validate_exam_content.mjs:1) | 真题结构、索引和知识块引用校验设计 |
-| [分步演示组件](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/src/components/knowledge-page/ManimCodePlayer.vue:1) | 上一步、下一步、重置与场景清理 |
-| [页面冒烟测试](D:/Cheetea555/Projects/postgraduate-exam-website-master/client/e2e/smoke.spec.ts:1) | 页面可见性、控制台错误和资源失败检查 |
+| 数据类型：`client/src/types.ts` | 知识层级、真题和知识块关联 |
+| 文章块类型：`client/src/content/knowledge-articles/types.ts` | 段落、HTML、公式、图片、提示和动画块 |
+| 文章注册与加载：`client/src/content/knowledge-articles/registry.ts` | 按教材动态加载、轻量反查元数据 |
+| 知识正文组件：`client/src/components/knowledge-page/KnowledgeArticle.vue` | 小知识点关联真题数去重与跳转 |
+| 真题仓库：`client/src/services/examRepository.ts` | 静态题库、缓存、筛选、反查和判题 |
+| 搜索实现：`client/src/search/composables/searchKnowledge.ts` | 同义词、字段权重、命中片段与正文定位 |
+| 索引生成：`scripts/rebuild-exam-index.mjs` | 逐年试卷作为唯一源自动生成索引 |
+| 真题校验：`scripts/validate_exam_content.mjs` | 真题结构、索引和知识块引用校验设计 |
+| 分步演示组件：`client/src/components/knowledge-page/ManimCodePlayer.vue` | 上一步、下一步、重置与场景清理 |
+| 页面冒烟测试：`client/e2e/smoke.spec.ts` | 页面可见性、控制台错误和资源失败检查 |
 
-### 本次实际验证
+### 初次评估的验证记录
 
 - C-Study：执行四科 20 个测试脚本与公共回归脚本，**21/21 通过**。
 - C-Study：逐文件检查 assets、tests 和四科下共 **48 个 JavaScript 文件**，语法检查通过。
 - 通过只读脚本统计四科题型、课程覆盖；统计参考项目逐年真题 JSON 的数量及字段填写情况。
-- 使用 Node VM、模拟 localStorage/FileReader 和展示函数桩，复现损坏记录覆盖、跨科导入、写入失败仍提示成功，**未读取或写入用户浏览器的真实学习记录**。
-- 参考项目没有安装依赖；本次没有安装依赖、运行其完整构建或完整测试。生成的 manifest/index 在下载源码中缺失，属于其构建脚本生成内容，不据此判断应用损坏。
-- 本次未启动浏览器做页面实操，不将仓库已有截图或已有验收文档当作本轮运行证据。
-- 本次交付为方案文档，未修改两个项目的业务代码。
+- 使用 Node VM、模拟 localStorage/FileReader 和展示函数桩，在隔离数据中复现损坏记录覆盖、跨科导入、写入失败仍提示成功。
+- 参考项目仅完成源码检查，未执行完整构建或完整测试。生成的 manifest/index 不在下载快照中，由其构建脚本生成，不能据此判断应用损坏。
+- 此阶段未进行浏览器交互验证；后续交付的验证结果见各实现文档。
