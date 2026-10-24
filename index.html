@@ -31,6 +31,14 @@
       <div><label>今日待复习</label><strong><span id="totalDue">—</span><small>题</small></strong></div>
       <div><label>累计学完</label><strong><span id="totalLessons">—</span><small>课</small></strong></div>
     </section>
+    <section class="card portal-search" aria-labelledby="portalSearchTitle">
+      <div><h2 id="portalSearchTitle">把知识连起来。</h2><p class="muted">四科课程、考点、题目与速查卡，一起查找。</p></div>
+      <form action="search.html" role="search"><label for="portalSearch">搜索四科学习内容</label><div class="search-input-row"><input id="portalSearch" name="q" type="search" maxlength="200" placeholder="搜索链表、求导、定语从句…"><button class="btn" type="submit">搜索</button></div></form>
+    </section>
+    <section class="card portal-budget" aria-labelledby="portalBudgetTitle">
+      <div><h2 id="portalBudgetTitle">把四科，放进同一份时间表。</h2><p class="muted">设置工作日、周末与休息日，先复习，再安排课程和练习。</p></div>
+      <a class="btn" href="plan.html">安排今天的学习 →</a>
+    </section>
     <section aria-labelledby="subjectsTitle">
       <div class="portal-section-title"><h2 id="subjectsTitle">你的学习空间</h2><span>保持节奏，慢慢积累。</span></div>
       <div class="subject-grid" id="subjectGrid">
@@ -40,7 +48,8 @@
         <a class="subject-card" data-subject="politics" href="kaoyan-politics/index.html"><h3>思想政治</h3><p class="subject-description">理解原理 · 梳理脉络 · 巩固记忆</p><span class="muted">16 章 · 32 课 · 48 道练习 →</span></a>
       </div>
     </section>
-    <div class="portal-note" id="portalNote"><span>学习记录保存在当前浏览器中。每周到各科「设置与数据」导出一次备份，让每一份努力都有留存。</span></div>
+    <div class="portal-note"><span>408 页面置换：先预测，再逐步核对页框与淘汰顺序。</span><a href="algorithms.html#replacement">试试 FIFO / LRU 演示 →</a></div>
+    <div class="portal-note" id="portalNote"><span>学习记录保存在当前浏览器中。每周留一份备份，让每一份努力都有留存。</span><a href="backup.html">四科备份与恢复 →</a></div>
     <noscript><p class="storage-warning">浏览器已关闭 JavaScript。请启用 JavaScript 后使用课程、刷题和学习记录功能。</p></noscript>
     <footer class="portal-footer"><span>C-Study · 日拱一卒，功不唐捐。</span><span>无需安装 · 无外部依赖 · 数据由你保管</span></footer>
   </main>

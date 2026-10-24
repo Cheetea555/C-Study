@@ -8,6 +8,7 @@
     { id: 'politics', folder: 'kaoyan-politics', key: 'kaoyan-pol.v1', name: '思想政治', en: 'POLITICS', icon: 'flag', points: 73, chapters: 16, lessons: 32, questions: 48, description: '梳理原理与脉络，让记忆有据可循。' }
   ];
   const paths = {
+    search: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>',
     grid: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
     book: '<path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Z"/><path d="M12 5v15"/>',
     math: '<path d="m4 13 4 6L14 4h7M15 11h6m-6 6h6"/>',
@@ -43,7 +44,15 @@
     const learned = Object.values(state.lessons || {}).filter(l => l && l.done).length;
     return { minutes, due, mastered, learned, lastVisit: Number(state.ui && state.ui.lastVisit) || 0 };
   }
-  const api = { subjects, icon, esc, localDate, summary };
+  function attemptSummary(attempts) {
+    const rows = Array.isArray(attempts) ? attempts : [];
+    const first = rows.filter(row => row.isFirst);
+    return {
+      total: rows.length, correct: rows.filter(row => row.correct).length,
+      firstTotal: first.length, firstCorrect: first.filter(row => row.correct).length
+    };
+  }
+  const api = { subjects, icon, esc, localDate, summary, attemptSummary };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.StudyCommon = api;
 })(typeof window !== 'undefined' ? window : this);

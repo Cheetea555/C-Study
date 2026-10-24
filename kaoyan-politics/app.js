@@ -14,118 +14,118 @@ function addDays(s, n){ const d = parseDate(s); d.setDate(d.getDate() + n); retu
 function diffDays(a, b){ return Math.round((parseDate(b) - parseDate(a)) / 86400000); }
 
 /* ---------------- 业务常量（纯数据） ---------------- */
-const REVIEW_STEPS = [1, 2, 4, 7, 15, 30];
-const REASONS = ['概念混淆', '原理理解错', '审题偏差', '时政没背到'];
+const REVIEW_STEPS = reviewEngine().STEPS;
+const REASONS = ['未归因', '概念混淆', '原理理解错', '审题偏差', '时政没背到'];
 const KP_STATUS = ['未开始', '学习中', '需复习', '已掌握'];
 const FULL_SCORE = 100; // 考研政治满分
 
 /* 考研政治范围：五门课 */
 const SYLLABUS = [
-  { id: 'p01', subject: '马原', name: '第1章 马克思主义总论', points: [
-    '马克思主义的创立与理论来源',
-    '马克思主义的鲜明特征',
-    '马克思主义的当代价值'
+  { id: "p01", subject: "马原", name: "第1章 马克思主义总论", points: [
+    { id: "politics.p01.p01", legacyKey: "p01-0", title: "马克思主义的创立与理论来源" },
+    { id: "politics.p01.p02", legacyKey: "p01-1", title: "马克思主义的鲜明特征" },
+    { id: "politics.p01.p03", legacyKey: "p01-2", title: "马克思主义的当代价值" },
   ]},
-  { id: 'p02', subject: '马原', name: '第2章 唯物论', points: [
-    '物质观与客观实在性',
-    '意识观与意识的能动作用',
-    '物质与运动、运动与静止',
-    '实践的本质与作用',
-    '世界的物质统一性'
+  { id: "p02", subject: "马原", name: "第2章 唯物论", points: [
+    { id: "politics.p02.p01", legacyKey: "p02-0", title: "物质观与客观实在性" },
+    { id: "politics.p02.p02", legacyKey: "p02-1", title: "意识观与意识的能动作用" },
+    { id: "politics.p02.p03", legacyKey: "p02-2", title: "物质与运动、运动与静止" },
+    { id: "politics.p02.p04", legacyKey: "p02-3", title: "实践的本质与作用" },
+    { id: "politics.p02.p05", legacyKey: "p02-4", title: "世界的物质统一性" },
   ]},
-  { id: 'p03', subject: '马原', name: '第3章 唯物辩证法', points: [
-    '联系与发展的总特征',
-    '对立统一规律（矛盾规律）',
-    '量变质变规律',
-    '否定之否定规律',
-    '五对基本范畴'
+  { id: "p03", subject: "马原", name: "第3章 唯物辩证法", points: [
+    { id: "politics.p03.p01", legacyKey: "p03-0", title: "联系与发展的总特征" },
+    { id: "politics.p03.p02", legacyKey: "p03-1", title: "对立统一规律（矛盾规律）" },
+    { id: "politics.p03.p03", legacyKey: "p03-2", title: "量变质变规律" },
+    { id: "politics.p03.p04", legacyKey: "p03-3", title: "否定之否定规律" },
+    { id: "politics.p03.p05", legacyKey: "p03-4", title: "五对基本范畴" },
   ]},
-  { id: 'p04', subject: '马原', name: '第4章 认识论', points: [
-    '实践与认识的关系',
-    '感性认识与理性认识',
-    '真理及其检验标准',
-    '真理与价值的统一',
-    '认识运动的总规律'
+  { id: "p04", subject: "马原", name: "第4章 认识论", points: [
+    { id: "politics.p04.p01", legacyKey: "p04-0", title: "实践与认识的关系" },
+    { id: "politics.p04.p02", legacyKey: "p04-1", title: "感性认识与理性认识" },
+    { id: "politics.p04.p03", legacyKey: "p04-2", title: "真理及其检验标准" },
+    { id: "politics.p04.p04", legacyKey: "p04-3", title: "真理与价值的统一" },
+    { id: "politics.p04.p05", legacyKey: "p04-4", title: "认识运动的总规律" },
   ]},
-  { id: 'p05', subject: '马原', name: '第5章 唯物史观', points: [
-    '社会存在与社会意识',
-    '生产力与生产关系',
-    '经济基础与上层建筑',
-    '社会形态及其更替',
-    '人民群众的历史地位'
+  { id: "p05", subject: "马原", name: "第5章 唯物史观", points: [
+    { id: "politics.p05.p01", legacyKey: "p05-0", title: "社会存在与社会意识" },
+    { id: "politics.p05.p02", legacyKey: "p05-1", title: "生产力与生产关系" },
+    { id: "politics.p05.p03", legacyKey: "p05-2", title: "经济基础与上层建筑" },
+    { id: "politics.p05.p04", legacyKey: "p05-3", title: "社会形态及其更替" },
+    { id: "politics.p05.p05", legacyKey: "p05-4", title: "人民群众的历史地位" },
   ]},
-  { id: 'p06', subject: '马原', name: '第6章 资本主义的本质与规律', points: [
-    '商品二因素与劳动二重性',
-    '价值量与价值规律',
-    '货币的职能',
-    '劳动力商品与剩余价值',
-    '资本积累与有机构成'
+  { id: "p06", subject: "马原", name: "第6章 资本主义的本质与规律", points: [
+    { id: "politics.p06.p01", legacyKey: "p06-0", title: "商品二因素与劳动二重性" },
+    { id: "politics.p06.p02", legacyKey: "p06-1", title: "价值量与价值规律" },
+    { id: "politics.p06.p03", legacyKey: "p06-2", title: "货币的职能" },
+    { id: "politics.p06.p04", legacyKey: "p06-3", title: "劳动力商品与剩余价值" },
+    { id: "politics.p06.p05", legacyKey: "p06-4", title: "资本积累与有机构成" },
   ]},
-  { id: 'p07', subject: '马原', name: '第7章 资本主义发展与科学社会主义', points: [
-    '垄断资本主义',
-    '资本主义经济危机的根源',
-    '社会主义从空想到科学',
-    '共产主义社会的基本特征'
+  { id: "p07", subject: "马原", name: "第7章 资本主义发展与科学社会主义", points: [
+    { id: "politics.p07.p01", legacyKey: "p07-0", title: "垄断资本主义" },
+    { id: "politics.p07.p02", legacyKey: "p07-1", title: "资本主义经济危机的根源" },
+    { id: "politics.p07.p03", legacyKey: "p07-2", title: "社会主义从空想到科学" },
+    { id: "politics.p07.p04", legacyKey: "p07-3", title: "共产主义社会的基本特征" },
   ]},
-  { id: 'p08', subject: '毛中特', name: '第8章 毛泽东思想', points: [
-    '毛泽东思想的形成与发展',
-    '新民主主义革命总路线',
-    '新民主主义基本纲领',
-    '三大法宝',
-    '毛泽东思想活的灵魂'
+  { id: "p08", subject: "毛中特", name: "第8章 毛泽东思想", points: [
+    { id: "politics.p08.p01", legacyKey: "p08-0", title: "毛泽东思想的形成与发展" },
+    { id: "politics.p08.p02", legacyKey: "p08-1", title: "新民主主义革命总路线" },
+    { id: "politics.p08.p03", legacyKey: "p08-2", title: "新民主主义基本纲领" },
+    { id: "politics.p08.p04", legacyKey: "p08-3", title: "三大法宝" },
+    { id: "politics.p08.p05", legacyKey: "p08-4", title: "毛泽东思想活的灵魂" },
   ]},
-  { id: 'p09', subject: '毛中特', name: '第9章 中国特色社会主义理论体系', points: [
-    '邓小平理论的首要基本问题',
-    '社会主义本质与市场经济',
-    '"三个代表"与科学发展观',
-    '中国特色社会主义制度优势'
+  { id: "p09", subject: "毛中特", name: "第9章 中国特色社会主义理论体系", points: [
+    { id: "politics.p09.p01", legacyKey: "p09-0", title: "邓小平理论的首要基本问题" },
+    { id: "politics.p09.p02", legacyKey: "p09-1", title: "社会主义本质与市场经济" },
+    { id: "politics.p09.p03", legacyKey: "p09-2", title: "\"三个代表\"与科学发展观" },
+    { id: "politics.p09.p04", legacyKey: "p09-3", title: "中国特色社会主义制度优势" },
   ]},
-  { id: 'p10', subject: '毛中特', name: '第10章 习近平新时代中国特色社会主义思想', points: [
-    '历史地位与核心要义',
-    '新时代社会主要矛盾',
-    '新发展理念与新发展格局',
-    '"两个一百年"与共同富裕',
-    '全面深化改革与全面依法治国'
+  { id: "p10", subject: "毛中特", name: "第10章 习近平新时代中国特色社会主义思想", points: [
+    { id: "politics.p10.p01", legacyKey: "p10-0", title: "历史地位与核心要义" },
+    { id: "politics.p10.p02", legacyKey: "p10-1", title: "新时代社会主要矛盾" },
+    { id: "politics.p10.p03", legacyKey: "p10-2", title: "新发展理念与新发展格局" },
+    { id: "politics.p10.p04", legacyKey: "p10-3", title: "\"两个一百年\"与共同富裕" },
+    { id: "politics.p10.p05", legacyKey: "p10-4", title: "全面深化改革与全面依法治国" },
   ]},
-  { id: 'p11', subject: '史纲', name: '第11章 旧民主主义革命时期', points: [
-    '近代中国半殖民地半封建社会',
-    '太平天国与洋务运动',
-    '戊戌变法与辛亥革命',
-    '旧民主主义革命的失败教训'
+  { id: "p11", subject: "史纲", name: "第11章 旧民主主义革命时期", points: [
+    { id: "politics.p11.p01", legacyKey: "p11-0", title: "近代中国半殖民地半封建社会" },
+    { id: "politics.p11.p02", legacyKey: "p11-1", title: "太平天国与洋务运动" },
+    { id: "politics.p11.p03", legacyKey: "p11-2", title: "戊戌变法与辛亥革命" },
+    { id: "politics.p11.p04", legacyKey: "p11-3", title: "旧民主主义革命的失败教训" },
   ]},
-  { id: 'p12', subject: '史纲', name: '第12章 新民主主义革命时期', points: [
-    '五四运动与中国共产党创立',
-    '国民革命与土地革命',
-    '遵义会议与红军长征',
-    '抗日战争的中流砥柱',
-    '解放战争与新中国成立'
+  { id: "p12", subject: "史纲", name: "第12章 新民主主义革命时期", points: [
+    { id: "politics.p12.p01", legacyKey: "p12-0", title: "五四运动与中国共产党创立" },
+    { id: "politics.p12.p02", legacyKey: "p12-1", title: "国民革命与土地革命" },
+    { id: "politics.p12.p03", legacyKey: "p12-2", title: "遵义会议与红军长征" },
+    { id: "politics.p12.p04", legacyKey: "p12-3", title: "抗日战争的中流砥柱" },
+    { id: "politics.p12.p05", legacyKey: "p12-4", title: "解放战争与新中国成立" },
   ]},
-  { id: 'p13', subject: '史纲', name: '第13章 社会主义建设与改革开放', points: [
-    '社会主义改造（三大改造）',
-    '社会主义建设的初步探索',
-    '十一届三中全会与改革开放',
-    '新时代的历史性成就'
+  { id: "p13", subject: "史纲", name: "第13章 社会主义建设与改革开放", points: [
+    { id: "politics.p13.p01", legacyKey: "p13-0", title: "社会主义改造（三大改造）" },
+    { id: "politics.p13.p02", legacyKey: "p13-1", title: "社会主义建设的初步探索" },
+    { id: "politics.p13.p03", legacyKey: "p13-2", title: "十一届三中全会与改革开放" },
+    { id: "politics.p13.p04", legacyKey: "p13-3", title: "新时代的历史性成就" },
   ]},
-  { id: 'p14', subject: '思修法治', name: '第14章 人生观与理想信念', points: [
-    '人生观与人生目的',
-    '人生态度与人生价值',
-    '理想信念的内涵与作用',
-    '个人理想与社会理想'
+  { id: "p14", subject: "思修法治", name: "第14章 人生观与理想信念", points: [
+    { id: "politics.p14.p01", legacyKey: "p14-0", title: "人生观与人生目的" },
+    { id: "politics.p14.p02", legacyKey: "p14-1", title: "人生态度与人生价值" },
+    { id: "politics.p14.p03", legacyKey: "p14-2", title: "理想信念的内涵与作用" },
+    { id: "politics.p14.p04", legacyKey: "p14-3", title: "个人理想与社会理想" },
   ]},
-  { id: 'p15', subject: '思修法治', name: '第15章 道德与法治', points: [
-    '道德的起源与本质',
-    '社会主义核心价值观',
-    '社会公德、职业道德、家庭美德',
-    '社会主义法律与法治体系',
-    '权利与义务'
+  { id: "p15", subject: "思修法治", name: "第15章 道德与法治", points: [
+    { id: "politics.p15.p01", legacyKey: "p15-0", title: "道德的起源与本质" },
+    { id: "politics.p15.p02", legacyKey: "p15-1", title: "社会主义核心价值观" },
+    { id: "politics.p15.p03", legacyKey: "p15-2", title: "社会公德、职业道德、家庭美德" },
+    { id: "politics.p15.p04", legacyKey: "p15-3", title: "社会主义法律与法治体系" },
+    { id: "politics.p15.p05", legacyKey: "p15-4", title: "权利与义务" },
   ]},
-  { id: 'p16', subject: '时政', name: '第16章 时政与分析题方法', points: [
-    '年度重大时政热点',
-    '当代世界经济与政治',
-    '分析题命题规律',
-    '分析题答题模板',
-    '选择题排除技巧'
-  ]}
+  { id: "p16", subject: "时政", name: "第16章 时政与分析题方法", points: [
+    { id: "politics.p16.p01", legacyKey: "p16-0", title: "年度重大时政热点" },
+    { id: "politics.p16.p02", legacyKey: "p16-1", title: "当代世界经济与政治" },
+    { id: "politics.p16.p03", legacyKey: "p16-2", title: "分析题命题规律" },
+    { id: "politics.p16.p04", legacyKey: "p16-3", title: "分析题答题模板" },
+    { id: "politics.p16.p05", legacyKey: "p16-4", title: "选择题排除技巧" },
+  ]},
 ];
 
 /* ---------------- 计划生成 / 复习调度（纯函数） ---------------- */
@@ -154,16 +154,11 @@ function generatePlan(startDate, examDate, syllabus){
   return { startAt: startDate, examDate, totalDays: total, chapters };
 }
 
+function reviewEngine(){
+  return typeof StudyReview !== 'undefined' ? StudyReview : require('../assets/review.js');
+}
 function scheduleNext(m, remembered, today){
-  m.history.push({ date: today, ok: !!remembered });
-  if (remembered){
-    m.stage += 1;
-    if (m.stage >= REVIEW_STEPS.length){ m.mastered = true; m.nextReview = null; }
-    else { m.nextReview = addDays(today, REVIEW_STEPS[m.stage]); }
-  } else {
-    m.stage = 0; m.mastered = false; m.nextReview = addDays(today, 1);
-  }
-  return m;
+  return reviewEngine().scheduleNext(m, remembered, today);
 }
 
 function dueMistakes(list, today){
@@ -189,6 +184,7 @@ function uid(){ return Date.now().toString(36) + '-' + Math.random().toString(36
 
 const STORE_KEY = 'kaoyan-pol.v1';
 let S = null;
+let persistence = null;
 let kpSubject = '全部', kpQuery = '';
 let mFilter = { status: 'active', chapter: '', reason: '' };
 let tickN = 0;
@@ -204,6 +200,7 @@ function defaultState(){
     v: 1,
     settings: { examDate: '2026-12-19', dailyGoal: 90, targetScore: 70 },
     kp: {},
+    attempts: [],     // 每次提交的独立记录；旧版聚合次数不会补造为历史。
     qz: {},
     lessons: {},
     favF: {},
@@ -215,36 +212,72 @@ function defaultState(){
   };
 }
 
-function load(){
+function persistenceStore(){
+  if (!persistence){
+    const engine = typeof StudyStorage !== 'undefined' ? StudyStorage : require('../assets/storage.js');
+    persistence = engine.create({ key: STORE_KEY, subjectId: 'politics', maxScore: 100, syllabus: SYLLABUS, defaults: defaultState, getStorage: () => localStorage });
+  }
+  return persistence;
+}
+function storageStatus(){
+  const info = persistenceStore().info();
+  if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(info.ok, info);
+  return info;
+}
+function refreshImportedState(){
+  pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
+  if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
+  renderAll(); syncTimerBtn(); updateTimerDisplay(); storageStatus();
+}
+function retrySave(){
+  if (save()) toast('记录已保存');
+}
+function exportRawData(){
+  const raw = persistenceStore().original();
+  if (raw === null){ toast('没有可下载的浏览器原始记录'); return; }
+  StudyStorage.download(raw, STORE_KEY + '-original-' + todayStr() + '.json');
+  toast('原始记录下载已发起，请确认文件已保存');
+}
+function exportPreservedData(){
   try {
-    const raw = (typeof localStorage !== 'undefined') ? localStorage.getItem(STORE_KEY) : null;
-    if (raw){
-      const obj = JSON.parse(raw);
-      if (obj && obj.settings){
-        S = obj;
-        S.kp = S.kp || {}; S.qz = S.qz || {}; S.lessons = S.lessons || {}; S.favF = S.favF || {}; S.logs = S.logs || []; S.mistakes = S.mistakes || []; S.papers = S.papers || [];
-        S.timer = S.timer || { running: false, startTs: 0, accumSec: 0, chapterId: null };
-        if (S.timer.running && Date.now() - S.timer.startTs > 4 * 3600 * 1000){
-          S.timer.accumSec += 4 * 3600;
-          S.timer.running = false; S.timer.startTs = 0;
-        }
-        return;
-      }
-    }
-  } catch (e) { /* 数据损坏则重置 */ }
-  S = defaultState();
+    const raw = persistenceStore().archived();
+    if (raw === null){ toast('尚无覆盖前保留的记录'); return; }
+    StudyStorage.download(raw, STORE_KEY + '-preserved-' + todayStr() + '.json');
+    toast('覆盖前记录下载已发起，请确认文件已保存');
+  } catch (e) { toast('无法读取覆盖前记录：' + e.message); }
+}
+function retryStorage(){
+  if (!confirm('重新读取会放弃当前页面尚未保存的修改。请先导出当前记录。确定继续？')) return;
+  const result = persistenceStore().read();
+  storageStatus();
+  if (!result.info.ok){ toast('记录仍无法读取，请保留原始记录后尝试恢复快照'); return; }
+  S = result.state;
+  if (!S.plan){ S.plan = generatePlan(todayStr(), S.settings.examDate, SYLLABUS); S.plan.generatedAt = todayStr(); }
+  refreshImportedState();
+  toast('已重新读取浏览器记录');
+}
+function restoreSnapshot(){
+  try {
+    const next = persistenceStore().snapshot();
+    if (!confirm('将恢复最近一次有效快照，覆盖前会保留浏览器原始记录。请先导出当前页面尚未保存的修改。确定继续？')) return;
+    if (!persistenceStore().save(next, { replace: true })){ storageStatus(); toast('恢复失败，原记录未被覆盖'); return; }
+    S = next; refreshImportedState(); toast('快照已恢复');
+  } catch (e) { toast('恢复失败：' + e.message); }
+}
+
+function load(){
+  S = persistenceStore().read().state;
+  // 延续旧版跨会话保护，暂停离开超过四小时的计时。
+  if (S.timer.running && Date.now() - S.timer.startTs > 4 * 3600 * 1000){
+    S.timer.accumSec += 4 * 3600; S.timer.running = false; S.timer.startTs = 0;
+  }
+  storageStatus();
 }
 
 function save(){
-  if (typeof localStorage === 'undefined') return false;
-  try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(S));
-    if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(true);
-    return true;
-  } catch (e) {
-    if (typeof StudyUI !== 'undefined') StudyUI.setStorageStatus(false);
-    return false;
-  }
+  const ok = persistenceStore().save(S);
+  storageStatus();
+  return ok;
 }
 
 /* ---------------- 通用小工具 ---------------- */
@@ -283,7 +316,7 @@ function toast(msg){
   const t = document.createElement('div');
   document.querySelectorAll('.toast').forEach(item => item.remove());
   t.className = 'toast'; t.setAttribute('role', 'status');
-  t.textContent = (typeof StudyUI !== 'undefined' && !StudyUI.storageOK() && /已|成功/.test(msg) && !/备份已导出/.test(msg)) ? '操作尚未保存，请先导出备份。' : msg;
+  t.textContent = (typeof StudyUI !== 'undefined' && !StudyUI.storageOK() && /已|成功/.test(msg) && !/下载/.test(msg)) ? '操作尚未保存，请先导出备份。' : msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 3000);
 }
@@ -304,13 +337,13 @@ function kpStatus(pid){
 function setKp(pid, st){ S.kp[pid] = { status: st, updatedAt: todayStr() }; }
 function chapterDone(c){
   let d = 0;
-  c.points.forEach((_, i) => { if (kpStatus(c.id + '-' + i) === 3) d++; });
+  c.points.forEach(p => { if (kpStatus(p.id) === 3) d++; });
   return d;
 }
 function kpTotals(){
   let total = 0, done = 0, learning = 0, review = 0;
-  SYLLABUS.forEach(c => c.points.forEach((_, i) => {
-    const st = kpStatus(c.id + '-' + i);
+  SYLLABUS.forEach(c => c.points.forEach(p => {
+    const st = kpStatus(p.id);
     total++;
     if (st === 3) done++; else if (st === 2) review++; else if (st === 1) learning++;
   }));
@@ -457,13 +490,13 @@ function renderKP(){
 
   el('kpList').innerHTML = SYLLABUS
     .filter(c => kpSubject === '全部' || c.subject === kpSubject)
-    .filter(c => !q || c.name.toLowerCase().indexOf(q.toLowerCase()) >= 0 || c.points.some(p => p.toLowerCase().indexOf(q.toLowerCase()) >= 0))
+    .filter(c => !q || c.name.toLowerCase().indexOf(q.toLowerCase()) >= 0 || c.points.some(p => p.title.toLowerCase().indexOf(q.toLowerCase()) >= 0))
     .map(c => {
       const done = chapterDone(c), tot = c.points.length;
       const isCur = S.plan && S.plan.chapters.some(pc => pc.id === c.id && idx >= pc.s && idx <= pc.e);
       const chips = c.points.map((p, i) => {
-        const pid = c.id + '-' + i, st = kpStatus(pid);
-        return '<button class="kp-chip st' + st + '" title="点击切换状态（当前：' + KP_STATUS[st] + '）" onclick="A.cycleKp(\'' + pid + '\')"><span class="dot"></span>' + esc(p) + '</button>';
+        const pid = p.id, st = kpStatus(pid);
+        return '<div class="kp-point"><button data-point-id="' + esc(pid) + '" class="kp-chip st' + st + '" title="点击切换状态（当前：' + KP_STATUS[st] + '）" onclick="A.cycleKp(\'' + pid + '\')"><span class="dot"></span>' + esc(p.title) + '</button>' + contentEngine().pointLinks(contentIndex(), pid) + '</div>';
       }).join('');
       return '<details class="chapter" data-cid="' + c.id + '"' + ((openIds.has(c.id) || isCur) ? ' open' : '') + '>' +
         '<summary><span class="ch-name">' + esc(c.name) + ' · ' + c.subject + '</span>' +
@@ -478,9 +511,10 @@ function renderMistakeList(){
   let arr = S.mistakes.slice();
   if (mFilter.status === 'due') arr = dueMistakes(S.mistakes, t);
   else if (mFilter.status === 'active') arr = arr.filter(m => !m.mastered);
+  else if (mFilter.status === 'relapsed') arr = arr.filter(m => !m.mastered && (m.recurrences || []).length);
   else if (mFilter.status === 'mastered') arr = arr.filter(m => m.mastered);
   if (mFilter.chapter) arr = arr.filter(m => m.chapterId === mFilter.chapter);
-  if (mFilter.reason) arr = arr.filter(m => m.reason === mFilter.reason);
+  if (mFilter.reason) arr = arr.filter(m => reviewEngine().reasonStatus(m).category === mFilter.reason);
   arr.sort((a, b) => ((a.nextReview || '9999-99-99') < (b.nextReview || '9999-99-99') ? -1 : 1));
 
   el('mistakeList').innerHTML = arr.length
@@ -489,12 +523,12 @@ function renderMistakeList(){
         const badge = m.mastered
           ? '<span class="tag ok2">已掌握</span>'
           : '<span class="tag ' + (due ? 'hot' : '') + '">' + (due ? '今日待复习' : '下次 ' + m.nextReview) + '</span>';
-        const reviewBtns = m.mastered ? '' :
+        const reviewBtns = !due ? '' :
           '<button class="btn sm ok" onclick="A.review(\'' + m.id + '\',true)">会了</button>' +
           '<button class="btn sm warn" onclick="A.review(\'' + m.id + '\',false)">还不会</button>';
-        return '<div class="mistake-card' + (m.mastered ? ' ok' : '') + '">' +
+        return '<div class="mistake-card' + (m.mastered ? ' ok' : '') + '" data-mistake-id="' + esc(m.id) + '">' +
           '<div class="m-head"><span class="tag">' + esc(shortChapter(m.chapterId)) + '</span>' +
-          '<span class="tag warn">' + esc(m.reason) + '</span>' + badge +
+          '<span class="tag warn">' + esc(reviewEngine().reasonStatus(m).label) + '</span>' + badge +
           '<span class="muted">' + m.date + '</span></div>' +
           '<div class="m-src">' + esc(m.source) + '</div>' +
           '<div class="m-desc">' + esc(m.desc.length > 90 ? plainMath(m.desc).slice(0, 90) + '…' : plainMath(m.desc)) + '</div>' +
@@ -504,12 +538,56 @@ function renderMistakeList(){
           '<button class="btn sm danger" onclick="A.delMistake(\'' + m.id + '\')">删除</button></div></div>';
       }).join('')
     : '<p class="muted">这里还没有错题。混过的概念、没背到的时政，都值得记进来复习——政治靠重复。</p>';
+  if (typeof StudyUI !== 'undefined') StudyUI.mistakesRendered();
 }
 
 /* ---------------- 刷题模块 ---------------- */
 
+let contentRegistry = null;
+function contentEngine(){ return typeof StudyContent !== 'undefined' ? StudyContent : require('../assets/content.js'); }
+function contentIndex(){
+  if (!contentRegistry) contentRegistry = contentEngine().create(SYLLABUS, LESSONS, QUESTIONS);
+  return contentRegistry;
+}
+function relatedKnowledgeHtml(questionId){ return contentEngine().relatedHtml(contentIndex(), questionId); }
+function lessonPointLinks(lesson){ return contentEngine().lessonPoints(contentIndex(), lesson); }
+function practicePoint(pointId){
+  const index = contentIndex(), point = index.point(pointId), questions = index.questionsFor(pointId);
+  const lesson = index.lessonsFor(pointId)[0];
+  if (typeof StudyUI !== 'undefined') StudyUI.setPracticeSource(lesson ? lesson.id : null, pointId);
+  pqFilter = { ch: point ? point.chapterId : '', diff: 0, scope: 'all', ids: questions.map(q => q.id), pointId };
+  pqScopeSnapshot = null; pqIndex = 0;
+  pqSession = { qid: questions[0] ? questions[0].id : null, picked: -1, revealed: false, judged: false };
+  el('pqChapter').value = pqFilter.ch; el('pqDiff').value = '0'; el('pqScope').value = 'all';
+  goTab('pq');
+  if (!point || !questions.length) toast('该考点尚未关联专项题，请返回课程或知识地图。');
+}
+// Search navigation changes visible content without recording an answer.
+function openQuestion(id){
+  const question = QUESTIONS.find(q => q.id === id);
+  if (!question) return false;
+  if (typeof StudyUI !== 'undefined') StudyUI.setQuestionSource(id);
+  pqFilter = { ch: question.ch, diff: 0, scope: 'all', ids: [id], questionId: id };
+  pqScopeSnapshot = null; pqIndex = 0;
+  pqSession = { qid: id, picked: -1, revealed: false, judged: false };
+  el('pqChapter').value = question.ch; el('pqDiff').value = '0'; el('pqScope').value = 'all';
+  goTab('pq'); return true;
+}
+function openPoint(id){
+  if (!SYLLABUS.some(ch => ch.points.some(point => point.id === id))) return false;
+  kpSubject = '全部'; kpQuery = '';
+  el('kpSubjectSel').value = '全部'; el('kpSearch').value = '';
+  goTab('kp'); return true;
+}
+function openCard(id){
+  if (!FORMULAS.some(card => card.id === id)) return false;
+  fQuery = ''; fCatFilter = 'all'; fOnlyFav = false; fQuiz = false;
+  el('fSearch').value = ''; el('fCat').value = 'all';
+  el('fOnlyFav').checked = false; el('fQuiz').checked = false;
+  goTab('learn'); renderFormulas(); return true;
+}
 function filteredQuestions(){
-  if (pqFilter.ids && pqFilter.ids.length){
+  if (Array.isArray(pqFilter.ids)){
     // 教学配套模式：只做本课指定的题目（按教学顺序）
     return QUESTIONS.filter(q => pqFilter.ids.indexOf(q.id) >= 0);
   }
@@ -537,33 +615,41 @@ function recordAnswer(q, ok, pick){
   const lastPick = (typeof pick === 'number' && pick >= 0) ? pick : (old ? old.lastPick : undefined);
   S.qz[q.id] = { ok: ok, times: (old ? old.times : 0) + 1, lastAt: todayStr() };
   if (typeof lastPick === 'number') S.qz[q.id].lastPick = lastPick;
-  if (!ok) addQToMistake(q, (typeof pick === 'number' && pick >= 0) ? pick : -1);
+  S.attempts = S.attempts || [];
+  S.attempts.push({
+    id: uid(), questionId: q.id, contentVersion: '2026-10', answeredAt: new Date().toISOString(),
+    answer: q.type === 'choice' && typeof pick === 'number' && pick >= 0 ? pick : null,
+    correct: !!ok, score: ok ? 1 : 0, maxScore: 1, isFirst: !old,
+    mode: pqFilter.ids && !pqFilter.pointId && !pqFilter.questionId ? 'lesson' : (old ? 'retry' : 'practice'),
+    gradingMethod: q.type === 'choice' ? 'automatic' : 'self', pointIds: (q.pointIds || []).slice()
+  });
+  if (!ok) addQToMistake(q, (typeof pick === 'number' && pick >= 0) ? pick : -1, S.attempts[S.attempts.length - 1]);
   save();
 }
 
-function addQToMistake(q, pick){
+function addQToMistake(q, pick, attempt){
   const hasPick = q.type === 'choice' && typeof pick === 'number' && pick >= 0 && q.opts && q.opts[pick] != null;
   const wrongTxt = hasPick ? '我选了 ' + 'ABCD'[pick] + '．' + plainMath(q.opts[pick]) : '';
-  const exist = S.mistakes.find(m => m.qid === q.id && !m.mastered);
+  const today = todayStr(), at = attempt ? attempt.answeredAt : new Date().toISOString();
+  const exist = S.mistakes.find(m => m.qid === q.id && !m.mastered) || S.mistakes.find(m => m.qid === q.id);
   if (exist){
-    // 已在错题本且未掌握：只更新本次错解与选项快照，不打断已有复习进度
+    if (!reviewEngine().relapse(exist, { id: uid(), date: today, at, attemptId: attempt && attempt.id, wrong: wrongTxt, wrongIdx: hasPick ? pick : null })) return;
     if (q.type === 'choice' && q.opts){ exist.opts = q.opts.slice(); exist.ansIdx = q.ans; }
-    if (hasPick){ exist.wrong = wrongTxt; exist.wrongIdx = pick; }
-    toast('❌ 又做错了，已更新这道题在错题本中的本次错解');
+    exist.wrong = wrongTxt; exist.wrongIdx = hasPick ? pick : null;
+    toast('再次答错：已记录复发并放回今日复习，历史记录保留');
     return;
   }
   S.mistakes.unshift({
-    id: uid(), qid: q.id, date: todayStr(),
+    id: uid(), qid: q.id, date: today,
     source: '题库 · ' + shortChapter(q.ch) + ' · ' + q.id,
-    chapterId: q.ch, reason: '概念混淆',
+    chapterId: q.ch, reason: '未归因', reasonConfirmed: false, reasonConfirmedAt: null,
     desc: q.q, wrong: wrongTxt,
     opts: (q.type === 'choice' && q.opts) ? q.opts.slice() : null,
-    ansIdx: q.type === 'choice' ? q.ans : null,
-    wrongIdx: hasPick ? pick : null,
+    ansIdx: q.type === 'choice' ? q.ans : null, wrongIdx: hasPick ? pick : null,
     correct: '【答案】' + (q.type === 'choice' ? 'ABCD'[q.ans] : q.ans) + '\n【解析】' + q.sol,
-    stage: 0, nextReview: addDays(todayStr(), 1), history: [], mastered: false
+    stage: 0, nextReview: addDays(today, 1), history: [], mastered: false, recurrences: [], lastWrongAt: at
   });
-  toast('❌ 做错了，已自动加入错题本（明天复习）');
+  toast('做错了，已加入错题本（明天复习）；错因待你确认');
 }
 
 function practiceCard(q, list){
@@ -604,7 +690,7 @@ function practiceCard(q, list){
     '<div class="practice-progress pbar" aria-label="当前题目进度"><div class="pfill" style="width:' + (i / n * 100) + '%"></div></div>' +
     '<div class="m-head"><span class="tag">' + esc(shortChapter(q.ch)) + '</span><span class="tag">' + diffName + '</span>' +
     '<span class="tag">' + typeName + '题</span><span class="muted">' + q.id + ' · 第 ' + i + '/' + n + ' 题</span></div>' +
-    '<p class="q-text">' + mathHtml(q.q) + '</p>' + body + feedback + retry + sol +
+    '<p class="q-text">' + mathHtml(q.q) + '</p>' + body + feedback + retry + sol + (pqSession.revealed ? relatedKnowledgeHtml(q.id) : '') +
     '<div class="row" style="margin-top:14px;justify-content:space-between">' +
     '<button class="btn ghost" ' + (i <= 1 ? 'disabled' : '') + ' onclick="A.pqNav(-1)">← 上一题</button>' +
     '<button class="btn ghost" ' + (i >= n ? 'disabled' : '') + ' onclick="A.pqNav(1)">下一题 →</button></div></div>';
@@ -616,10 +702,10 @@ function renderPractice(){
   if (pqIndex >= n) pqIndex = Math.max(0, n - 1);
   const done = list.filter(q => S.qz[q.id]).length;
   const right = list.filter(q => S.qz[q.id] && S.qz[q.id].ok).length;
-  if (pqFilter.ids && pqFilter.ids.length){
-    el('pqInfo').innerHTML = '教学配套练习：' + n + ' 题 <button class="btn sm ghost" onclick="A.clearPqIds()">退出配套模式</button>';
+  if (Array.isArray(pqFilter.ids)){
+    el('pqInfo').innerHTML = (pqFilter.questionId ? '搜索定位：' : pqFilter.pointId ? '考点专项：' + esc((contentIndex().point(pqFilter.pointId) || { title: '暂不存在的考点' }).title) + ' · ' : '教学配套练习：') + n + ' 题 <button class="btn sm ghost" onclick="A.clearPqIds()">' + (pqFilter.questionId ? '返回章节题库' : '退出配套模式') + '</button>';
   } else {
-    el('pqInfo').textContent = n ? ('共 ' + n + ' 题 · 已做 ' + done + ' · 正确率 ' + (done ? Math.round(right / done * 100) : 0) + '%') : '共 0 题';
+    el('pqInfo').textContent = n ? ('共 ' + n + ' 题 · 已做 ' + done + ' · 最近答对率 ' + (done ? Math.round(right / done * 100) : 0) + '%') : '共 0 题';
   }
   if (!n){ el('pqArea').innerHTML = '<div class="card"><p class="muted">当前筛选条件下没有题目，换个条件试试。</p></div>'; return; }
   const q = list[pqIndex];
@@ -699,10 +785,10 @@ function lessonCard(l){
   const quizN = l.quiz ? l.quiz.length : 0;
   return '<details class="lesson' + (done ? ' done' : '') + '" data-lid="' + l.id + '">' +
     '<summary><span class="ls-title">' + (done ? '✅ ' : '📘 ') + esc(l.title) + '</span>' +
-    '<span class="muted">约 ' + l.mins + ' 分钟 · ' + l.pts.length + ' 个考点' + (quizN ? ' · 配套 ' + quizN + ' 题' : '') + '</span></summary>' +
+    '<span class="muted">约 ' + l.mins + ' 分钟 · ' + l.pointIds.length + ' 个考点' + (quizN ? ' · 配套 ' + quizN + ' 题' : '') + '</span></summary>' +
     '<div class="ls-body">' +
     '<p class="ls-goal">🎯 ' + mathHtml(l.goal) + '</p>' +
-    '<h4>概念与方法</h4><ul>' + l.concept.map(x => '<li>' + mathHtml(x) + '</li>').join('') + '</ul>' +
+    lessonPointLinks(l) + '<h4>概念与方法</h4><ul>' + l.concept.map(x => '<li>' + mathHtml(x) + '</li>').join('') + '</ul>' +
     '<h4>例题（先遮住自做，再展开核对）</h4>' +
     l.examples.map((e, i) => '<details class="ex"><summary>例 ' + (i + 1) + '　' + mathHtml(e.q) + '</summary>' +
       '<div class="ex-sol"><b>解答：</b>' + mathHtml(e.sol) + '</div></details>').join('') +
@@ -746,8 +832,7 @@ function markLesson(id){
     toast('已取消本课的学完标记');
   } else {
     S.lessons[id] = { done: true, doneAt: todayStr() };
-    l.pts.forEach(p => {
-      const pid = l.ch + '-' + p;
+    l.pointIds.forEach(pid => {
       if (kpStatus(pid) === 0) setKp(pid, 1);
     });
     toast('🎉 已学完！本课考点已自动标为「学习中」');
@@ -794,7 +879,7 @@ function renderFormulas(){
     const fav = !!S.favF[f.id];
     const covered = fQuiz && !fRevealed.has(f.id);
     const tagCls = f.tag === '高频' ? ' hot2' : (f.tag === '了解' ? '' : ' warn');
-    return '<div class="fcard">' +
+    return '<div class="fcard" data-card-id="' + esc(f.id) + '">' +
       '<div class="f-top"><span class="f-name">' + esc(f.name) + '</span>' +
       '<span class="tag' + tagCls + '">' + f.tag + '</span>' +
       '<button class="fstar' + (fav ? ' on' : '') + '" title="收藏" onclick="A.toggleFav(\'' + f.id + '\')">' + (fav ? '★' : '☆') + '</button></div>' +
@@ -871,7 +956,11 @@ function renderStats(){
     statCard('📝', '错题总数', S.mistakes.length + '<span class="unit">题</span>', '<span class="muted">未掌握 ' + active + ' · 已掌握 ' + (S.mistakes.length - active) + '</span>') +
     statCard('🚩', '知识点掌握', kp.done + '<span class="unit">/ ' + kp.total + '</span>', progressBar(kp.done / kp.total * 100)) +
     statCard('✏️', '题库刷题', qa + '<span class="unit">/ ' + QUESTIONS.length + ' 题</span>',
-      '<span class="muted">正确率 ' + (qa ? Math.round(qr / qa * 100) : 0) + '%</span>');
+      '<span class="muted">最近答对率 ' + (qa ? Math.round(qr / qa * 100) : 0) + '%</span>');
+
+  const metrics = (typeof StudyCommon !== 'undefined' ? StudyCommon : require('../assets/common.js')).attemptSummary(S.attempts);
+  el('statsCards').innerHTML += statCard('📝', '新记录中的首答', metrics.firstTotal ? Math.round(metrics.firstCorrect / metrics.firstTotal * 100) + '%' : '—', '<span class="muted">' + metrics.firstCorrect + ' / ' + metrics.firstTotal + ' 次；旧聚合记录不补造首答</span>') +
+    statCard('📋', '全部新增作答', metrics.total ? Math.round(metrics.correct / metrics.total * 100) + '%' : '—', '<span class="muted">' + metrics.correct + ' / ' + metrics.total + ' 次，含重做与自评</span>');
 
   const days30 = [];
   for (let i = 29; i >= 0; i--){ const d = addDays(todayStr(), -i); days30.push({ d, m: minutesOn(d) }); }
@@ -890,14 +979,13 @@ function renderStats(){
         '<span class="muted" style="width:56px;text-align:right">' + (r.v / 60).toFixed(1) + 'h</span></div>').join('')
     : '<p class="muted">暂无学习记录。</p>';
 
-  const rc = {};
-  S.mistakes.forEach(m => { rc[m.reason] = (rc[m.reason] || 0) + 1; });
-  const mxr = Math.max(1, Math.max.apply(null, REASONS.map(r => rc[r] || 0)));
-  el('reasonDist').innerHTML = REASONS.map(r =>
-    '<div class="hbar-row"><span class="hbar-name">' + r + '</span>' +
-    '<div class="hbar-track"><div class="hbar-fill warn" style="width:' + Math.round((rc[r] || 0) / mxr * 100) + '%"></div></div>' +
-    '<span class="muted" style="width:40px;text-align:right">' + (rc[r] || 0) + '</span></div>').join('') +
-    '<p class="muted" style="margin-top:8px">“概念混淆”多 → 用速查卡默写原理对照表；“时政没背到”多 → 考前一个月集中过时政专题。</p>';
+  const summary = reviewEngine().reasonSummary(S.mistakes, REASONS), rc = summary.counts;
+  const reasons = Object.keys(rc), mxr = Math.max(1, ...Object.values(rc));
+  el('reasonDist').innerHTML = reasons.map(r =>
+    '<div class="hbar-row"><span class="hbar-name">' + esc(r) + '</span>' +
+    '<div class="hbar-track"><div class="hbar-fill warn" style="width:' + Math.round(rc[r] / mxr * 100) + '%"></div></div>' +
+    '<span class="muted" style="width:40px;text-align:right">' + rc[r] + '</span></div>').join('') +
+    '<p class="muted" style="margin-top:8px">已确认 ' + summary.confirmed + ' 条；未归因或待确认 ' + summary.pending + ' 条。旧标签保留，确认后才计入对应原因。</p>';
 
   const logs = S.logs.slice().sort((a, b) => (a.date === b.date ? (a.id < b.id ? 1 : -1) : (a.date < b.date ? 1 : -1))).slice(0, 20);
   el('logList').innerHTML = logs.length
@@ -973,14 +1061,16 @@ function onMistakeSubmit(e){
     stage: 0, nextReview: addDays(date, 1), history: [], mastered: false
   };
   if (!m.source || !m.desc || !m.chapterId){ toast('请至少填写题源、章节和描述'); return; }
-  S.mistakes.unshift(m);
-  save();
+  reviewEngine().setReason(m, m.reason, m.reason !== '未归因', new Date().toISOString());
+  m.recurrences = [];
+  const next = JSON.parse(JSON.stringify(S)); next.mistakes.unshift(m);
+  if (!commitMistakeChange(next)) return;
   e.target.reset();
   el('mDate').value = todayStr();
   el('mChapter').value = SYLLABUS[0].id;
   el('mistakeAdd').removeAttribute('open');
   renderMistakeList(); renderDash();
-  toast('已入错题本：明天进行第 1 次复习');
+  toast('已入错题本：下次复习 ' + m.nextReview);
 }
 
 function onPaperSubmit(e){
@@ -1036,11 +1126,13 @@ function editMistake(id){
     : '第 ' + (m.stage + 1) + '/' + REVIEW_STEPS.length + ' 轮 · 下次复习 ' + m.nextReview + ' · 已复习 ' + m.history.length + ' 次';
   openModal(
     '<h3>错题详情</h3><p class="muted">' + esc(statusLine) + '</p>' +
+    (typeof StudyUI !== 'undefined' ? StudyUI.mistakeHistoryHtml(m) : '') +
     '<form onsubmit="return A.saveMistakeEdit(event,\'' + m.id + '\')">' +
     '<div class="row"><div class="fld"><label>题源</label><input id="eSrc" value="' + esc(m.source) + '"></div>' +
     '<div class="fld"><label>章节</label><select id="eChapter"></select></div>' +
     '<div class="fld"><label>错误原因</label><select id="eReason"></select></div>' +
     '<div class="fld"><label>记录日期</label><input type="date" id="eDate" value="' + m.date + '"></div></div>' +
+    '<label class="reason-confirm"><input type="checkbox" id="eReasonConfirmed"' + (reviewEngine().reasonStatus(m).confirmed ? ' checked' : '') + '>我已核对本次错误原因（未勾选则保留为待确认）</label>' +
     '<label style="margin-top:10px">题目 / 错因描述</label><textarea id="eDesc" rows="3">' + esc(m.desc) + '</textarea>' +
     mistakeOptsHtml(m) +
     '<label style="margin-top:8px">我当时的错解</label><textarea id="eWrong" rows="2">' + esc(m.wrong) + '</textarea>' +
@@ -1060,60 +1152,54 @@ function editMistake(id){
     el('eChapter').appendChild(o);
   }
   el('eChapter').value = m.chapterId;
-  el('eReason').innerHTML = REASONS.map(r => '<option>' + r + '</option>').join('');
-  el('eReason').value = m.reason;
+  el('eReason').innerHTML = Array.from(new Set(REASONS.concat(m.reason || '未归因'))).map(r => '<option>' + esc(r) + '</option>').join('');
+  el('eReason').value = m.reason || '未归因';
 }
 
 /* ---------------- 数据导入导出 ---------------- */
 
 function exportData(){
-  const blob = new Blob([JSON.stringify(S, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'kaoyan-pol-backup-' + todayStr() + '.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
   S.settings.lastBackup = todayStr();
+  StudyStorage.download(persistenceStore().backup(S), STORE_KEY + '-backup-' + todayStr() + '.json');
   save();
-  toast('备份已导出，请妥善保存');
+  toast('备份下载已发起，请确认文件已保存');
 }
 
 function importData(file){
   const r = new FileReader();
   r.onload = () => {
     try {
-      const obj = JSON.parse(r.result);
-      if (!obj || !obj.settings || !Array.isArray(obj.logs) || !Array.isArray(obj.mistakes) || !Array.isArray(obj.papers)) throw new Error('bad');
-      if (!confirm('导入将覆盖当前全部数据，确定继续？')) return;
-      obj.kp = obj.kp || {}; obj.qz = obj.qz || {}; obj.lessons = obj.lessons || {}; obj.favF = obj.favF || {};
-      obj.timer = obj.timer || { running: false, startTs: 0, accumSec: 0, chapterId: null };
-      S = obj;
-      pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
-      save(); renderAll(); syncTimerBtn(); updateTimerDisplay();
-      toast('导入成功');
-    } catch (e) {
-      toast('文件格式不正确，导入失败');
-    }
+      const prepared = persistenceStore().prepareImport(r.result);
+      const unidentified = prepared.unidentified ? '该旧备份无法自动识别科目，请确认它属于本科目。\n' : '';
+      if (!confirm(unidentified + prepared.summary + '\n导入将覆盖本科当前记录，并保留覆盖前的原文。请先导出当前页面尚未保存的修改。确定继续？')) return;
+      if (!persistenceStore().save(prepared.state, { replace: true })){
+        storageStatus(); toast('导入失败，当前学习记录未被替换'); return;
+      }
+      S = prepared.state; refreshImportedState(); toast('备份已导入并保存');
+    } catch (e) { toast('导入失败：' + e.message); }
   };
+  r.onerror = () => toast('无法读取备份文件，当前记录未改变');
   r.readAsText(file);
 }
 
 function clearData(){
-  if (!confirm('确定清空全部数据？此操作不可恢复！')) return;
-  if (!confirm('再次确认：真的要清空吗？建议先导出备份。')) return;
-  S = defaultState();
-  S.plan = generatePlan(todayStr(), S.settings.examDate, SYLLABUS);
-  S.plan.generatedAt = todayStr();
-  pqScopeSnapshot = null; pqSession = { qid: null, picked: -1, revealed: false };
-  if (typeof StudyUI !== 'undefined') StudyUI.clearPracticeSource();
-  save(); renderAll(); syncTimerBtn(); updateTimerDisplay();
-  toast('已清空');
+  if (!confirm('确定清空本科目的全部记录？建议先导出当前记录。')) return;
+  if (!confirm('再次确认清空？覆盖前将保留浏览器原始记录，可在数据恢复中恢复。')) return;
+  const next = defaultState();
+  next.plan = generatePlan(todayStr(), next.settings.examDate, SYLLABUS);
+  next.plan.generatedAt = todayStr();
+  if (!persistenceStore().save(next, { replace: true })){
+    storageStatus(); toast('清空失败，原记录未被替换'); return;
+  }
+  S = next; refreshImportedState(); toast('本科记录已清空');
 }
 
 /* ---------------- 事件动作（供内联 onclick 调用） ---------------- */
 
 function goTab(name){
   if (!document.getElementById('tab-' + name)) return;
+  const renderers = { dash: renderDash, learn: renderLearn, pq: renderPractice, mistake: renderMistakeList, kp: renderKP, paper: renderPapers, stats: renderStats, settings: renderSettings };
+  if (renderers[name]) renderers[name]();
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   document.querySelectorAll('.tab').forEach(s => s.classList.toggle('active', s.id === 'tab-' + name));
   if (typeof StudyUI !== 'undefined') StudyUI.onTab(name);
@@ -1122,12 +1208,30 @@ function cycleKp(pid){
   setKp(pid, (kpStatus(pid) + 1) % 4);
   save(); renderKP(); renderDash();
 }
+function commitMistakeChange(next){
+  if (!persistenceStore().save(next)){
+    storageStatus(); toast('修改尚未保存，当前错题记录未改变，请导出备份或重试'); return false;
+  }
+  S = next; storageStatus(); return true;
+}
+function confirmMistakeReason(id, reason){
+  const current = S.mistakes.find(x => x.id === id);
+  if (!current || (!REASONS.includes(reason) && reason !== current.reason)) return false;
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
+  reviewEngine().setReason(m, reason, reason !== '未归因', new Date().toISOString());
+  if (!commitMistakeChange(next)) return false;
+  renderMistakeList(); renderDash();
+  toast(m.reasonConfirmed ? '本次错误原因已确认' : '已保留为未归因'); return true;
+}
 function review(id, ok){
-  const m = S.mistakes.find(x => x.id === id);
-  if (!m) return;
-  scheduleNext(m, ok, todayStr());
-  save(); renderMistakeList(); renderDash();
-  toast(ok ? (m.mastered ? '🎉 最后一轮通过，此题已掌握！' : '已记录：进入下一轮复习') : '已记录：明天再复习一次');
+  const current = S.mistakes.find(x => x.id === id), today = todayStr();
+  if (!current || !reviewEngine().isDue(current, today)) return false;
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
+  scheduleNext(m, ok, today);
+  if (!commitMistakeChange(next)) return false;
+  renderMistakeList(); renderDash();
+  toast(ok ? (m.mastered ? '最后一轮通过，此题已掌握！' : '已记录：进入下一轮复习') : '已记录：明天再复习一次');
+  return true;
 }
 function delMistake(id){
   if (!confirm('确定删除这道错题？')) return;
@@ -1136,25 +1240,24 @@ function delMistake(id){
 }
 function saveMistakeEdit(ev, id){
   ev.preventDefault();
-  const m = S.mistakes.find(x => x.id === id);
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
   if (!m) return false;
   m.source = el('eSrc').value.trim() || m.source;
   m.chapterId = el('eChapter').value || m.chapterId;
-  m.reason = el('eReason').value || m.reason;
+  reviewEngine().setReason(m, el('eReason').value, el('eReasonConfirmed').checked, new Date().toISOString());
   m.date = el('eDate').value || m.date;
-  m.desc = el('eDesc').value.trim();
-  m.wrong = el('eWrong').value.trim();
-  m.correct = el('eCorrect').value.trim();
-  save(); closeModal(); renderMistakeList(); renderDash();
-  toast('已保存');
+  m.desc = el('eDesc').value.trim(); m.wrong = el('eWrong').value.trim(); m.correct = el('eCorrect').value.trim();
+  if (!commitMistakeChange(next)) return false;
+  closeModal(); renderMistakeList(); renderDash(); toast('已保存');
   return false;
 }
 function toggleMastered(id){
-  const m = S.mistakes.find(x => x.id === id);
-  if (!m) return;
+  const next = JSON.parse(JSON.stringify(S)), m = next.mistakes.find(x => x.id === id);
+  if (!m) return false;
   if (m.mastered){ m.mastered = false; m.stage = 0; m.nextReview = addDays(todayStr(), 1); }
   else { m.mastered = true; m.nextReview = null; }
-  save(); closeModal(); renderMistakeList(); renderDash();
+  if (!commitMistakeChange(next)) return false;
+  closeModal(); renderMistakeList(); renderDash();
   toast(m.mastered ? '已标记为掌握' : '已放回复习队列');
 }
 function delPaper(id){
@@ -1181,14 +1284,18 @@ function toggleTimer(){
 }
 function finishTimer(){
   const T = S.timer;
-  const total = T.accumSec + (T.running ? (Date.now() - T.startTs) / 1000 : 0);
+  const total = T.accumSec + (T.running ? Math.max(0, (Date.now() - T.startTs) / 1000) : 0);
   if (total <= 0){ toast('还没有开始计时'); return; }
-  const min = Math.max(1, Math.round(total / 60));
-  addLog(min, T.chapterId || el('timerChapter').value || null, todayStr(), '计时学习');
-  Object.assign(T, { running: false, startTs: 0, accumSec: 0 });
-  save(); syncTimerBtn(); updateTimerDisplay();
+  const minutes = Math.max(1, Math.round(total / 60));
+  const next = JSON.parse(JSON.stringify(S));
+  next.logs.push({ id: uid(), date: todayStr(), minutes, chapterId: T.chapterId || el('timerChapter').value || null, note: '计时学习' });
+  Object.assign(next.timer, { running: false, startTs: 0, accumSec: 0 });
+  if (!persistenceStore().save(next)){
+    storageStatus(); toast('计时归档失败，计时与原记录仍保留，请导出备份或重试'); return;
+  }
+  S = next; storageStatus(); syncTimerBtn(); updateTimerDisplay();
   renderDash(); renderStats();
-  toast('已记录 ' + min + ' 分钟学习');
+  toast('已记录 ' + minutes + ' 分钟学习');
 }
 function quickAdd(){
   const min = parseInt(el('quickMin').value, 10);
@@ -1209,10 +1316,11 @@ function openModal(html){ el('modalBox').innerHTML = html; el('modal').classList
 function closeModal(){ el('modal').classList.add('hidden'); if (typeof StudyUI !== 'undefined') StudyUI.modalClosed(); }
 
 const A = {
-  goTab, cycleKp, review, editMistake, delMistake, saveMistakeEdit, toggleMastered,
-  pickOpt, revealAns, selfJudge, retryQuestion, pqNav, markLesson, practiceLesson, clearPqIds, toggleFav, revealF,
+  openQuestion, openPoint, openCard,
+  goTab, cycleKp, review, confirmMistakeReason, editMistake, delMistake, saveMistakeEdit, toggleMastered,
+  pickOpt, revealAns, selfJudge, retryQuestion, pqNav, markLesson, practiceLesson, practicePoint, clearPqIds, toggleFav, revealF,
   delPaper, delLog, toggleTimer, finishTimer, quickAdd, regenPlan,
-  exportData, clearData, closeModal
+  exportData, clearData, closeModal, retrySave, exportRawData, exportPreservedData, retryStorage, restoreSnapshot
 };
 
 /* ---------------- 初始化 ---------------- */
@@ -1283,14 +1391,21 @@ function init(){
   el('fQuiz').addEventListener('change', e => { fQuiz = e.target.checked; fRevealed.clear(); renderFormulas(); });
   el('fOnlyFav').addEventListener('change', e => { fOnlyFav = e.target.checked; renderFormulas(); });
 
+  window.addEventListener('storage', event => {
+    if (event.key === STORE_KEY || event.key === null){
+      persistenceStore().checkExternal();
+      storageStatus();
+    }
+  });
   renderAll();
   syncTimerBtn();
   updateTimerDisplay();
   if (typeof StudyUI !== 'undefined') StudyUI.mount({
     storeKey: STORE_KEY, getState: () => S, actions: A, save,
-    syllabus: SYLLABUS, lessons: LESSONS, today: todayStr,
-    due: dueMistakes, math: mathHtml, chapterName: shortChapter, toast, openModal
+    syllabus: SYLLABUS, lessons: LESSONS, reasons: REASONS, today: todayStr,
+    due: dueMistakes, math: mathHtml, chapterName: shortChapter, toast, openModal, questionLinks: relatedKnowledgeHtml
   });
+  storageStatus();
   setInterval(tick, 1000);
 }
 

@@ -20,7 +20,7 @@ jobs:
           set -e
           for d in kaoyan-math2 kaoyan-408 kaoyan-en2 kaoyan-politics; do
             echo "▶ node --check $d"
-            (cd "$d" && node --check *.js)
+            for file in "$d"/*.js; do node --check "$file"; done
           done
 
       - name: Run all tests (4 apps × 5 suites)
@@ -35,5 +35,17 @@ jobs:
 
       - name: Shared workspace regression tests
         run: |
-          for file in assets/*.js; do node --check "$file"; done
+          set -e
+          for file in assets/*.js tests/*.js scripts/*.js; do node --check "$file"; done
           node tests/workspace.test.js
+          node tests/storage.test.js
+          node tests/content.test.js
+          node tests/search.test.js
+          node tests/review.test.js
+          node tests/planner.test.js
+          node tests/coverage.test.js
+          node tests/backup.test.js
+          node tests/replacement.test.js
+          node scripts/build-search-index.js --check
+          node scripts/build-plan-catalog.js --check
+          node scripts/build-content-coverage.js --check

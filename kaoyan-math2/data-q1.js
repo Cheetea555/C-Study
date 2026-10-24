@@ -6,58 +6,58 @@
 var QUESTIONS = [
 
 /* ============ c01 函数、极限、连续 ============ */
-{ id: 'q01-1', ch: 'c01', diff: 1, type: 'choice',
+{ id: 'q01-1', ch: 'c01', pointIds: ["math2.c01.p09"], diff: 1, type: 'choice',
   q: '计算极限：lim(x→0) @{sin 3x|tan 5x} =（　）',
   opts: ['@{3|5}', '@{5|3}', '1', '0'],
   ans: 0,
   sol: 'x→0 时 sin 3x ~ 3x，tan 5x ~ 5x，乘除因子可直接等价替换：原式 = @{3x|5x} = @{3|5}。等价无穷小替换是求极限的第一工具。' },
 
-{ id: 'q01-2', ch: 'c01', diff: 1, type: 'choice',
+{ id: 'q01-2', ch: 'c01', pointIds: ["math2.c01.p09"], diff: 1, type: 'choice',
   q: 'lim(x→0) @{1 − cos 2x|x²} =（　）',
   opts: ['@{1|2}', '1', '2', '4'],
   ans: 2,
   sol: '1 − cos u ~ @{u²|2}，故 1 − cos 2x ~ @{(2x)²|2} = 2x²，原式 = @{2x²|x²} = 2。注意代入的 2 要平方。' },
 
-{ id: 'q01-3', ch: 'c01', diff: 2, type: 'choice',
+{ id: 'q01-3', ch: 'c01', pointIds: ["math2.c01.p08"], diff: 2, type: 'choice',
   q: 'lim(x→∞) (1 + @{2|x})^{3x} =（　）',
   opts: ['e³', 'e²', 'e⁶', 'e'],
   ans: 2,
   sol: '(1 + @{2|x})ˣ → e²（第二个重要极限）。于是 (1 + @{2|x})^{3x} = [(1 + @{2|x})ˣ]³ → (e²)³ = e⁶。关键动作是“配指数”。' },
 
-{ id: 'q01-4', ch: 'c01', diff: 2, type: 'choice',
+{ id: 'q01-4', ch: 'c01', pointIds: ["math2.c01.p09"], diff: 2, type: 'choice',
   q: '当 x→0 时，1 − cos x 与 x² 是（　）',
   opts: ['高阶无穷小', '低阶无穷小', '同阶但不等价的无穷小', '等价无穷小'],
   ans: 2,
   sol: '1 − cos x ~ @{x²|2}，故 lim @{1 − cos x|x²} = @{1|2}，比值极限非 0 也非 1 ⟹ 同阶但不等价。判断阶数就看比值极限。' },
 
-{ id: 'q01-5', ch: 'c01', diff: 2, type: 'choice',
+{ id: 'q01-5', ch: 'c01', pointIds: ["math2.c01.p13"], diff: 2, type: 'choice',
   q: 'f(x) = @{x² − x|x² − 1}，则 x = 1 是 f(x) 的（　）',
   opts: ['可去间断点', '跳跃间断点', '无穷间断点', '连续点'],
   ans: 0,
   sol: 'x≠1 时约去零因子：f(x) = @{x(x−1)|(x−1)(x+1)} = @{x|x+1}，故 lim(x→1) f(x) = @{1|2} 存在，但 f(1) 无定义 ⟹ 第一类可去间断点。' },
 
-{ id: 'q01-6', ch: 'c01', diff: 2, type: 'fill',
+{ id: 'q01-6', ch: 'c01', pointIds: ["math2.c01.p10"], diff: 2, type: 'fill',
   q: '计算极限：lim(x→0⁺) x·ln x = ？',
   ans: '0',
   sol: '0·∞ 型化为分式：x·ln x = @{ln x|1/x}，属 @{−∞|+∞} 型，洛必达：@{(1/x)|(−1/x²)} = −x → 0，故原式 = 0。' },
 
-{ id: 'q01-7', ch: 'c01', diff: 2, type: 'choice',
+{ id: 'q01-7', ch: 'c01', pointIds: ["math2.c01.p14"], diff: 2, type: 'choice',
   q: 'f(x) 在 [0,1] 上连续，f(0) = −1，f(1) = 2，则方程 f(x) = x 在 (0,1) 内（　）',
   opts: ['至少有一个实根', '至多有一个实根', '没有实根', '恰好有一个实根'],
   ans: 0,
   sol: '令 g(x) = f(x) − x，g 在 [0,1] 连续且 g(0) = −1，g(1) = 1 异号，由零点定理 ∃ξ∈(0,1) 使 g(ξ)=0。要断言“恰好一个”还需单调性，题目未给。' },
 
-{ id: 'q01-8', ch: 'c01', diff: 3, type: 'fill',
+{ id: 'q01-8', ch: 'c01', pointIds: ["math2.c01.p11"], diff: 3, type: 'fill',
   q: 'lim(x→0) @{eˣ − 1 − x|x²} = ？',
   ans: '@{1|2}',
   sol: '泰勒展开：eˣ = 1 + x + @{x²|2} + o(x²)，分子 = @{x²|2} + o(x²)，极限 = @{1|2}。加减结构若用等价替换会误得 0，必须用泰勒。' },
 
-{ id: 'q01-9', ch: 'c01', diff: 1, type: 'fill',
+{ id: 'q01-9', ch: 'c01', pointIds: ["math2.c01.p04","math2.c01.p07"], diff: 1, type: 'fill',
   q: 'lim(n→∞) @{n² + 1|2n² − 3n} = ？',
   ans: '@{1|2}',
   sol: '分子分母同除最高次项 n²：@{1 + 1/n²|2 − 3/n} → @{1|2}（“抓大头”）。' },
 
-{ id: 'q01-10', ch: 'c01', diff: 2, type: 'choice',
+{ id: 'q01-10', ch: 'c01', pointIds: ["math2.c01.p05","math2.c01.p13"], diff: 2, type: 'choice',
   q: 'f(x) = e^{1/x}，则 x = 0 是 f(x) 的（　）',
   opts: ['第一类可去间断点', '第一类跳跃间断点', '第二类无穷间断点', '连续点'],
   ans: 2,

@@ -64,31 +64,31 @@ var QUESTIONS = [
   sol: 'bi-（二）+ lingua（语言）+ -al（形容词后缀）= 双语的。同族：bicycle、bilateral（双边的）；对比：tri-（三）、multi-（多）、mono-（单）。用词根拼词义，是猜词题的正规军打法。' },
 
 /* ============ e03 长难句 ============ */
-{ id: 'Qe03-1', ch: 'e03', diff: 2, type: 'choice',
+{ id: 'Qe03-1', ch: 'e03', pointIds: ["en2.e03.p01","en2.e03.p02","en2.e03.p05"], diff: 2, type: 'choice',
   q: '句子 “What matters most in learning a foreign language is consistent practice.” 的主干结构是（　）',
   opts: ['What matters most 是主语从句，is 是系动词，practice 是表语', 'matters 是谓语动词', 'learning 是主语', 'practice 是宾语'],
   ans: 0,
   sol: '主语从句 What matters most（最重要的东西）+ is + 表语 consistent practice（持续的练习）。判断主干先找“有时态的动词”——这里唯一的谓语是 is，前面的从句整体当主语。长难句第一刀永远切在谓语上。' },
 
-{ id: 'Qe03-2', ch: 'e03', diff: 2, type: 'choice',
+{ id: 'Qe03-2', ch: 'e03', pointIds: ["en2.e03.p02"], diff: 2, type: 'choice',
   q: '填引导词：The professor ___ lecture I attended yesterday will give a talk next week.',
   opts: ['who', 'whose', 'which', 'whom'],
   ans: 1,
   sol: '空后 lecture 是名词，需要“谁的”来连接：whose lecture = 教授的讲座（whose 既可指人也可指物）。做题口诀：引导词后直接跟名词，先考虑 whose。' },
 
-{ id: 'Qe03-3', ch: 'e03', diff: 3, type: 'choice',
+{ id: 'Qe03-3', ch: 'e03', pointIds: ["en2.e03.p02"], diff: 3, type: 'choice',
   q: '同位语从句填空：The fact ___ he failed the exam surprised all of us.',
   opts: ['which', 'that', 'what', 'whether（此处不通）'],
   ans: 1,
   sol: 'that 引导同位语从句，解释 fact 的内容，that 在从句中不充当成分——这是与定语从句 that 的根本区别（定语从句的 that 在从句里作主语或宾语）。同位语从句常挂在 fact / news / idea / belief 之后。' },
 
-{ id: 'Qe03-4', ch: 'e03', diff: 3, type: 'choice',
+{ id: 'Qe03-4', ch: 'e03', pointIds: ["en2.e03.p04"], diff: 3, type: 'choice',
   q: '强调句 “It was not until midnight that he came back.” 还原为普通语序是（　）',
   opts: ['He did not come back until midnight.', 'He came back at midnight sharp.', 'Not until midnight came he back.', 'He never came back.'],
   ans: 0,
   sol: '强调句框架 It was … that … 去掉后句子残缺还原：not until midnight → He did not come back until midnight（注意还原后要借助助动词 did）。写作中反向运用：把时间状语塞进 It was not until … that … 就是现成的高级句型。' },
 
-{ id: 'Qe03-5', ch: 'e03', diff: 2, type: 'choice',
+{ id: 'Qe03-5', ch: 'e03', pointIds: ["en2.e03.p03"], diff: 2, type: 'choice',
   q: '分词用法：___ from the hilltop, the whole city looks like a giant garden.',
   opts: ['Seen', 'Seeing', 'To see', 'See'],
   ans: 0,
