@@ -10,3 +10,12 @@ Desktop.ini
 .vscode/
 .idea/
 *.swp
+
+# 本地方案、实施记录和验收资料
+/CHANGELOG.md
+/docs/*.md
+!/docs/content-coverage.md
+/docs/screenshots/*
+!/docs/screenshots/portal-workspace.jpg
+!/docs/screenshots/math2-workspace.jpg
+!/docs/screenshots/math2-mobile.jpg
